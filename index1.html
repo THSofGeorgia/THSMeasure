@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>THS — Field Measure</title>
+  <style>
+    :root {
+      --teal:#0a7c6e; --teal-dark:#065f55; --teal-mid:#0e9e8d; --teal-light:#e6f7f5;
+      --gold:#c8960c; --gold-light:#fef9e7; --gold-dark:#a37b0a;
+      --s50:#f8fafc; --s100:#f1f5f9; --s200:#e2e8f0; --s300:#cbd5e1;
+      --s400:#94a3b8; --s500:#64748b; --s600:#475569; --s700:#334155; --s800:#1e293b;
+      --red:#dc2626; --redl:#fef2f2; --border:#e2e8f0;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{background:var(--s100);color:var(--s800);font-family:ui-sans-serif,system-ui,sans-serif;min-height:100vh;overscroll-behavior-y:contain;padding-bottom:110px}
+
+    /* ── HEADER ── */
+    .hdr{background:var(--teal-dark);padding:12px 14px 0;border-bottom:4px solid var(--gold);position:sticky;top:0;z-index:200}
+    .hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .hdr-title{font-size:0.9rem;font-weight:900;color:white;flex:1;text-align:center;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .hdr-save{background:var(--gold);color:#1a0e00;border:none;border-radius:7px;padding:7px 13px;font-size:0.65rem;font-weight:900;text-transform:uppercase;cursor:pointer}
+    .hdr-menu{background:rgba(255,255,255,0.12);color:white;border:none;border-radius:7px;padding:7px 11px;font-size:0.65rem;font-weight:800;text-transform:uppercase;cursor:pointer}
+    .hdr-addr{font-size:0.58rem;color:rgba(255,255,255,0.6);text-align:center;padding-bottom:6px;margin-top:-4px}
+
+    /* ── TABS ── */
+    .tabs{display:flex;background:rgba(0,0,0,0.2);border-radius:8px;padding:3px;gap:3px;margin-bottom:10px}
+    .tab{flex:1;padding:7px 4px;font-size:0.6rem;font-weight:900;text-transform:uppercase;border:none;border-radius:6px;background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s}
+    .tab.on{background:var(--gold);color:#1a0e00}
+
+    /* ── MAIN ── */
+    .main{padding:12px 12px 20px;max-width:680px;margin:0 auto}
+
+    /* ── CARDS ── */
+    .card{background:white;border-radius:14px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 2px 10px rgba(10,124,110,0.06)}
+    .card-head{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal-mid) 100%);padding:12px 14px;color:white;font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;display:flex;justify-content:space-between;align-items:center}
+    .card-body{padding:14px;display:flex;flex-direction:column;gap:10px}
+
+    /* ── FIELDS ── */
+    .fl{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--s400);display:block;margin-bottom:4px}
+    .fi{width:100%;background:var(--s50);border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--s800);font-size:0.85rem;font-family:inherit;outline:none}
+    .fi:focus{border-color:var(--teal)}
+    select.fi{-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+    textarea.fi{resize:none;min-height:70px;line-height:1.5}
+    .fg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+    /* ── UNIT CARDS ── */
+    .unit{background:white;border-radius:10px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:8px}
+    .unit.win{border-left:5px solid var(--teal)}
+    .unit.door{border-left:5px solid var(--gold)}
+    .unit.misc{border-left:5px solid var(--s400)}
+    .unit-hdr{display:flex;align-items:center;padding:10px 12px;cursor:pointer;background:var(--s50)}
+    .unit-num{width:26px;height:26px;border-radius:6px;background:var(--s200);font-size:0.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;color:var(--s600);flex-shrink:0}
+    .unit-info{flex:1;padding:0 10px}
+    .unit-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
+    .unit-sub{font-size:0.6rem;color:var(--s400);margin-top:1px}
+    .unit-del{background:var(--redl);border:1px solid #fecaca;color:var(--red);border-radius:6px;padding:4px 9px;font-size:0.6rem;font-weight:800;cursor:pointer}
+    .unit-body{padding:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:9px}
+
+    /* ── DIM DISPLAY ── */
+    .dim{text-align:center;font-size:1.25rem;font-weight:900;color:var(--s800);background:var(--s100);border:1.5px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:center}
+    .dim.active{border:2px solid var(--gold);background:var(--gold-light);color:var(--gold-dark)}
+
+    /* ── PILLS ── */
+    .pill-row{display:flex;gap:6px;flex-wrap:wrap}
+    .pill{display:flex;align-items:center;gap:5px;background:var(--s100);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:0.65rem;font-weight:700;color:var(--s600)}
+    .pill input{width:14px;height:14px;accent-color:var(--teal);cursor:pointer;flex-shrink:0}
+    .pill.on{background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal-dark)}
+
+    /* ── FLAG CHIPS ── */
+    .flag-row{display:flex;gap:6px;flex-wrap:wrap}
+    .flag{padding:7px 12px;border-radius:20px;font-size:0.62rem;font-weight:800;text-transform:uppercase;cursor:pointer;transition:all 0.15s}
+    .flag.rot{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
+    .flag.header{background:#fff7ed;color:#c2410c;border:1px solid #fdba74}
+    .flag.hoa{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+    .flag.custom{background:var(--s100);color:var(--s500);border:1px solid var(--border)}
+    .flag.on{box-shadow:0 0 0 2.5px currentColor}
+
+    /* ── ADD UNIT ── */
+    .add-row{display:flex;gap:8px;margin-top:4px}
+    .add-u{flex:1;padding:12px;border-radius:9px;font-size:0.65rem;font-weight:900;text-transform:uppercase;cursor:pointer;background:transparent}
+    .add-u.win{border:2px dashed var(--teal);color:var(--teal)}
+    .add-u.door{border:2px dashed var(--gold);color:var(--gold-dark)}
+    .add-u.misc{border:2px dashed var(--s300);color:var(--s500)}
+
+    /* ── PHOTO STRIP ── */
+    .photo-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+    .photo-strip::-webkit-scrollbar{display:none}
+    .p-thumb{width:72px;height:72px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;cursor:pointer}
+    .p-add{width:72px;height:72px;border-radius:8px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;flex-shrink:0;background:var(--s50)}
+
+    /* ── SIGNATURE ── */
+    .sig-wrap{background:white;border:2px dashed var(--border);border-radius:12px;overflow:hidden;position:relative}
+    .sig-canvas{display:block;width:100%;height:180px;touch-action:none}
+    .sig-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.08);border:none;border-radius:6px;padding:4px 9px;font-size:0.6rem;font-weight:900;color:var(--s600);cursor:pointer}
+
+    /* ── KEYPAD ── */
+    .kp-tray{position:fixed;bottom:0;left:0;right:0;z-index:500;background:var(--teal-dark);border-top:3px solid var(--gold);padding:12px 12px 24px;transform:translateY(100%);transition:transform 0.25s cubic-bezier(0.4,0,0.2,1)}
+    .kp-tray.open{transform:translateY(0)}
+    .kp-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:6px}
+    .kp-disp{background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;text-align:center;font-size:1.4rem;font-weight:900;color:white;margin-bottom:10px;min-height:50px}
+    .kp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+    .kbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:14px 6px;font-size:1rem;font-weight:900;color:white;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent}
+    .kbtn:active{background:rgba(255,255,255,0.2)}
+    .kbtn.gold{background:var(--gold);color:#1a0e00}
+    .kbtn.red{background:rgba(220,38,38,0.4);color:white}
+    .kbtn.wide{grid-column:span 2}
+    .kp-done{width:100%;margin-top:8px;padding:13px;background:var(--gold);color:#1a0e00;border:none;border-radius:10px;font-size:0.82rem;font-weight:900;text-transform:uppercase;cursor:pointer}
+
+    /* ── BOTTOM BAR ── */
+    .bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:10px 12px 28px;display:flex;gap:8px;z-index:100}
+    .bar-btn{flex:1;padding:13px;border:none;border-radius:10px;font-size:0.72rem;font-weight:900;text-transform:uppercase;cursor:pointer}
+    .bar-save{background:var(--teal-dark);color:white}
+    .bar-sec{background:var(--gold-light);color:var(--gold-dark);border:1px solid var(--gold)}
+
+    /* ── MODAL OVERLAY ── */
+    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px}
+    .modal{background:white;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+    .modal-head{background:var(--teal-dark);padding:16px 20px;color:white;font-size:0.8rem;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;border-bottom:3px solid var(--gold)}
+    .modal-body{padding:20px;display:flex;flex-direction:column;gap:14px}
+    .modal-foot{padding:12px 20px 20px;display:flex;gap:10px}
+    .modal-btn{flex:1;padding:12px;border:none;border-radius:9px;font-size:0.72rem;font-weight:900;text-transform:uppercase;cursor:pointer}
+    .modal-ok{background:var(--teal-dark);color:white}
+    .modal-cancel{background:var(--s100);color:var(--s600)}
+
+    /* ── JOB SWITCHER ── */
+    .jobs-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
+    .job-row{display:flex;align-items:center;padding:10px 12px;background:var(--s50);border:1.5px solid var(--border);border-radius:9px;gap:10px;cursor:pointer}
+    .job-row.active{border-color:var(--teal);background:var(--teal-light)}
+    .job-info{flex:1}
+    .job-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
+    .job-addr{font-size:0.6rem;color:var(--s400)}
+    .job-del{background:var(--redl);border:1px solid #fecaca;color:var(--red);border-radius:6px;padding:3px 8px;font-size:0.6rem;font-weight:800;cursor:pointer}
+    .new-job-btn{padding:11px;background:var(--teal-light);border:2px dashed var(--teal-mid);border-radius:9px;color:var(--teal-dark);font-size:0.68rem;font-weight:900;text-transform:uppercase;cursor:pointer;text-align:center}
+
+    /* ── JOB SUMMARY (sign-off tab) ── */
+    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--s100);font-size:0.78rem}
+    .summary-row:last-child{border-bottom:none}
+    .summary-label{color:var(--s500);font-weight:700}
+    .summary-val{font-weight:900;color:var(--s800);text-align:right;max-width:60%}
+
+    /* ── MISC ── */
+    .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;border-radius:10px;padding:9px 18px;font-size:0.72rem;font-weight:700;z-index:700;white-space:nowrap;opacity:0;transition:opacity 0.3s;pointer-events:none}
+    .toast.show{opacity:1}
+    .empty-units{text-align:center;padding:28px 16px;color:var(--s400);font-size:0.78rem;font-weight:700;border:2px dashed var(--border);border-radius:12px}
+    .sec-count{background:rgba(255,255,255,0.2);border-radius:12px;padding:2px 8px;font-size:0.6rem;font-weight:900}
+  </style>
+</head>
+<body>
+
+<input type="file" id="photoIn" accept="image/*" capture="environment" style="display:none">
+<div id="root"></div>
+<div class="toast" id="toast"></div>
+
+<!-- Keypad -->
+<div class="kp-tray" id="kpTray">
+  <div class="kp-lbl" id="kpLbl">Width (in)</div>
+  <div class="kp-disp" id="kpDisp">—</div>
+  <div class="kp-grid">
+    <button class="kbtn" onclick="kp('7')">7</button>
+    <button class="kbtn" onclick="kp('8')">8</button>
+    <button class="kbtn" onclick="kp('9')">9</button>
+    <button class="kbtn red" onclick="kp('DEL')">⌫</button>
+    <button class="kbtn" onclick="kp('4')">4</button>
+    <button class="kbtn" onclick="kp('5')">5</button>
+    <button class="kbtn" onclick="kp('6')">6</button>
+    <button class="kbtn gold" onclick="kp('1/2')">½</button>
+    <button class="kbtn" onclick="kp('1')">1</button>
+    <button class="kbtn" onclick="kp('2')">2</button>
+    <button class="kbtn" onclick="kp('3')">3</button>
+    <button class="kbtn gold" onclick="kp('3/4')">¾</button>
+    <button class="kbtn wide" onclick="kp('0')">0</button>
+    <button class="kbtn gold" onclick="kp('1/4')">¼</button>
+    <button class="kbtn gold" onclick="kp('CLR')">CLR</button>
+  </div>
+  <button class="kp-done" onclick="closeKp()">Done ✓</button>
+</div>
+
+<script>
+// ─── LOOKUP DATA ──────────────────────────────────────────────────────────────
+var WIN_T  = ['DH','SH','SL','PIC','CAS','AWN','BAY','BW','Other'];
+var DOOR_T = ['Single Entry','Double/French','Slider Patio','Single w/ Sidelites','Double w/ Sidelites','Bifold','Storm Door','Other'];
+var SWINGS = ['RHI','LHI','RHO','LHO','Active/Passive – Right','Active/Passive – Left'];
+var JAMBS  = ['4-9/16"','6-9/16"','4-5/8"','Custom'];
+var GRIDS  = ['None','Contour','Flat','SDL','Other'];
+var GLASS  = ['None','Tempered','Obscure – Standard','Obscure – Rain','Obscure – Flemish','Obscure – Satin'];
+var COLORS = ['White','Bronze','Tan','Clay','Black','Custom'];
+var WIN_OPTS  = ['OSJ','OSBM','Egress','Temp Glass'];
+var DOOR_OPTS = ['OSJ','OSBM','Sidelites','Transom','Deadbolt','Handleset'];
+
+// ─── APP STATE ────────────────────────────────────────────────────────────────
+var activeJobId  = null;
+var activeTab    = 'measure';
+var expandedUnit = null;
+var activeKp     = null;   // 'w{idx}' or 'h{idx}'
+var showModal    = null;   // null | 'jobs' | 'newjob' | 'abc'
+var newJobDraft  = {name:'', address:''};
+var abcEmail     = '';
+
+// ─── STORAGE ──────────────────────────────────────────────────────────────────
+var STORE_JOBS = 'ths_measure_jobs_v1';
+var STORE_SETTINGS = 'ths_measure_settings_v1';
+
+function safeGet(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch(e) { return fb; } }
+function safeSet(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+
+function getAllJobs() { return safeGet(STORE_JOBS, []); }
+function saveAllJobs(jobs) { safeSet(STORE_JOBS, jobs); }
+
+function getSettings() { return safeGet(STORE_SETTINGS, {abcEmail:''}); }
+function saveSettings(s) { safeSet(STORE_SETTINGS, s); }
+
+function getActiveJob() {
+  var jobs = getAllJobs();
+  return jobs.find(function(j){ return j.id === activeJobId; }) || null;
+}
+
+function blankMeasure() {
+  return {units:[], jobNotes:'', accessNotes:'', photos:[], signature:null,
+          flags:{rot:false, header:false, hoa:false, custom:false}, customFlag:''};
+}
+
+function newJob(name, address) {
+  return {
+    id: 'job_' + Date.now(),
+    name: name.trim(),
+    address: address.trim(),
+    createdAt: todayISO(),
+    updatedAt: todayISO(),
+    measure: blankMeasure()
+  };
+}
+
+function saveCurrentJob(md) {
+  var jobs = getAllJobs();
+  var idx = jobs.findIndex(function(j){ return j.id === activeJobId; });
+  if (idx > -1) {
+    jobs[idx].measure = md;
+    jobs[idx].updatedAt = todayISO();
+    saveAllJobs(jobs);
+  }
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function todayISO() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()); }
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function showToast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 2200);
+}
+
+function el(tag, props, children) {
+  var e = document.createElement(tag);
+  for (var k in props) {
+    if (k === 'C') e.className = props[k];
+    else if (k === 't') e.textContent = props[k];
+    else if (k === 'html') e.innerHTML = props[k];
+    else if (k === 'click') e.addEventListener('click', props[k]);
+    else if (k === 'style') e.style.cssText = props[k];
+    else e[k] = props[k];
+  }
+  if (children) children.forEach(function(c){ if(c) e.appendChild(c); });
+  return e;
+}
+
+function mkSel(arr, selected, onChange) {
+  var s = el('select', {C:'fi'});
+  arr.forEach(function(v) {
+    var o = document.createElement('option');
+    o.value = v; o.textContent = v;
+    if (v === selected) o.selected = true;
+    s.appendChild(o);
+  });
+  s.addEventListener('change', function(){ onChange(this.value); });
+  return s;
+}
+
+function lf(label) { return el('label', {C:'fl', t:label}); }
+
+function wrapField(label, inputEl, colSpan) {
+  var w = el('div', colSpan ? {style:'grid-column:span '+colSpan} : {});
+  w.appendChild(lf(label));
+  w.appendChild(inputEl);
+  return w;
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var jobs = getAllJobs();
+  var settings = getSettings();
+  abcEmail = settings.abcEmail || '';
+
+  if (jobs.length === 0) {
+    // Fresh install — show new job modal immediately
+    showModal = 'newjob';
+    activeJobId = null;
+  } else {
+    activeJobId = jobs[jobs.length - 1].id;
+  }
+  render();
+});
+
+// ─── SAVE ────────────────────────────────────────────────────────────────────
+function saveMeasure() {
+  var md = getActiveMd();
+  if (!md) return;
+  saveCurrentJob(md);
+  showToast('✓ Saved — ' + new Date().toLocaleTimeString());
+}
+
+function getActiveMd() {
+  var job = getActiveJob();
+  return job ? job.measure : null;
+}
+
+// ─── MAIN RENDER ─────────────────────────────────────────────────────────────
+function render() {
+  var root = document.getElementById('root');
+  root.innerHTML = '';
+
+  if (showModal) { renderModal(); return; }
+
+  var job = getActiveJob();
+  if (!job) { renderNoJob(root); return; }
+
+  var md = job.measure;
+
+  // Header
+  var hdr = el('div', {C:'hdr'});
+  var top = el('div', {C:'hdr-top'});
+  top.appendChild(el('button', {C:'hdr-menu', t:'Jobs ▾', click: function(){ showModal='jobs'; render(); }}));
+  top.appendChild(el('div', {C:'hdr-title', t: job.name || 'Field Measure'}));
+  top.appendChild(el('button', {C:'hdr-save', t:'Save', click: saveMeasure}));
+  hdr.appendChild(top);
+  if (job.address) hdr.appendChild(el('div', {C:'hdr-addr', t:'📍 ' + job.address}));
+
+  // Tabs
+  var tabs = el('div', {C:'tabs'});
+  ['measure','photos','signoff'].forEach(function(t) {
+    var lbl = t === 'measure' ? 'Measure' : t === 'photos' ? 'Photos' : 'Sign Off';
+    var btn = el('button', {C:'tab'+(activeTab===t?' on':''), t:lbl, click:function(){ setTab(t); }});
+    tabs.appendChild(btn);
+  });
+  hdr.appendChild(tabs);
+  root.appendChild(hdr);
+
+  var main = el('div', {C:'main'});
+  if (activeTab === 'measure') renderMeasure(main, md, job);
+  else if (activeTab === 'photos') renderPhotos(main, md);
+  else renderSignoff(main, md, job);
+  root.appendChild(main);
+
+  // Bottom bar
+  var bar = el('div', {C:'bar'});
+  bar.appendChild(el('button', {C:'bar-btn bar-save', t:'💾 Save', click:saveMeasure}));
+  if (activeTab === 'measure') {
+    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'📧 ABC Quote', click:function(){ draftABC(md, job); }}));
+  } else if (activeTab === 'signoff') {
+    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'🖨️ Print / Export', click:function(){ printJob(md, job); }}));
+  } else {
+    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'📷 Add Photo', click:function(){ document.getElementById('photoIn').click(); }}));
+  }
+  root.appendChild(bar);
+
+  // Photo input handler
+  document.getElementById('photoIn').addEventListener('change', function(e) {
+    var file = e.target.files[0]; if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      if (!md.photos) md.photos = [];
+      md.photos.push(ev.target.result);
+      saveCurrentJob(md);
+      render();
+    };
+    reader.readAsDataURL(file);
+    this.value = '';
+  });
+
+  if (activeTab === 'signoff') initSignature(md);
+}
+
+// ─── NO JOB ──────────────────────────────────────────────────────────────────
+function renderNoJob(root) {
+  var wrap = el('div', {style:'padding:60px 24px;text-align:center'});
+  wrap.appendChild(el('div', {style:'font-size:2.5rem;margin-bottom:16px', t:'📋'}));
+  wrap.appendChild(el('div', {style:'font-size:1rem;font-weight:900;color:#065f55;margin-bottom:8px', t:'THS Field Measure'}));
+  wrap.appendChild(el('div', {style:'font-size:0.78rem;color:#64748b;margin-bottom:24px', t:'Total Home Services of Georgia'}));
+  var btn = el('button', {style:'background:#065f55;color:white;border:none;border-radius:10px;padding:14px 28px;font-size:0.8rem;font-weight:900;text-transform:uppercase;cursor:pointer', t:'+ New Job', click:function(){ showModal='newjob'; render(); }});
+  wrap.appendChild(btn);
+  root.appendChild(wrap);
+}
+
+function setTab(t) { activeTab = t; activeKp = null; closeKpSilent(); render(); }
+
+// ─── MEASURE TAB ─────────────────────────────────────────────────────────────
+function renderMeasure(main, md, job) {
+  // Site Conditions card
+  var fc = el('div', {C:'card'});
+  fc.appendChild(el('div', {C:'card-head', t:'Site Conditions'}));
+  var fb = el('div', {C:'card-body'});
+
+  var fr = el('div', {C:'flag-row'});
+  [{k:'rot',lbl:'ROT'},{k:'header',lbl:'HEADER'},{k:'hoa',lbl:'HOA'},{k:'custom',lbl:'Custom'}].forEach(function(f) {
+    var chip = el('div', {C:'flag '+f.k+(md.flags[f.k]?' on':''), t:f.lbl, click:function(){
+      md.flags[f.k] = !md.flags[f.k];
+      saveCurrentJob(md); render();
+    }});
+    fr.appendChild(chip);
+  });
+  fb.appendChild(fr);
+
+  if (md.flags.custom) {
+    fb.appendChild(lf('Custom Flag Description'));
+    var cf = el('input', {C:'fi', placeholder:'Describe custom condition...'});
+    cf.value = md.customFlag || '';
+    cf.addEventListener('input', function(){ md.customFlag = this.value; });
+    fb.appendChild(cf);
+  }
+
+  fb.appendChild(lf('Access / Alarm Notes'));
+  var an = el('textarea', {C:'fi', placeholder:'Gate codes, alarm info, dogs, parking...'});
+  an.value = md.accessNotes || '';
+  an.addEventListener('input', function(){ md.accessNotes = this.value; });
+  fb.appendChild(an);
+  fc.appendChild(fb);
+  main.appendChild(fc);
+
+  // Units card
+  var cnt = md.units.length;
+  var uc = el('div', {C:'card'});
+  var ucHead = el('div', {C:'card-head'});
+  ucHead.appendChild(el('span', {t:'Windows, Doors & Misc'}));
+  if (cnt > 0) ucHead.appendChild(el('span', {C:'sec-count', t:cnt + ' unit' + (cnt!==1?'s':'')}));
+  uc.appendChild(ucHead);
+  var ub = el('div', {C:'card-body'});
+  if (!cnt) ub.appendChild(el('div', {C:'empty-units', t:'Add a window, door, or misc item below.'}));
+  md.units.forEach(function(u, i) { ub.appendChild(renderUnit(u, i, md)); });
+
+  var ar = el('div', {C:'add-row'});
+  ar.appendChild(el('button', {C:'add-u win', t:'+ Window', click:function(){ addUnit('window', md); }}));
+  ar.appendChild(el('button', {C:'add-u door', t:'+ Door', click:function(){ addUnit('door', md); }}));
+  ar.appendChild(el('button', {C:'add-u misc', t:'+ Misc', click:function(){ addUnit('misc', md); }}));
+  ub.appendChild(ar);
+  uc.appendChild(ub);
+  main.appendChild(uc);
+
+  // Job notes
+  var nc = el('div', {C:'card'});
+  nc.appendChild(el('div', {C:'card-head', t:'Field Notes'}));
+  var nb = el('div', {C:'card-body'});
+  var jn = el('textarea', {C:'fi', placeholder:'Header condition, trim repair needed, customer preferences...'});
+  jn.style.minHeight = '90px';
+  jn.value = md.jobNotes || '';
+  jn.addEventListener('input', function(){ md.jobNotes = this.value; });
+  nb.appendChild(jn);
+  nc.appendChild(nb);
+  main.appendChild(nc);
+}
+
+// ─── UNIT CARD ────────────────────────────────────────────────────────────────
+function renderUnit(u, idx, md) {
+  var isExp = expandedUnit === idx;
+  var typeClass = u.category === 'door' ? 'door' : u.category === 'misc' ? 'misc' : 'win';
+  var wrap = el('div', {C:'unit '+typeClass});
+
+  var hdr = el('div', {C:'unit-hdr', click:function(){ expandedUnit = isExp ? null : idx; render(); }});
+  hdr.appendChild(el('div', {C:'unit-num', t:String(idx+1)}));
+  var info = el('div', {C:'unit-info'});
+  info.appendChild(el('div', {C:'unit-name', t:u.location || (u.category==='misc' ? u.type||'Misc' : 'New Unit')}));
+  var sub = (u.qty && u.qty > 1 ? u.qty+'× ' : '') + (u.type||'') + (u.width ? ' — '+u.width+'" × '+u.height+'"' : '');
+  info.appendChild(el('div', {C:'unit-sub', t:sub}));
+  hdr.appendChild(info);
+  var del = el('button', {C:'unit-del', t:'DEL', click:function(e){
+    e.stopPropagation();
+    if (confirm('Remove this unit?')) {
+      md.units.splice(idx, 1);
+      if (expandedUnit === idx) expandedUnit = null;
+      else if (expandedUnit > idx) expandedUnit--;
+      saveCurrentJob(md); render();
+    }
+  }});
+  hdr.appendChild(del);
+  wrap.appendChild(hdr);
+
+  if (!isExp) return wrap;
+
+  var b = el('div', {C:'unit-body'});
+
+  if (u.category === 'window') {
+    // Row 1: Qty + Location
+    var r1 = el('div', {C:'fg3'});
+    var qw = el('div');
+    qw.appendChild(lf('Qty'));
+    var qi = el('input', {C:'fi', type:'number', min:'1'}); qi.value = u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
+    qi.addEventListener('change', function(){ u.qty = parseInt(this.value)||1; saveCurrentJob(md); });
+    qw.appendChild(qi); r1.appendChild(qw);
+
+    var lw = el('div', {style:'grid-column:span 2'});
+    lw.appendChild(lf('Location / Room'));
+    var li = el('input', {C:'fi', placeholder:'e.g. Master Bedroom'}); li.value = u.location||'';
+    li.addEventListener('input', function(){ u.location = this.value; saveCurrentJob(md); });
+    lw.appendChild(li); r1.appendChild(lw);
+    b.appendChild(r1);
+
+    // Row 2: Type + Color
+    var r2 = el('div', {C:'fg2'});
+    r2.appendChild(wrapField('Type', mkSel(WIN_T, u.type||'DH', function(v){ u.type=v; saveCurrentJob(md); })));
+    r2.appendChild(wrapField('Finish / Color', mkSel(COLORS, u.color||'White', function(v){ u.color=v; saveCurrentJob(md); })));
+    b.appendChild(r2);
+
+    // Row 3: W × H dimensions
+    var r3 = el('div', {C:'fg2'});
+    r3.appendChild(dimField('Width', idx, 'w', u));
+    r3.appendChild(dimField('Height', idx, 'h', u));
+    b.appendChild(r3);
+
+    // Row 4: Grids + Glass
+    var r4 = el('div', {C:'fg2'});
+    r4.appendChild(wrapField('Grids', mkSel(GRIDS, u.grids||'None', function(v){ u.grids=v; saveCurrentJob(md); })));
+    r4.appendChild(wrapField('Glass', mkSel(GLASS, u.glass||'None', function(v){ u.glass=v; saveCurrentJob(md); })));
+    b.appendChild(r4);
+
+    // Options pills
+    b.appendChild(lf('Options'));
+    var pr = el('div', {C:'pill-row'});
+    WIN_OPTS.forEach(function(opt) {
+      var key = opt.toLowerCase().replace(/\s/g,'');
+      var isOn = !!u[key];
+      var pill = el('label', {C:'pill'+(isOn?' on':'')});
+      var cb = el('input', {type:'checkbox'}); cb.checked = isOn;
+      cb.addEventListener('change', function(){ u[key] = this.checked; saveCurrentJob(md); render(); });
+      pill.appendChild(cb); pill.appendChild(el('span', {t:opt}));
+      pr.appendChild(pill);
+    });
+    b.appendChild(pr);
+  }
+
+  else if (u.category === 'door') {
+    var r1 = el('div', {C:'fg3'});
+    var qw = el('div');
+    qw.appendChild(lf('Qty'));
+    var qi = el('input', {C:'fi', type:'number', min:'1'}); qi.value = u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
+    qi.addEventListener('change', function(){ u.qty = parseInt(this.value)||1; saveCurrentJob(md); });
+    qw.appendChild(qi); r1.appendChild(qw);
+
+    var lw = el('div', {style:'grid-column:span 2'});
+    lw.appendChild(lf('Location / Room'));
+    var li = el('input', {C:'fi', placeholder:'e.g. Front Entry'}); li.value = u.location||'';
+    li.addEventListener('input', function(){ u.location = this.value; saveCurrentJob(md); });
+    lw.appendChild(li); r1.appendChild(lw);
+    b.appendChild(r1);
+
+    var r2 = el('div', {C:'fg2'});
+    r2.appendChild(wrapField('Door Type', mkSel(DOOR_T, u.type||'Single Entry', function(v){ u.type=v; saveCurrentJob(md); })));
+    r2.appendChild(wrapField('Finish / Color', mkSel(COLORS, u.color||'White', function(v){ u.color=v; saveCurrentJob(md); })));
+    b.appendChild(r2);
+
+    var r3 = el('div', {C:'fg2'});
+    r3.appendChild(dimField('Width', idx, 'w', u));
+    r3.appendChild(dimField('Height', idx, 'h', u));
+    b.appendChild(r3);
+
+    var r4 = el('div', {C:'fg2'});
+    r4.appendChild(wrapField('Swing / Handing', mkSel(SWINGS, u.swing||'RHI', function(v){ u.swing=v; saveCurrentJob(md); })));
+    r4.appendChild(wrapField('Jamb Depth', mkSel(JAMBS, u.jambDepth||'4-9/16"', function(v){ u.jambDepth=v; saveCurrentJob(md); })));
+    b.appendChild(r4);
+
+    var r5 = el('div', {C:'fg2'});
+    r5.appendChild(wrapField('Glass', mkSel(GLASS, u.glass||'None', function(v){ u.glass=v; saveCurrentJob(md); })));
+    b.appendChild(r5);
+
+    b.appendChild(lf('Options'));
+    var pr = el('div', {C:'pill-row'});
+    DOOR_OPTS.forEach(function(opt) {
+      var key = opt.toLowerCase().replace(/\s/g,'');
+      var isOn = !!u[key];
+      var pill = el('label', {C:'pill'+(isOn?' on':'')});
+      var cb = el('input', {type:'checkbox'}); cb.checked = isOn;
+      cb.addEventListener('change', function(){ u[key] = this.checked; saveCurrentJob(md); render(); });
+      pill.appendChild(cb); pill.appendChild(el('span', {t:opt}));
+      pr.appendChild(pill);
+    });
+    b.appendChild(pr);
+  }
+
+  else { // misc
+    var r1 = el('div', {C:'fg2'});
+    var tw = el('div');
+    tw.appendChild(lf('Item / Description'));
+    var ti = el('input', {C:'fi', placeholder:'e.g. Trim Repair, Brick Mold'}); ti.value = u.type||'';
+    ti.addEventListener('input', function(){ u.type = this.value; saveCurrentJob(md); });
+    tw.appendChild(ti); r1.appendChild(tw);
+
+    var qw = el('div');
+    qw.appendChild(lf('Qty'));
+    var qi = el('input', {C:'fi', type:'number', min:'1'}); qi.value = u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
+    qi.addEventListener('change', function(){ u.qty = parseInt(this.value)||1; saveCurrentJob(md); });
+    qw.appendChild(qi); r1.appendChild(qw);
+    b.appendChild(r1);
+  }
+
+  // Unit notes (all types)
+  b.appendChild(lf('Unit Notes'));
+  var ni = el('input', {C:'fi', placeholder:'Condition, special instructions...'});
+  ni.value = u.unitNotes || '';
+  ni.addEventListener('input', function(){ u.unitNotes = this.value; saveCurrentJob(md); });
+  b.appendChild(ni);
+
+  wrap.appendChild(b);
+  return wrap;
+}
+
+function dimField(label, unitIdx, dir, u) {
+  var kpKey = dir + unitIdx;
+  var isActive = activeKp === kpKey;
+  var curVal = dir === 'w' ? (u.width||'') : (u.height||'');
+  var w = el('div');
+  w.appendChild(lf(label + ' (in)'));
+  var disp = el('div', {C:'dim'+(isActive?' active':''), t: curVal || (dir==='w'?'W"':'H"'),
+    click:function(){ openKp(kpKey, label, curVal); }
+  });
+  w.appendChild(disp);
+  return w;
+}
+
+function addUnit(category, md) {
+  md.units.push({
+    category:category, qty:1, unitNotes:'',
+    type: category==='window'?'DH':category==='door'?'Single Entry':'',
+    width:'', height:'', location:'', color:'White',
+    grids:'None', glass:'None', swing:'RHI', jambDepth:'4-9/16"'
+  });
+  expandedUnit = md.units.length - 1;
+  saveCurrentJob(md);
+  render();
+}
+
+// ─── PHOTOS TAB ───────────────────────────────────────────────────────────────
+function renderPhotos(main, md) {
+  var pc = el('div', {C:'card'});
+  var ph = el('div', {C:'card-head'});
+  ph.appendChild(el('span', {t:'Site Photos'}));
+  if (md.photos && md.photos.length) ph.appendChild(el('span', {C:'sec-count', t:md.photos.length + ' photo' + (md.photos.length!==1?'s':'')}));
+  pc.appendChild(ph);
+  var pb = el('div', {C:'card-body'});
+
+  if (!md.photos || !md.photos.length) {
+    pb.appendChild(el('div', {C:'empty-units', t:'No photos yet. Tap "Add Photo" below.'}));
+  } else {
+    var strip = el('div', {C:'photo-strip'});
+    (md.photos || []).forEach(function(dataUrl, i) {
+      var img = el('img', {C:'p-thumb', src:dataUrl});
+      img.addEventListener('click', function(){
+        if (confirm('Remove this photo?')) {
+          md.photos.splice(i, 1);
+          saveCurrentJob(md); render();
+        }
+      });
+      strip.appendChild(img);
+    });
+    pb.appendChild(strip);
+    pb.appendChild(el('div', {style:'font-size:0.6rem;color:#94a3b8;text-align:center', t:'Tap a photo to remove it'}));
+  }
+  pc.appendChild(pb);
+  main.appendChild(pc);
+}
+
+// ─── SIGN OFF TAB ─────────────────────────────────────────────────────────────
+function renderSignoff(main, md, job) {
+  // Summary
+  var sc = el('div', {C:'card'});
+  sc.appendChild(el('div', {C:'card-head', t:'Job Summary'}));
+  var sb = el('div', {C:'card-body'});
+
+  function sumRow(label, val) {
+    var r = el('div', {C:'summary-row'});
+    r.appendChild(el('span', {C:'summary-label', t:label}));
+    r.appendChild(el('span', {C:'summary-val', t:val}));
+    sb.appendChild(r);
+  }
+
+  sumRow('Job', job.name);
+  if (job.address) sumRow('Address', job.address);
+  sumRow('Date', todayISO());
+  sumRow('Total Units', md.units.length + ' unit' + (md.units.length!==1?'s':''));
+
+  var wins = md.units.filter(function(u){ return u.category==='window'; });
+  var doors = md.units.filter(function(u){ return u.category==='door'; });
+  var misc = md.units.filter(function(u){ return u.category==='misc'; });
+  if (wins.length) sumRow('Windows', wins.length);
+  if (doors.length) sumRow('Doors', doors.length);
+  if (misc.length) sumRow('Misc Items', misc.length);
+
+  var activeFlags = Object.keys(md.flags).filter(function(k){ return md.flags[k]; });
+  if (activeFlags.length) sumRow('Flags', activeFlags.map(function(f){ return f.toUpperCase(); }).join(', '));
+  sc.appendChild(sb);
+  main.appendChild(sc);
+
+  // Unit list
+  if (md.units.length) {
+    var ul = el('div', {C:'card'});
+    ul.appendChild(el('div', {C:'card-head', t:'Unit Breakdown'}));
+    var ub = el('div', {C:'card-body'});
+    md.units.forEach(function(u, i) {
+      var r = el('div', {C:'summary-row'});
+      r.appendChild(el('span', {C:'summary-label', t:(i+1)+'. '+(u.location||u.type||'Unit')}));
+      var detail = (u.qty||1)+'× '+(u.type||'') + (u.width?' — '+u.width+'" × '+u.height+'"':'');
+      r.appendChild(el('span', {C:'summary-val', t:detail}));
+      ub.appendChild(r);
+    });
+    ul.appendChild(ub);
+    main.appendChild(ul);
+  }
+
+  // Customer signature
+  var sigCard = el('div', {C:'card'});
+  sigCard.appendChild(el('div', {C:'card-head', t:'Customer Sign-Off'}));
+  var sigBody = el('div', {C:'card-body'});
+  var sigWrap = el('div', {C:'sig-wrap', id:'sigWrap'});
+  var canvas = el('canvas', {C:'sig-canvas', id:'sigCanvas'});
+  var clearBtn = el('button', {C:'sig-clear', t:'Clear', click:function(){
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    md.signature = null;
+    saveCurrentJob(md);
+  }});
+  sigWrap.appendChild(canvas);
+  sigWrap.appendChild(clearBtn);
+  sigBody.appendChild(sigWrap);
+  if (md.signature) {
+    sigBody.appendChild(el('div', {style:'font-size:0.6rem;color:#0a7c6e;font-weight:700', t:'✓ Signature captured'}));
+  } else {
+    sigBody.appendChild(el('div', {style:'font-size:0.6rem;color:#94a3b8', t:'Customer signs below to confirm measure is complete'}));
+  }
+  sigCard.appendChild(sigBody);
+  main.appendChild(sigCard);
+
+  // ABC Settings
+  var ac = el('div', {C:'card'});
+  ac.appendChild(el('div', {C:'card-head', t:'ABC Supply Settings'}));
+  var ab = el('div', {C:'card-body'});
+  ab.appendChild(lf('ABC Rep Email'));
+  var ai = el('input', {C:'fi', type:'email', placeholder:'rep@abcsupply.com'});
+  ai.value = abcEmail;
+  ai.addEventListener('input', function(){
+    abcEmail = this.value;
+    saveSettings({abcEmail:abcEmail});
+  });
+  ab.appendChild(ai);
+  ac.appendChild(ab);
+  main.appendChild(ac);
+}
+
+// ─── SIGNATURE CANVAS ─────────────────────────────────────────────────────────
+function initSignature(md) {
+  var canvas = document.getElementById('sigCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+  if (md.signature) {
+    var img = new Image();
+    img.onload = function(){ ctx.drawImage(img, 0, 0); };
+    img.src = md.signature;
+  }
+
+  ctx.strokeStyle = '#0a7c6e';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  var drawing = false;
+  function pos(e) {
+    var r = canvas.getBoundingClientRect();
+    var src = e.touches ? e.touches[0] : e;
+    return {x: src.clientX - r.left, y: src.clientY - r.top};
+  }
+  function start(e) { e.preventDefault(); drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function move(e)  { e.preventDefault(); if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); }
+  function end(e)   { drawing=false; md.signature = canvas.toDataURL(); saveCurrentJob(md); }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, {passive:false});
+  canvas.addEventListener('touchmove', move, {passive:false});
+  canvas.addEventListener('touchend', end);
+}
+
+// ─── KEYPAD ───────────────────────────────────────────────────────────────────
+function openKp(id, label, current) {
+  activeKp = id;
+  document.getElementById('kpLbl').textContent = label + ' (inches)';
+  document.getElementById('kpDisp').textContent = current || '—';
+  document.getElementById('kpTray').classList.add('open');
+  render();
+}
+
+function kp(v) {
+  var d = document.getElementById('kpDisp');
+  var cur = d.textContent === '—' ? '' : d.textContent;
+  if (v === 'CLR') { d.textContent = '—'; return; }
+  if (v === 'DEL') { d.textContent = cur.slice(0,-1) || '—'; return; }
+  if (v.includes('/') && cur.length > 0 && !cur.endsWith(' ')) cur += ' ';
+  d.textContent = cur + v;
+}
+
+function closeKp() {
+  var d = document.getElementById('kpDisp');
+  var val = d ? d.textContent : '';
+  if (val === '—') val = '';
+  if (activeKp) {
+    var md = getActiveMd();
+    if (md) {
+      var dir = activeKp[0];
+      var idx = parseInt(activeKp.slice(1));
+      if (!isNaN(idx) && md.units[idx]) {
+        if (dir === 'w') md.units[idx].width = val;
+        else md.units[idx].height = val;
+        saveCurrentJob(md);
+      }
+    }
+  }
+  activeKp = null;
+  document.getElementById('kpTray').classList.remove('open');
+  render();
+}
+
+function closeKpSilent() {
+  activeKp = null;
+  var t = document.getElementById('kpTray');
+  if (t) t.classList.remove('open');
+}
+
+// ─── MODAL SYSTEM ─────────────────────────────────────────────────────────────
+function renderModal() {
+  var root = document.getElementById('root');
+  var bg = el('div', {C:'modal-bg'});
+
+  if (showModal === 'jobs') renderJobsModal(bg);
+  else if (showModal === 'newjob') renderNewJobModal(bg);
+
+  root.appendChild(bg);
+}
+
+function renderJobsModal(bg) {
+  var m = el('div', {C:'modal'});
+  m.appendChild(el('div', {C:'modal-head', t:'Job Files'}));
+  var mb = el('div', {C:'modal-body'});
+  var jobs = getAllJobs();
+
+  var list = el('div', {C:'jobs-list'});
+  if (!jobs.length) {
+    list.appendChild(el('div', {style:'color:#94a3b8;font-size:0.78rem;font-weight:700;text-align:center;padding:20px', t:'No jobs yet.'}));
+  }
+  jobs.slice().reverse().forEach(function(j) {
+    var row = el('div', {C:'job-row' + (j.id===activeJobId?' active':'')});
+    var info = el('div', {C:'job-info'});
+    info.appendChild(el('div', {C:'job-name', t:j.name}));
+    if (j.address) info.appendChild(el('div', {C:'job-addr', t:'📍 '+j.address}));
+    info.addEventListener('click', function(){ activeJobId = j.id; showModal = null; render(); });
+    row.appendChild(info);
+    if (j.id !== activeJobId) {
+      var del = el('button', {C:'job-del', t:'DEL', click:function(){
+        if (confirm('Delete job "'+j.name+'"? This cannot be undone.')) {
+          var all = getAllJobs().filter(function(x){ return x.id !== j.id; });
+          saveAllJobs(all);
+          if (activeJobId === j.id) activeJobId = all.length ? all[all.length-1].id : null;
+          if (!activeJobId) showModal = 'newjob'; else showModal = null;
+          render();
+        }
+      }});
+      row.appendChild(del);
+    }
+    list.appendChild(row);
+  });
+  mb.appendChild(list);
+
+  var newBtn = el('button', {C:'new-job-btn', t:'+ New Job', click:function(){ showModal='newjob'; newJobDraft={name:'',address:''}; render(); }});
+  mb.appendChild(newBtn);
+  m.appendChild(mb);
+
+  var mf = el('div', {C:'modal-foot'});
+  mf.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Close', click:function(){ showModal=null; render(); }}));
+  m.appendChild(mf);
+  bg.appendChild(m);
+}
+
+function renderNewJobModal(bg) {
+  var m = el('div', {C:'modal'});
+  m.appendChild(el('div', {C:'modal-head', t:'New Job'}));
+  var mb = el('div', {C:'modal-body'});
+
+  mb.appendChild(lf('Customer / Job Name *'));
+  var ni = el('input', {C:'fi', placeholder:'e.g. Smith Residence'}); ni.value = newJobDraft.name;
+  ni.addEventListener('input', function(){ newJobDraft.name = this.value; });
+  mb.appendChild(ni);
+
+  mb.appendChild(lf('Address'));
+  var ai = el('input', {C:'fi', placeholder:'e.g. 123 Oak St, Marietta'}); ai.value = newJobDraft.address;
+  ai.addEventListener('input', function(){ newJobDraft.address = this.value; });
+  mb.appendChild(ai);
+
+  m.appendChild(mb);
+
+  var mf = el('div', {C:'modal-foot'});
+  if (getAllJobs().length > 0) {
+    mf.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Cancel', click:function(){ showModal=null; render(); }}));
+  }
+  mf.appendChild(el('button', {C:'modal-btn modal-ok', t:'Create Job', click:function(){
+    if (!newJobDraft.name.trim()) { ni.style.borderColor='#dc2626'; ni.focus(); return; }
+    var j = newJob(newJobDraft.name, newJobDraft.address);
+    var all = getAllJobs();
+    all.push(j);
+    saveAllJobs(all);
+    activeJobId = j.id;
+    newJobDraft = {name:'', address:''};
+    showModal = null;
+    render();
+  }}));
+  m.appendChild(mf);
+  bg.appendChild(m);
+
+  // Auto-focus name field
+  setTimeout(function(){ if(ni) ni.focus(); }, 100);
+}
+
+// ─── ABC EMAIL DRAFT ──────────────────────────────────────────────────────────
+function draftABC(md, job) {
+  if (!abcEmail) {
+    alert('Add your ABC rep\'s email in the Sign Off tab first.');
+    return;
+  }
+  var lines = md.units.map(function(u, i) {
+    var n = i + 1;
+    if (u.category === 'misc') return n+'. '+(u.qty||1)+'× '+u.type+(u.unitNotes?' — '+u.unitNotes:'');
+    if (u.category === 'door') return n+'. '+(u.qty||1)+'× '+u.type+' | '+u.width+'" W × '+u.height+'" H | '+u.swing+' | Jamb '+u.jambDepth+' | '+u.color+' | Glass: '+u.glass+(u.sidelites?' | Sidelites':'')+' | Loc: '+u.location;
+    return n+'. '+(u.qty||1)+'× '+u.type+' | '+u.width+'" W × '+u.height+'" H | '+u.color+' | Grids: '+u.grids+' | Glass: '+u.glass+' | Loc: '+u.location;
+  }).join('\n');
+
+  var flags = Object.keys(md.flags).filter(function(k){ return md.flags[k]; }).map(function(k){ return k.toUpperCase(); }).join(', ');
+  var body = 'Hi,\n\nPlease provide a quote for the following job:\n\nCustomer: '+job.name+'\nAddress: '+(job.address||'')+'\n\nScope:\n'+lines+(flags?'\n\nSite Flags: '+flags:'')+(md.jobNotes?'\n\nField Notes: '+md.jobNotes:'')+'\n\nThank you,\nCameron\nTotal Home Services of Georgia';
+  var subj = 'Quote Request — '+job.name+(job.address?' / '+job.address:'');
+  window.open('mailto:'+encodeURIComponent(abcEmail)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body),'_blank');
+  showToast('✓ ABC email opened');
+}
+
+// ─── PRINT / EXPORT ──────────────────────────────────────────────────────────
+function printJob(md, job) {
+  var lines = md.units.map(function(u, i) {
+    var n = i + 1;
+    var base = '<strong>' + n + '. ' + (u.location||u.type||'Unit') + '</strong><br>';
+    if (u.category === 'misc') return base + (u.qty||1) + '× ' + u.type + (u.unitNotes ? ' — ' + u.unitNotes : '');
+    if (u.category === 'door') return base + (u.qty||1) + '× ' + u.type + ' | ' + u.width + '" × ' + u.height + '" | Swing: ' + u.swing + ' | Jamb: ' + u.jambDepth + ' | ' + u.color + ' | Glass: ' + u.glass;
+    return base + (u.qty||1) + '× ' + u.type + ' | ' + u.width + '" × ' + u.height + '" | ' + u.color + ' | Grids: ' + u.grids + ' | Glass: ' + u.glass;
+  }).join('<br><br>');
+
+  var flags = Object.keys(md.flags).filter(function(k){ return md.flags[k]; }).map(function(k){ return k.toUpperCase(); }).join(', ');
+  var win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>Measure — '+job.name+'</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#1e293b;font-size:14px;line-height:1.6}h1{font-size:1.2rem;font-weight:900;color:#065f55;margin-bottom:4px}h2{font-size:0.75rem;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;margin:24px 0 8px;border-bottom:2px solid #e2e8f0;padding-bottom:4px}.flag-badge{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:12px;padding:2px 10px;font-size:0.7rem;font-weight:800;text-transform:uppercase;display:inline-block;margin-right:4px}@media print{@page{margin:20mm}}</style></head><body>');
+  win.document.write('<h1>' + job.name + '</h1>');
+  win.document.write('<div style="color:#64748b;font-size:0.82rem">' + (job.address||'') + ' &nbsp;·&nbsp; ' + todayISO() + '</div>');
+  if (flags) {
+    win.document.write('<div style="margin-top:12px">');
+    flags.split(', ').forEach(function(f){ win.document.write('<span class="flag-badge">'+f+'</span>'); });
+    win.document.write('</div>');
+  }
+  if (md.accessNotes) win.document.write('<h2>Access Notes</h2><p>' + md.accessNotes + '</p>');
+  if (lines) win.document.write('<h2>Units (' + md.units.length + ')</h2><p>' + lines + '</p>');
+  if (md.jobNotes) win.document.write('<h2>Field Notes</h2><p>' + md.jobNotes + '</p>');
+  if (md.signature) win.document.write('<h2>Customer Signature</h2><img src="'+md.signature+'" style="max-width:300px;border:1px solid #e2e8f0;border-radius:8px">');
+  win.document.write('</body></html>');
+  win.document.close();
+  win.print();
+}
+</script>
+</body>
+</html>
