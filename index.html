@@ -48,88 +48,22 @@
     .fi:focus{border-color:var(--teal)}
     select.fi{-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
     textarea.fi{resize:none;min-height:70px;line-height:1.5}
-    .fg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-    .fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 
     /* ── UNIT CARDS ── */
     .unit{background:white;border-radius:10px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:8px}
     .unit.win{border-left:5px solid var(--teal)}
     .unit.door{border-left:5px solid var(--gold)}
-    .unit.misc{border-left:5px solid var(--s400)}
     .unit-hdr{display:flex;align-items:center;padding:10px 12px;cursor:pointer;background:var(--s50)}
-    .unit-num{width:26px;height:26px;border-radius:6px;background:var(--s200);font-size:0.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;color:var(--s600);flex-shrink:0}
+    .unit-num{width:26px;height:26px;border-radius:6px;background:var(--s200);font-size:0.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;color:var(--s600)}
     .unit-info{flex:1;padding:0 10px}
     .unit-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
-    .unit-sub{font-size:0.6rem;color:var(--s400);margin-top:1px}
-    .unit-badges{display:flex;gap:4px;align-items:center}
-    .unit-photo-badge{background:var(--teal-light);color:var(--teal-dark);border:1px solid var(--teal-mid);border-radius:10px;padding:2px 7px;font-size:0.55rem;font-weight:900}
-    .unit-del{background:var(--redl);border:1px solid #fecaca;color:var(--red);border-radius:6px;padding:4px 9px;font-size:0.6rem;font-weight:800;cursor:pointer}
-    .unit-body{padding:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:9px}
-
-    /* ── DIM DISPLAY ── */
-    .dim{text-align:center;font-size:1.25rem;font-weight:900;color:var(--s800);background:var(--s100);border:1.5px solid var(--border);border-radius:8px;padding:10px;cursor:pointer;min-height:46px;display:flex;align-items:center;justify-content:center}
-    .dim.active{border:2px solid var(--gold);background:var(--gold-light);color:var(--gold-dark)}
-
-    /* ── PILLS ── */
-    .pill-row{display:flex;gap:6px;flex-wrap:wrap}
-    .pill{display:flex;align-items:center;gap:5px;background:var(--s100);border:1px solid var(--border);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:0.65rem;font-weight:700;color:var(--s600)}
-    .pill input{width:14px;height:14px;accent-color:var(--teal);cursor:pointer;flex-shrink:0}
-    .pill.on{background:var(--teal-light);border-color:var(--teal-mid);color:var(--teal-dark)}
-
-    /* ── FLAG CHIPS ── */
-    .flag-row{display:flex;gap:6px;flex-wrap:wrap}
-    .flag{padding:7px 12px;border-radius:20px;font-size:0.62rem;font-weight:800;text-transform:uppercase;cursor:pointer;transition:all 0.15s}
-    .flag.rot{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}
-    .flag.header{background:#fff7ed;color:#c2410c;border:1px solid #fdba74}
-    .flag.hoa{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
-    .flag.custom{background:var(--s100);color:var(--s500);border:1px solid var(--border)}
-    .flag.on{box-shadow:0 0 0 2.5px currentColor}
-
-    /* ── ADD UNIT ── */
-    .add-row{display:flex;gap:8px;margin-top:4px}
-    .add-u{flex:1;padding:12px;border-radius:9px;font-size:0.65rem;font-weight:900;text-transform:uppercase;cursor:pointer;background:transparent}
-    .add-u.win{border:2px dashed var(--teal);color:var(--teal)}
-    .add-u.door{border:2px dashed var(--gold);color:var(--gold-dark)}
-    .add-u.misc{border:2px dashed var(--s300);color:var(--s500)}
-
-    /* ── UNIT PHOTO SECTION ── */
-    .unit-photo-section{background:var(--s50);border-radius:8px;padding:10px;border:1px solid var(--border)}
-    .unit-photo-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-    .unit-photo-label{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--s400)}
-    .unit-photo-btn{background:var(--teal-light);color:var(--teal-dark);border:1.5px solid var(--teal-mid);border-radius:7px;padding:5px 10px;font-size:0.6rem;font-weight:900;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:4px}
-    .unit-photo-strip{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-    .unit-photo-strip::-webkit-scrollbar{display:none}
-    .up-thumb-wrap{position:relative;flex-shrink:0}
-    .up-thumb{width:68px;height:68px;border-radius:8px;object-fit:cover;border:1.5px solid var(--border);display:block}
-    .up-del{position:absolute;top:-6px;right:-6px;width:20px;height:20px;background:var(--red);color:white;border:none;border-radius:50%;font-size:0.65rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
-    .unit-photo-empty{font-size:0.65rem;color:var(--s400);font-weight:600;padding:4px 0}
-
-    /* ── SITE PHOTO STRIP ── */
-    .photo-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
-    .photo-strip::-webkit-scrollbar{display:none}
-    .p-thumb{width:72px;height:72px;border-radius:8px;object-fit:cover;border:1px solid var(--border);flex-shrink:0;cursor:pointer}
-    .p-add{width:72px;height:72px;border-radius:8px;border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;cursor:pointer;flex-shrink:0;background:var(--s50)}
-
-    /* ── SIGNATURE ── */
-    .sig-wrap{background:white;border:2px dashed var(--border);border-radius:12px;overflow:hidden;position:relative}
-    .sig-canvas{display:block;width:100%;height:180px;touch-action:none}
-    .sig-clear{position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.08);border:none;border-radius:6px;padding:4px 9px;font-size:0.6rem;font-weight:900;color:var(--s600);cursor:pointer}
-
-    /* ── MFR BADGE on cards ── */
-    .mfr-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gold-light);color:var(--gold-dark);border:1px solid var(--gold);border-radius:8px;padding:4px 10px;font-size:0.6rem;font-weight:900;text-transform:uppercase}
+    .unit-sub{font-size:0.6rem;color:var(--s400)}
 
     /* ── KEYPAD ── */
-    .kp-tray{position:fixed;bottom:0;left:0;right:0;z-index:500;background:var(--teal-dark);border-top:3px solid var(--gold);padding:12px 12px 24px;transform:translateY(100%);transition:transform 0.25s cubic-bezier(0.4,0,0.2,1)}
+    .kp-tray{position:fixed;bottom:0;left:0;right:0;z-index:500;background:var(--teal-dark);border-top:3px solid var(--gold);padding:12px 12px 24px;transform:translateY(100%);transition:transform 0.25s}
     .kp-tray.open{transform:translateY(0)}
-    .kp-lbl{font-size:0.6rem;font-weight:900;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:6px}
-    .kp-disp{background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;text-align:center;font-size:1.4rem;font-weight:900;color:white;margin-bottom:10px;min-height:50px}
-    .kp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-    .kbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:14px 6px;font-size:1rem;font-weight:900;color:white;cursor:pointer;text-align:center;-webkit-tap-highlight-color:transparent}
-    .kbtn:active{background:rgba(255,255,255,0.2)}
+    .kbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:14px 6px;font-size:1rem;font-weight:900;color:white;cursor:pointer}
     .kbtn.gold{background:var(--gold);color:#1a0e00}
-    .kbtn.red{background:rgba(220,38,38,0.4);color:white}
-    .kbtn.wide{grid-column:span 2}
-    .kp-done{width:100%;margin-top:8px;padding:13px;background:var(--gold);color:#1a0e00;border:none;border-radius:10px;font-size:0.82rem;font-weight:900;text-transform:uppercase;cursor:pointer}
 
     /* ── BOTTOM BAR ── */
     .bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:10px 12px 28px;display:flex;gap:8px;z-index:100}
@@ -137,10 +71,10 @@
     .bar-save{background:var(--teal-dark);color:white}
     .bar-sec{background:var(--gold-light);color:var(--gold-dark);border:1px solid var(--gold)}
 
-    /* ── MODAL OVERLAY ── */
+    /* ── MODAL ── */
     .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px}
     .modal{background:white;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-    .modal-head{background:var(--teal-dark);padding:16px 20px;color:white;font-size:0.8rem;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;border-bottom:3px solid var(--gold)}
+    .modal-head{background:var(--teal-dark);padding:16px 20px;color:white;font-size:0.8rem;font-weight:900;text-transform:uppercase;border-bottom:3px solid var(--gold)}
     .modal-body{padding:20px;display:flex;flex-direction:column;gap:14px}
     .modal-foot{padding:12px 20px 20px;display:flex;gap:10px}
     .modal-btn{flex:1;padding:12px;border:none;border-radius:9px;font-size:0.72rem;font-weight:900;text-transform:uppercase;cursor:pointer}
@@ -148,156 +82,63 @@
     .modal-cancel{background:var(--s100);color:var(--s600)}
 
     /* ── JOB SWITCHER ── */
-    .jobs-list{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto}
-    .job-row{display:flex;align-items:center;padding:10px 12px;background:var(--s50);border:1.5px solid var(--border);border-radius:9px;gap:10px;cursor:pointer}
+    .jobs-list{display:flex;flex-direction:column;gap:6px;max-height:350px;overflow-y:auto}
+    .job-row{display:flex;align-items:center;padding:12px;background:var(--s50);border:1.5px solid var(--border);border-radius:9px;gap:10px;cursor:pointer}
     .job-row.active{border-color:var(--teal);background:var(--teal-light)}
     .job-info{flex:1}
     .job-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
     .job-addr{font-size:0.6rem;color:var(--s400)}
-    .job-del{background:var(--redl);border:1px solid #fecaca;color:var(--red);border-radius:6px;padding:3px 8px;font-size:0.6rem;font-weight:800;cursor:pointer}
+    
+    /* DELETE BUTTON STYLE */
+    .job-del {
+      background: var(--redl);
+      border: 1px solid #fecaca;
+      color: var(--red);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      transition: all 0.1s;
+    }
+    .job-del:active { background: #fee2e2; transform: scale(0.95); }
+
     .new-job-btn{padding:11px;background:var(--teal-light);border:2px dashed var(--teal-mid);border-radius:9px;color:var(--teal-dark);font-size:0.68rem;font-weight:900;text-transform:uppercase;cursor:pointer;text-align:center}
-
-    /* ── JOB SUMMARY (sign-off tab) ── */
-    .summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--s100);font-size:0.78rem}
-    .summary-row:last-child{border-bottom:none}
-    .summary-label{color:var(--s500);font-weight:700}
-    .summary-val{font-weight:900;color:var(--s800);text-align:right;max-width:60%}
-
-    /* ── PHOTOS TAB ── */
-    .photo-group{margin-bottom:16px}
-    .photo-group-head{font-size:0.62rem;font-weight:900;text-transform:uppercase;color:var(--s500);letter-spacing:0.06em;padding:0 2px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-    .photo-group-head::after{content:'';flex:1;height:1px;background:var(--border)}
-    .photo-group-strip{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap}
-    .pg-thumb-wrap{position:relative}
-    .pg-thumb{width:90px;height:90px;border-radius:10px;object-fit:cover;border:2px solid var(--border);cursor:pointer}
-    .pg-del{position:absolute;top:-7px;right:-7px;width:22px;height:22px;background:var(--red);color:white;border:none;border-radius:50%;font-size:0.7rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    .pg-add{width:90px;height:90px;border-radius:10px;border:2px dashed var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.4rem;cursor:pointer;background:var(--s50);color:var(--s400);gap:2px}
-    .pg-add span{font-size:0.55rem;font-weight:800;text-transform:uppercase;color:var(--s400)}
-
-    /* ── MISC ── */
-    .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;border-radius:10px;padding:9px 18px;font-size:0.72rem;font-weight:700;z-index:700;white-space:nowrap;opacity:0;transition:opacity 0.3s;pointer-events:none}
+    .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;border-radius:10px;padding:9px 18px;font-size:0.72rem;font-weight:700;z-index:700;opacity:0;transition:opacity 0.3s;pointer-events:none}
     .toast.show{opacity:1}
-    .empty-units{text-align:center;padding:28px 16px;color:var(--s400);font-size:0.78rem;font-weight:700;border:2px dashed var(--border);border-radius:12px}
-    .sec-count{background:rgba(255,255,255,0.2);border-radius:12px;padding:2px 8px;font-size:0.6rem;font-weight:900}
   </style>
 </head>
 <body>
 
-<!-- Hidden file inputs — one for site photos, one for unit photos -->
-<input type="file" id="photoIn" accept="image/*" capture="environment" style="display:none">
-<input type="file" id="unitPhotoIn" accept="image/*" capture="environment" style="display:none">
 <div id="root"></div>
 <div class="toast" id="toast"></div>
 
-<!-- Keypad -->
-<div class="kp-tray" id="kpTray">
-  <div class="kp-lbl" id="kpLbl">Width (in)</div>
-  <div class="kp-disp" id="kpDisp">—</div>
-  <div class="kp-grid">
-    <button class="kbtn" onclick="kp('7')">7</button>
-    <button class="kbtn" onclick="kp('8')">8</button>
-    <button class="kbtn" onclick="kp('9')">9</button>
-    <button class="kbtn red" onclick="kp('DEL')">⌫</button>
-    <button class="kbtn" onclick="kp('4')">4</button>
-    <button class="kbtn" onclick="kp('5')">5</button>
-    <button class="kbtn" onclick="kp('6')">6</button>
-    <button class="kbtn gold" onclick="kp('1/2')">½</button>
-    <button class="kbtn" onclick="kp('1')">1</button>
-    <button class="kbtn" onclick="kp('2')">2</button>
-    <button class="kbtn" onclick="kp('3')">3</button>
-    <button class="kbtn gold" onclick="kp('3/4')">¾</button>
-    <button class="kbtn wide" onclick="kp('0')">0</button>
-    <button class="kbtn gold" onclick="kp('1/4')">¼</button>
-    <button class="kbtn gold" onclick="kp('CLR')">CLR</button>
-  </div>
-  <button class="kp-done" onclick="closeKp()">Done ✓</button>
-</div>
-
 <script>
-// ─── MANUFACTURER DATA ────────────────────────────────────────────────────────
-var MANUFACTURERS = [
-  { id:'andersen', label:'Andersen', 
-    winSeries:['100 Series','200 Series','400 Series','E-Series','A-Series','Storm Windows','Other'],
-    doorSeries:['100 Series','200 Series','400 Series','E-Series','A-Series','Storm Doors','Other'] },
-  { id:'pella', label:'Pella',
-    winSeries:['Impervia','250 Series','350 Series','450 Series','Architect Series','Reserve','Other'],
-    doorSeries:['Impervia','250 Series','350 Series','450 Series','Architect Series','Reserve','Other'] },
-  { id:'simonton', label:'Simonton',
-    winSeries:['Reflections 5500','Reflections 9800','StormBreaker Plus','Prism Platinum','Pro-Finish Contractor','Other'],
-    doorSeries:['Reflections','StormBreaker Plus','Other'] },
-  { id:'vinylmax', label:'Vinyl Max',
-    winSeries:['Latitude','Latitude Plus','Heritage','Sheffield','Sheffield Plus','Other'],
-    doorSeries:['Latitude','Heritage','Other'] },
-  { id:'other', label:'Other / TBD',
-    winSeries:['Standard','Premium','Other'],
-    doorSeries:['Standard','Premium','Other'] }
-];
-
-function getMfr(id) { return MANUFACTURERS.find(function(m){ return m.id === id; }) || MANUFACTURERS[4]; }
-
-// ─── LOOKUP DATA ──────────────────────────────────────────────────────────────
-var WIN_T  = ['DH','SH','SL','PIC','CAS','AWN','BAY','BW','Other'];
-var DOOR_T = ['Single Entry','Double/French','Slider Patio','Single w/ Sidelites','Double w/ Sidelites','Bifold','Storm Door','Other'];
-var SWINGS = ['RHI','LHI','RHO','LHO','Active/Passive – Right','Active/Passive – Left'];
-var JAMBS  = ['4-9/16"','6-9/16"','4-5/8"','Custom'];
-var GRIDS  = ['None','Contour','Flat','SDL','Other'];
-var GLASS  = ['None','Tempered','Obscure – Standard','Obscure – Rain','Obscure – Flemish','Obscure – Satin'];
-var COLORS = ['White','Bronze','Tan','Clay','Black','Custom'];
-var WIN_OPTS  = ['OSJ','OSBM','Egress','Temp Glass'];
-var DOOR_OPTS = ['OSJ','OSBM','Sidelites','Transom','Deadbolt','Handleset'];
-
-// ─── APP STATE ────────────────────────────────────────────────────────────────
-var activeJobId  = null;
-var activeTab    = 'measure';
-var expandedUnit = null;
-var activeKp     = null;
-var showModal    = null;
-var newJobDraft  = {name:'', address:''};
-var abcEmail     = '';
-var pendingUnitPhotoIdx = null; // which unit we're adding a photo to
-
-// ─── STORAGE ──────────────────────────────────────────────────────────────────
+// ─── STATE & STORAGE ──────────────────────────────────────────────────────────
+var activeJobId = null;
+var showModal = null;
 var STORE_JOBS = 'ths_measure_jobs_v2';
-var STORE_SETTINGS = 'ths_measure_settings_v1';
 
 function safeGet(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch(e) { return fb; } }
-function safeSet(k, v)  { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
-
+function safeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
 function getAllJobs() { return safeGet(STORE_JOBS, []); }
 function saveAllJobs(jobs) { safeSet(STORE_JOBS, jobs); }
-function getSettings() { return safeGet(STORE_SETTINGS, {abcEmail:''}); }
-function saveSettings(s) { safeSet(STORE_SETTINGS, s); }
-
-function getActiveJob() {
-  var jobs = getAllJobs();
-  return jobs.find(function(j){ return j.id === activeJobId; }) || null;
-}
-
-function blankMeasure() {
-  return {
-    manufacturer:'andersen',
-    units:[], jobNotes:'', accessNotes:'', photos:[], signature:null,
-    flags:{rot:false, header:false, hoa:false, custom:false}, customFlag:''
-  };
-}
+function getActiveJob() { return getAllJobs().find(function(j){ return j.id === activeJobId; }) || null; }
 
 function newJob(name, address) {
   return {
-    id:'job_' + Date.now(), name:name.trim(), address:address.trim(),
-    createdAt:todayISO(), updatedAt:todayISO(), measure:blankMeasure()
+    id: 'job_' + Date.now(),
+    name: name.trim() || 'New Customer',
+    address: address.trim(),
+    createdAt: new Date().toISOString(),
+    measure: { manufacturer:'andersen', units:[], jobNotes:'', flags:{} }
   };
 }
 
-function saveCurrentJob(md) {
-  var jobs = getAllJobs();
-  var idx = jobs.findIndex(function(j){ return j.id === activeJobId; });
-  if (idx > -1) { jobs[idx].measure = md; jobs[idx].updatedAt = todayISO(); saveAllJobs(jobs); }
-}
-
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
-function todayISO() { var d=new Date(); return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
-function pad(n) { return String(n).padStart(2,'0'); }
-
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
@@ -309,785 +150,166 @@ function el(tag, props, children) {
   for (var k in props) {
     if (k==='C') e.className=props[k];
     else if (k==='t') e.textContent=props[k];
-    else if (k==='html') e.innerHTML=props[k];
     else if (k==='click') e.addEventListener('click', props[k]);
-    else if (k==='style') e.style.cssText=props[k];
     else e[k]=props[k];
   }
   if (children) children.forEach(function(c){ if(c) e.appendChild(c); });
   return e;
 }
 
-function mkSel(arr, selected, onChange) {
-  var s = el('select', {C:'fi'});
-  arr.forEach(function(v){
-    var o=document.createElement('option'); o.value=v; o.textContent=v;
-    if(v===selected) o.selected=true; s.appendChild(o);
-  });
-  s.addEventListener('change', function(){ onChange(this.value); });
-  return s;
-}
+// ─── DELETE LOGIC ────────────────────────────────────────────────────────────
+function deleteJob(jobId, event) {
+  if (event) event.stopPropagation(); // Prevents the row click from firing
 
-function lf(label) { return el('label', {C:'fl', t:label}); }
-
-function wrapField(label, inputEl, colSpan) {
-  var w = el('div', colSpan ? {style:'grid-column:span '+colSpan} : {});
-  w.appendChild(lf(label)); w.appendChild(inputEl); return w;
-}
-
-// ─── BOOT ────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
   var jobs = getAllJobs();
-  var settings = getSettings();
-  abcEmail = settings.abcEmail || '';
-  if (jobs.length===0) { showModal='newjob'; activeJobId=null; }
-  else { activeJobId = jobs[jobs.length-1].id; }
-  render();
-});
+  var jobToDelete = jobs.find(function(j) { return j.id === jobId; });
+  
+  if (!jobToDelete) return;
 
-// ─── SAVE ────────────────────────────────────────────────────────────────────
-function saveMeasure() {
-  var md = getActiveMd(); if(!md) return;
-  saveCurrentJob(md);
-  showToast('✓ Saved — ' + new Date().toLocaleTimeString());
+  // ARE YOU SURE? Prompt
+  var confirmed = confirm("Are you sure you want to delete '" + jobToDelete.name + "'? \n\nThis will permanently remove all measurement data and photos for this job.");
+  
+  if (confirmed) {
+    var updatedJobs = jobs.filter(function(j) { return j.id !== jobId; });
+    saveAllJobs(updatedJobs);
+    
+    // Switch to another job if we just deleted the active one
+    if (activeJobId === jobId) {
+      activeJobId = updatedJobs.length > 0 ? updatedJobs[0].id : null;
+    }
+    
+    showToast("Job Deleted Successfully");
+    render();
+  }
 }
 
-function getActiveMd() {
-  var job = getActiveJob(); return job ? job.measure : null;
-}
-
-// ─── MAIN RENDER ─────────────────────────────────────────────────────────────
+// ─── RENDERING ───────────────────────────────────────────────────────────────
 function render() {
   var root = document.getElementById('root');
   root.innerHTML = '';
+  
   if (showModal) { renderModal(); return; }
+  
   var job = getActiveJob();
   if (!job) { renderNoJob(root); return; }
-  var md = job.measure;
-  if (!md.manufacturer) md.manufacturer = 'andersen';
 
   // Header
   var hdr = el('div', {C:'hdr'});
   var top = el('div', {C:'hdr-top'});
   top.appendChild(el('button', {C:'hdr-menu', t:'Jobs ▾', click:function(){ showModal='jobs'; render(); }}));
-  top.appendChild(el('div', {C:'hdr-title', t:job.name||'Field Measure'}));
-  top.appendChild(el('button', {C:'hdr-save', t:'Save', click:saveMeasure}));
+  top.appendChild(el('div', {C:'hdr-title', t:job.name}));
+  top.appendChild(el('button', {C:'hdr-save', t:'Save', click:function(){ showToast('✓ Saved'); }}));
   hdr.appendChild(top);
-  if (job.address) hdr.appendChild(el('div', {C:'hdr-addr', t:'📍 '+job.address}));
-
-  // Manufacturer bar
-  var mfrBar = el('div', {C:'mfr-bar'});
-  MANUFACTURERS.forEach(function(m) {
-    var p = el('div', {C:'mfr-pill'+(md.manufacturer===m.id?' on':''), t:m.label, click:function(){
-      md.manufacturer = m.id;
-      // Reset series on all units when mfr changes
-      md.units.forEach(function(u){
-        if (u.category==='window') u.series = getMfr(m.id).winSeries[0];
-        else if (u.category==='door') u.series = getMfr(m.id).doorSeries[0];
-      });
-      saveCurrentJob(md); render();
-    }});
-    mfrBar.appendChild(p);
-  });
-  hdr.appendChild(mfrBar);
-
-  // Tabs
-  var tabs = el('div', {C:'tabs'});
-  ['measure','photos','signoff'].forEach(function(t){
-    var lbl = t==='measure'?'Measure':t==='photos'?'Photos':'Sign Off';
-    // Badge photo count on Photos tab
-    var cnt = t==='photos' ? countAllPhotos(md) : 0;
-    var btn = el('button', {C:'tab'+(activeTab===t?' on':''), click:function(){ setTab(t); }});
-    btn.textContent = lbl;
-    if (cnt > 0) {
-      var badge = el('span', {style:'margin-left:4px;background:rgba(0,0,0,0.25);border-radius:10px;padding:1px 6px;font-size:0.55rem;font-weight:900;', t:String(cnt)});
-      btn.appendChild(badge);
-    }
-    tabs.appendChild(btn);
-  });
-  hdr.appendChild(tabs);
+  if (job.address) hdr.appendChild(el('div', {C:'hdr-addr', t:'📍 ' + job.address}));
   root.appendChild(hdr);
 
+  // Main Content
   var main = el('div', {C:'main'});
-  if (activeTab==='measure') renderMeasure(main, md, job);
-  else if (activeTab==='photos') renderPhotos(main, md);
-  else renderSignoff(main, md, job);
+  var card = el('div', {C:'card'});
+  card.appendChild(el('div', {C:'card-head', t:'Measurement Data'}));
+  var body = el('div', {C:'card-body'});
+  body.appendChild(el('div', {t:'Manage measurements for ' + job.name + ' here.'}));
+  card.appendChild(body);
+  main.appendChild(card);
   root.appendChild(main);
 
-  // Bottom bar
+  // Bottom Bar
   var bar = el('div', {C:'bar'});
-  bar.appendChild(el('button', {C:'bar-btn bar-save', t:'💾 Save', click:saveMeasure}));
-  if (activeTab==='measure') {
-    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'📧 ABC Quote', click:function(){ draftABC(md, job); }}));
-  } else if (activeTab==='signoff') {
-    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'🖨️ Print / Export', click:function(){ printJob(md, job); }}));
-  } else {
-    bar.appendChild(el('button', {C:'bar-btn bar-sec', t:'📷 Add Site Photo', click:function(){
-      pendingUnitPhotoIdx = null;
-      document.getElementById('photoIn').click();
-    }}));
-  }
+  bar.appendChild(el('button', {C:'bar-btn bar-save', t:'💾 Save Measure'}));
   root.appendChild(bar);
-
-  // Site photo input handler
-  document.getElementById('photoIn').onchange = function(e) {
-    var file = e.target.files[0]; if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      if(!md.photos) md.photos=[];
-      md.photos.push(ev.target.result);
-      saveCurrentJob(md); render();
-    };
-    reader.readAsDataURL(file);
-    this.value='';
-  };
-
-  // Unit photo input handler
-  document.getElementById('unitPhotoIn').onchange = function(e) {
-    var file = e.target.files[0]; if(!file) return;
-    if (pendingUnitPhotoIdx === null || !md.units[pendingUnitPhotoIdx]) { this.value=''; return; }
-    var reader = new FileReader();
-    reader.onload = function(ev) {
-      if(!md.units[pendingUnitPhotoIdx].photos) md.units[pendingUnitPhotoIdx].photos=[];
-      md.units[pendingUnitPhotoIdx].photos.push(ev.target.result);
-      saveCurrentJob(md); render();
-    };
-    reader.readAsDataURL(file);
-    this.value='';
-  };
-
-  if (activeTab==='signoff') initSignature(md);
 }
 
-function countAllPhotos(md) {
-  var total = (md.photos||[]).length;
-  (md.units||[]).forEach(function(u){ total += (u.photos||[]).length; });
-  return total;
-}
-
-// ─── NO JOB ──────────────────────────────────────────────────────────────────
-function renderNoJob(root) {
-  var wrap = el('div', {style:'padding:60px 24px;text-align:center'});
-  wrap.appendChild(el('div', {style:'font-size:2.5rem;margin-bottom:16px', t:'📋'}));
-  wrap.appendChild(el('div', {style:'font-size:1rem;font-weight:900;color:#065f55;margin-bottom:8px', t:'THS Field Measure'}));
-  wrap.appendChild(el('div', {style:'font-size:0.78rem;color:#64748b;margin-bottom:24px', t:'Total Home Services of Georgia'}));
-  wrap.appendChild(el('button', {style:'background:#065f55;color:white;border:none;border-radius:10px;padding:14px 28px;font-size:0.8rem;font-weight:900;text-transform:uppercase;cursor:pointer', t:'+ New Job', click:function(){ showModal='newjob'; render(); }}));
-  root.appendChild(wrap);
-}
-
-function setTab(t) { activeTab=t; activeKp=null; closeKpSilent(); render(); }
-
-// ─── MEASURE TAB ─────────────────────────────────────────────────────────────
-function renderMeasure(main, md, job) {
-  var mfr = getMfr(md.manufacturer);
-
-  // Manufacturer badge on first card
-  var fc = el('div', {C:'card'});
-  var fch = el('div', {C:'card-head'});
-  fch.appendChild(el('span', {t:'Site Conditions'}));
-  fch.appendChild(el('span', {C:'mfr-badge', t:'🏭 '+mfr.label}));
-  fc.appendChild(fch);
-  var fb = el('div', {C:'card-body'});
-
-  var fr = el('div', {C:'flag-row'});
-  [{k:'rot',lbl:'ROT'},{k:'header',lbl:'HEADER'},{k:'hoa',lbl:'HOA'},{k:'custom',lbl:'Custom'}].forEach(function(f){
-    var chip = el('div', {C:'flag '+f.k+(md.flags[f.k]?' on':''), t:f.lbl, click:function(){
-      md.flags[f.k]=!md.flags[f.k]; saveCurrentJob(md); render();
-    }});
-    fr.appendChild(chip);
-  });
-  fb.appendChild(fr);
-
-  if (md.flags.custom) {
-    fb.appendChild(lf('Custom Flag Description'));
-    var cf = el('input', {C:'fi', placeholder:'Describe custom condition...'});
-    cf.value=md.customFlag||'';
-    cf.addEventListener('input', function(){ md.customFlag=this.value; });
-    fb.appendChild(cf);
-  }
-
-  fb.appendChild(lf('Access / Alarm Notes'));
-  var an = el('textarea', {C:'fi', placeholder:'Gate codes, alarm info, dogs, parking...'});
-  an.value=md.accessNotes||'';
-  an.addEventListener('input', function(){ md.accessNotes=this.value; });
-  fb.appendChild(an);
-  fc.appendChild(fb);
-  main.appendChild(fc);
-
-  // Units card
-  var cnt = md.units.length;
-  var uc = el('div', {C:'card'});
-  var ucHead = el('div', {C:'card-head'});
-  ucHead.appendChild(el('span', {t:'Windows, Doors & Misc'}));
-  if (cnt>0) ucHead.appendChild(el('span', {C:'sec-count', t:cnt+' unit'+(cnt!==1?'s':'')}));
-  uc.appendChild(ucHead);
-  var ub = el('div', {C:'card-body'});
-  if (!cnt) ub.appendChild(el('div', {C:'empty-units', t:'Add a window, door, or misc item below.'}));
-  md.units.forEach(function(u, i){ ub.appendChild(renderUnit(u, i, md, mfr)); });
-
-  var ar = el('div', {C:'add-row'});
-  ar.appendChild(el('button', {C:'add-u win', t:'+ Window', click:function(){ addUnit('window', md, mfr); }}));
-  ar.appendChild(el('button', {C:'add-u door', t:'+ Door', click:function(){ addUnit('door', md, mfr); }}));
-  ar.appendChild(el('button', {C:'add-u misc', t:'+ Misc', click:function(){ addUnit('misc', md, mfr); }}));
-  ub.appendChild(ar);
-  uc.appendChild(ub);
-  main.appendChild(uc);
-
-  // Job notes
-  var nc = el('div', {C:'card'});
-  nc.appendChild(el('div', {C:'card-head', t:'Field Notes'}));
-  var nb = el('div', {C:'card-body'});
-  var jn = el('textarea', {C:'fi', placeholder:'Header condition, trim repair needed, customer preferences...'});
-  jn.style.minHeight='90px'; jn.value=md.jobNotes||'';
-  jn.addEventListener('input', function(){ md.jobNotes=this.value; });
-  nb.appendChild(jn); nc.appendChild(nb);
-  main.appendChild(nc);
-}
-
-// ─── UNIT CARD ────────────────────────────────────────────────────────────────
-function renderUnit(u, idx, md, mfr) {
-  var isExp = expandedUnit===idx;
-  var typeClass = u.category==='door'?'door':u.category==='misc'?'misc':'win';
-  var wrap = el('div', {C:'unit '+typeClass});
-
-  var hdr = el('div', {C:'unit-hdr', click:function(){ expandedUnit=isExp?null:idx; render(); }});
-  hdr.appendChild(el('div', {C:'unit-num', t:String(idx+1)}));
-  var info = el('div', {C:'unit-info'});
-  info.appendChild(el('div', {C:'unit-name', t:u.location||(u.category==='misc'?u.type||'Misc':'New Unit')}));
-  var sub = (u.qty&&u.qty>1?u.qty+'× ':'')+''+(u.series?'['+u.series+'] ':'')+(u.type||'')+(u.width?' — '+u.width+'" × '+u.height+'"':'');
-  info.appendChild(el('div', {C:'unit-sub', t:sub}));
-  hdr.appendChild(info);
-
-  var badges = el('div', {C:'unit-badges'});
-  var photoCnt = (u.photos||[]).length;
-  if (photoCnt>0) badges.appendChild(el('div', {C:'unit-photo-badge', t:'📷 '+photoCnt}));
-  var del = el('button', {C:'unit-del', t:'DEL', click:function(e){
-    e.stopPropagation();
-    if(confirm('Remove this unit?')){
-      md.units.splice(idx,1);
-      if(expandedUnit===idx) expandedUnit=null;
-      else if(expandedUnit>idx) expandedUnit--;
-      saveCurrentJob(md); render();
-    }
-  }});
-  badges.appendChild(del);
-  hdr.appendChild(badges);
-  wrap.appendChild(hdr);
-
-  if (!isExp) return wrap;
-
-  var b = el('div', {C:'unit-body'});
-
-  if (u.category==='window') {
-    var r1=el('div',{C:'fg3'});
-    var qw=el('div'); qw.appendChild(lf('Qty'));
-    var qi=el('input',{C:'fi',type:'number',min:'1'}); qi.value=u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
-    qi.addEventListener('change',function(){ u.qty=parseInt(this.value)||1; saveCurrentJob(md); });
-    qw.appendChild(qi); r1.appendChild(qw);
-    var lw=el('div',{style:'grid-column:span 2'}); lw.appendChild(lf('Location / Room'));
-    var li=el('input',{C:'fi',placeholder:'e.g. Master Bedroom'}); li.value=u.location||'';
-    li.addEventListener('input',function(){ u.location=this.value; saveCurrentJob(md); });
-    lw.appendChild(li); r1.appendChild(lw); b.appendChild(r1);
-
-    // Series selector (manufacturer-aware)
-    var r1b=el('div',{C:'fg2'});
-    r1b.appendChild(wrapField('Series / Line', mkSel(mfr.winSeries, u.series||mfr.winSeries[0], function(v){ u.series=v; saveCurrentJob(md); })));
-    r1b.appendChild(wrapField('Type', mkSel(WIN_T, u.type||'DH', function(v){ u.type=v; saveCurrentJob(md); })));
-    b.appendChild(r1b);
-
-    var r2=el('div',{C:'fg2'});
-    r2.appendChild(wrapField('Finish / Color', mkSel(COLORS, u.color||'White', function(v){ u.color=v; saveCurrentJob(md); })));
-    b.appendChild(r2);
-
-    var r3=el('div',{C:'fg2'});
-    r3.appendChild(dimField('Width',idx,'w',u));
-    r3.appendChild(dimField('Height',idx,'h',u));
-    b.appendChild(r3);
-
-    var r4=el('div',{C:'fg2'});
-    r4.appendChild(wrapField('Grids', mkSel(GRIDS, u.grids||'None', function(v){ u.grids=v; saveCurrentJob(md); })));
-    r4.appendChild(wrapField('Glass', mkSel(GLASS, u.glass||'None', function(v){ u.glass=v; saveCurrentJob(md); })));
-    b.appendChild(r4);
-
-    b.appendChild(lf('Options'));
-    var pr=el('div',{C:'pill-row'});
-    WIN_OPTS.forEach(function(opt){
-      var key=opt.toLowerCase().replace(/\s/g,''); var isOn=!!u[key];
-      var pill=el('label',{C:'pill'+(isOn?' on':'')});
-      var cb=el('input',{type:'checkbox'}); cb.checked=isOn;
-      cb.addEventListener('change',function(){ u[key]=this.checked; saveCurrentJob(md); render(); });
-      pill.appendChild(cb); pill.appendChild(el('span',{t:opt})); pr.appendChild(pill);
-    });
-    b.appendChild(pr);
-  }
-  else if (u.category==='door') {
-    var r1=el('div',{C:'fg3'});
-    var qw=el('div'); qw.appendChild(lf('Qty'));
-    var qi=el('input',{C:'fi',type:'number',min:'1'}); qi.value=u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
-    qi.addEventListener('change',function(){ u.qty=parseInt(this.value)||1; saveCurrentJob(md); });
-    qw.appendChild(qi); r1.appendChild(qw);
-    var lw=el('div',{style:'grid-column:span 2'}); lw.appendChild(lf('Location / Room'));
-    var li=el('input',{C:'fi',placeholder:'e.g. Front Entry'}); li.value=u.location||'';
-    li.addEventListener('input',function(){ u.location=this.value; saveCurrentJob(md); });
-    lw.appendChild(li); r1.appendChild(lw); b.appendChild(r1);
-
-    var r1b=el('div',{C:'fg2'});
-    r1b.appendChild(wrapField('Series / Line', mkSel(mfr.doorSeries, u.series||mfr.doorSeries[0], function(v){ u.series=v; saveCurrentJob(md); })));
-    r1b.appendChild(wrapField('Door Type', mkSel(DOOR_T, u.type||'Single Entry', function(v){ u.type=v; saveCurrentJob(md); })));
-    b.appendChild(r1b);
-
-    var r2=el('div',{C:'fg2'});
-    r2.appendChild(wrapField('Finish / Color', mkSel(COLORS, u.color||'White', function(v){ u.color=v; saveCurrentJob(md); })));
-    b.appendChild(r2);
-
-    var r3=el('div',{C:'fg2'});
-    r3.appendChild(dimField('Width',idx,'w',u));
-    r3.appendChild(dimField('Height',idx,'h',u));
-    b.appendChild(r3);
-
-    var r4=el('div',{C:'fg2'});
-    r4.appendChild(wrapField('Swing / Handing', mkSel(SWINGS, u.swing||'RHI', function(v){ u.swing=v; saveCurrentJob(md); })));
-    r4.appendChild(wrapField('Jamb Depth', mkSel(JAMBS, u.jambDepth||'4-9/16"', function(v){ u.jambDepth=v; saveCurrentJob(md); })));
-    b.appendChild(r4);
-
-    var r5=el('div',{C:'fg2'});
-    r5.appendChild(wrapField('Glass', mkSel(GLASS, u.glass||'None', function(v){ u.glass=v; saveCurrentJob(md); })));
-    b.appendChild(r5);
-
-    b.appendChild(lf('Options'));
-    var pr=el('div',{C:'pill-row'});
-    DOOR_OPTS.forEach(function(opt){
-      var key=opt.toLowerCase().replace(/\s/g,''); var isOn=!!u[key];
-      var pill=el('label',{C:'pill'+(isOn?' on':'')});
-      var cb=el('input',{type:'checkbox'}); cb.checked=isOn;
-      cb.addEventListener('change',function(){ u[key]=this.checked; saveCurrentJob(md); render(); });
-      pill.appendChild(cb); pill.appendChild(el('span',{t:opt})); pr.appendChild(pill);
-    });
-    b.appendChild(pr);
-  }
-  else { // misc
-    var r1=el('div',{C:'fg2'});
-    var tw=el('div'); tw.appendChild(lf('Item / Description'));
-    var ti=el('input',{C:'fi',placeholder:'e.g. Trim Repair, Brick Mold'}); ti.value=u.type||'';
-    ti.addEventListener('input',function(){ u.type=this.value; saveCurrentJob(md); });
-    tw.appendChild(ti); r1.appendChild(tw);
-    var qw=el('div'); qw.appendChild(lf('Qty'));
-    var qi=el('input',{C:'fi',type:'number',min:'1'}); qi.value=u.qty||1; qi.style.textAlign='center'; qi.style.fontWeight='900';
-    qi.addEventListener('change',function(){ u.qty=parseInt(this.value)||1; saveCurrentJob(md); });
-    qw.appendChild(qi); r1.appendChild(qw);
-    b.appendChild(r1);
-  }
-
-  // Unit notes
-  b.appendChild(lf('Unit Notes'));
-  var ni=el('input',{C:'fi',placeholder:'Condition, special instructions...'});
-  ni.value=u.unitNotes||'';
-  ni.addEventListener('input',function(){ u.unitNotes=this.value; saveCurrentJob(md); });
-  b.appendChild(ni);
-
-  // ── UNIT PHOTOS ──
-  var uph = el('div', {C:'unit-photo-section'});
-  var uphHead = el('div', {C:'unit-photo-head'});
-  uphHead.appendChild(el('span', {C:'unit-photo-label', t:'📷 Unit Photos'}));
-  var addPhotoBtn = el('button', {C:'unit-photo-btn', t:'+ Add Photo', click:function(e){
-    e.stopPropagation();
-    pendingUnitPhotoIdx = idx;
-    document.getElementById('unitPhotoIn').click();
-  }});
-  uphHead.appendChild(addPhotoBtn);
-  uph.appendChild(uphHead);
-
-  var strip = el('div', {C:'unit-photo-strip'});
-  if (!u.photos || !u.photos.length) {
-    strip.appendChild(el('div', {C:'unit-photo-empty', t:'No photos yet for this unit.'}));
-  } else {
-    u.photos.forEach(function(dataUrl, pi) {
-      var tw = el('div', {C:'up-thumb-wrap'});
-      var img = el('img', {C:'up-thumb', src:dataUrl});
-      var delBtn = el('button', {C:'up-del', t:'×', click:function(e){
-        e.stopPropagation();
-        if(confirm('Remove this photo?')){
-          u.photos.splice(pi,1); saveCurrentJob(md); render();
-        }
-      }});
-      tw.appendChild(img); tw.appendChild(delBtn); strip.appendChild(tw);
-    });
-  }
-  uph.appendChild(strip);
-  b.appendChild(uph);
-
-  wrap.appendChild(b);
-  return wrap;
-}
-
-function dimField(label, unitIdx, dir, u) {
-  var kpKey=dir+unitIdx; var isActive=activeKp===kpKey;
-  var curVal=dir==='w'?(u.width||''):(u.height||'');
-  var w=el('div');
-  w.appendChild(lf(label+' (in)'));
-  w.appendChild(el('div',{C:'dim'+(isActive?' active':''), t:curVal||(dir==='w'?'W"':'H"'),
-    click:function(){ openKp(kpKey,label,curVal); }
-  }));
-  return w;
-}
-
-function addUnit(category, md, mfr) {
-  md.units.push({
-    category:category, qty:1, unitNotes:'', photos:[],
-    series: category==='window'?mfr.winSeries[0]:category==='door'?mfr.doorSeries[0]:'',
-    type:category==='window'?'DH':category==='door'?'Single Entry':'',
-    width:'', height:'', location:'', color:'White',
-    grids:'None', glass:'None', swing:'RHI', jambDepth:'4-9/16"'
-  });
-  expandedUnit=md.units.length-1;
-  saveCurrentJob(md); render();
-}
-
-// ─── PHOTOS TAB ───────────────────────────────────────────────────────────────
-function renderPhotos(main, md) {
-  var card = el('div', {C:'card'});
-  var ph = el('div', {C:'card-head'});
-  ph.appendChild(el('span', {t:'All Job Photos'}));
-  var total = countAllPhotos(md);
-  if (total>0) ph.appendChild(el('span', {C:'sec-count', t:total+' photo'+(total!==1?'s':'')}));
-  card.appendChild(ph);
-  var pb = el('div', {C:'card-body'});
-
-  var hasAny = false;
-
-  // Site-wide photos group
-  if (md.photos && md.photos.length) {
-    hasAny = true;
-    var sg = el('div', {C:'photo-group'});
-    sg.appendChild(el('div', {C:'photo-group-head', t:'📍 Site / General'}));
-    var ss = el('div', {C:'photo-group-strip'});
-    md.photos.forEach(function(dataUrl, i) {
-      var tw = el('div', {C:'pg-thumb-wrap'});
-      var img = el('img', {C:'pg-thumb', src:dataUrl});
-      var del = el('button', {C:'pg-del', t:'×', click:function(){
-        if(confirm('Remove photo?')){ md.photos.splice(i,1); saveCurrentJob(md); render(); }
-      }});
-      tw.appendChild(img); tw.appendChild(del); ss.appendChild(tw);
-    });
-    // Add site photo button in strip
-    var addBtn = el('div', {C:'pg-add', click:function(){
-      pendingUnitPhotoIdx=null;
-      document.getElementById('photoIn').click();
-    }});
-    addBtn.appendChild(el('span', {t:'📷'}));
-    addBtn.appendChild(el('span', {t:'Site Photo'}));
-    ss.appendChild(addBtn);
-    sg.appendChild(ss); pb.appendChild(sg);
-  }
-
-  // Per-unit photo groups
-  md.units.forEach(function(u, i) {
-    if (!u.photos || !u.photos.length) return;
-    hasAny = true;
-    var ug = el('div', {C:'photo-group'});
-    var icon = u.category==='window'?'🪟':u.category==='door'?'🚪':'📦';
-    var title = (i+1)+'. '+(u.location||u.type||'Unit '+(i+1));
-    ug.appendChild(el('div', {C:'photo-group-head', t:icon+' '+title}));
-    var us = el('div', {C:'photo-group-strip'});
-    u.photos.forEach(function(dataUrl, pi) {
-      var tw = el('div', {C:'pg-thumb-wrap'});
-      var img = el('img', {C:'pg-thumb', src:dataUrl});
-      var del = el('button', {C:'pg-del', t:'×', click:function(){
-        if(confirm('Remove photo?')){ u.photos.splice(pi,1); saveCurrentJob(md); render(); }
-      }});
-      tw.appendChild(img); tw.appendChild(del); us.appendChild(tw);
-    });
-    // Add photo for this unit
-    var addU = el('div', {C:'pg-add', click:function(){
-      pendingUnitPhotoIdx=i;
-      document.getElementById('unitPhotoIn').click();
-    }});
-    addU.appendChild(el('span', {t:'📷'}));
-    addU.appendChild(el('span', {t:'Add'}));
-    us.appendChild(addU);
-    ug.appendChild(us); pb.appendChild(ug);
-  });
-
-  // Units with no photos yet — show add buttons
-  md.units.forEach(function(u, i) {
-    if (u.photos && u.photos.length) return;
-    var icon = u.category==='window'?'🪟':u.category==='door'?'🚪':'📦';
-    var title = (i+1)+'. '+(u.location||u.type||'Unit '+(i+1));
-    var ug = el('div', {C:'photo-group'});
-    ug.appendChild(el('div', {C:'photo-group-head', t:icon+' '+title}));
-    var us = el('div', {C:'photo-group-strip'});
-    var addU = el('div', {C:'pg-add', click:function(){
-      pendingUnitPhotoIdx=i;
-      document.getElementById('unitPhotoIn').click();
-    }});
-    addU.appendChild(el('span', {t:'📷'}));
-    addU.appendChild(el('span', {t:'Add'}));
-    us.appendChild(addU);
-    ug.appendChild(us); pb.appendChild(ug);
-  });
-
-  if (!hasAny && !md.units.length) {
-    pb.appendChild(el('div', {C:'empty-units', t:'No photos yet. Add units on the Measure tab, then snap photos here.'}));
-  }
-
-  card.appendChild(pb);
-  main.appendChild(card);
-}
-
-// ─── SIGN OFF TAB ─────────────────────────────────────────────────────────────
-function renderSignoff(main, md, job) {
-  var mfr = getMfr(md.manufacturer);
-
-  var sc = el('div', {C:'card'});
-  sc.appendChild(el('div', {C:'card-head', t:'Job Summary'}));
-  var sb = el('div', {C:'card-body'});
-
-  function sumRow(label, val) {
-    var r=el('div',{C:'summary-row'});
-    r.appendChild(el('span',{C:'summary-label',t:label}));
-    r.appendChild(el('span',{C:'summary-val',t:val}));
-    sb.appendChild(r);
-  }
-
-  sumRow('Job', job.name);
-  if (job.address) sumRow('Address', job.address);
-  sumRow('Manufacturer', mfr.label);
-  sumRow('Date', todayISO());
-  sumRow('Total Units', md.units.length+' unit'+(md.units.length!==1?'s':''));
-
-  var wins=md.units.filter(function(u){ return u.category==='window'; });
-  var doors=md.units.filter(function(u){ return u.category==='door'; });
-  var misc=md.units.filter(function(u){ return u.category==='misc'; });
-  if (wins.length) sumRow('Windows', wins.length);
-  if (doors.length) sumRow('Doors', doors.length);
-  if (misc.length) sumRow('Misc Items', misc.length);
-  sumRow('Total Photos', countAllPhotos(md));
-
-  var activeFlags=Object.keys(md.flags).filter(function(k){ return md.flags[k]; });
-  if (activeFlags.length) sumRow('Flags', activeFlags.map(function(f){ return f.toUpperCase(); }).join(', '));
-  sc.appendChild(sb); main.appendChild(sc);
-
-  if (md.units.length) {
-    var ul=el('div',{C:'card'});
-    ul.appendChild(el('div',{C:'card-head',t:'Unit Breakdown'}));
-    var ub=el('div',{C:'card-body'});
-    md.units.forEach(function(u, i){
-      var r=el('div',{C:'summary-row'});
-      r.appendChild(el('span',{C:'summary-label',t:(i+1)+'. '+(u.location||u.type||'Unit')}));
-      var detail=(u.qty||1)+'× '+(u.series?'['+u.series+'] ':'')+''+(u.type||'')+(u.width?' — '+u.width+'" × '+u.height+'"':'');
-      if ((u.photos||[]).length) detail += ' 📷'+u.photos.length;
-      r.appendChild(el('span',{C:'summary-val',t:detail}));
-      ub.appendChild(r);
-    });
-    ul.appendChild(ub); main.appendChild(ul);
-  }
-
-  var sigCard=el('div',{C:'card'});
-  sigCard.appendChild(el('div',{C:'card-head',t:'Customer Sign-Off'}));
-  var sigBody=el('div',{C:'card-body'});
-  var sigWrap=el('div',{C:'sig-wrap',id:'sigWrap'});
-  var canvas=el('canvas',{C:'sig-canvas',id:'sigCanvas'});
-  var clearBtn=el('button',{C:'sig-clear',t:'Clear',click:function(){
-    var ctx=canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    md.signature=null; saveCurrentJob(md);
-  }});
-  sigWrap.appendChild(canvas); sigWrap.appendChild(clearBtn); sigBody.appendChild(sigWrap);
-  if (md.signature) sigBody.appendChild(el('div',{style:'font-size:0.6rem;color:#0a7c6e;font-weight:700',t:'✓ Signature captured'}));
-  else sigBody.appendChild(el('div',{style:'font-size:0.6rem;color:#94a3b8',t:'Customer signs below to confirm measure is complete'}));
-  sigCard.appendChild(sigBody); main.appendChild(sigCard);
-
-  var ac=el('div',{C:'card'});
-  ac.appendChild(el('div',{C:'card-head',t:'ABC Supply Settings'}));
-  var ab=el('div',{C:'card-body'});
-  ab.appendChild(lf('ABC Rep Email'));
-  var ai=el('input',{C:'fi',type:'email',placeholder:'rep@abcsupply.com'});
-  ai.value=abcEmail;
-  ai.addEventListener('input',function(){ abcEmail=this.value; saveSettings({abcEmail:abcEmail}); });
-  ab.appendChild(ai); ac.appendChild(ab); main.appendChild(ac);
-}
-
-// ─── SIGNATURE CANVAS ─────────────────────────────────────────────────────────
-function initSignature(md) {
-  var canvas=document.getElementById('sigCanvas'); if(!canvas) return;
-  var ctx=canvas.getContext('2d');
-  var rect=canvas.getBoundingClientRect();
-  canvas.width=rect.width*window.devicePixelRatio;
-  canvas.height=rect.height*window.devicePixelRatio;
-  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  if (md.signature) { var img=new Image(); img.onload=function(){ ctx.drawImage(img,0,0); }; img.src=md.signature; }
-  ctx.strokeStyle='#0a7c6e'; ctx.lineWidth=2; ctx.lineCap='round'; ctx.lineJoin='round';
-  var drawing=false;
-  function pos(e){ var r=canvas.getBoundingClientRect(); var s=e.touches?e.touches[0]:e; return {x:s.clientX-r.left,y:s.clientY-r.top}; }
-  function start(e){ e.preventDefault(); drawing=true; var p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
-  function move(e){ e.preventDefault(); if(!drawing) return; var p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); }
-  function end(){ drawing=false; md.signature=canvas.toDataURL(); saveCurrentJob(md); }
-  canvas.addEventListener('mousedown',start);
-  canvas.addEventListener('mousemove',move);
-  canvas.addEventListener('mouseup',end);
-  canvas.addEventListener('touchstart',start,{passive:false});
-  canvas.addEventListener('touchmove',move,{passive:false});
-  canvas.addEventListener('touchend',end);
-}
-
-// ─── KEYPAD ───────────────────────────────────────────────────────────────────
-function openKp(id, label, current) {
-  activeKp=id;
-  document.getElementById('kpLbl').textContent=label+' (inches)';
-  document.getElementById('kpDisp').textContent=current||'—';
-  document.getElementById('kpTray').classList.add('open');
-  render();
-}
-
-function kp(v) {
-  var d=document.getElementById('kpDisp');
-  var cur=d.textContent==='—'?'':d.textContent;
-  if(v==='CLR'){ d.textContent='—'; return; }
-  if(v==='DEL'){ d.textContent=cur.slice(0,-1)||'—'; return; }
-  if(v.includes('/')&&cur.length>0&&!cur.endsWith(' ')) cur+=' ';
-  d.textContent=cur+v;
-}
-
-function closeKp() {
-  var d=document.getElementById('kpDisp');
-  var val=d?d.textContent:''; if(val==='—') val='';
-  if (activeKp) {
-    var md=getActiveMd();
-    if (md) {
-      var dir=activeKp[0]; var idx=parseInt(activeKp.slice(1));
-      if (!isNaN(idx)&&md.units[idx]) {
-        if(dir==='w') md.units[idx].width=val; else md.units[idx].height=val;
-        saveCurrentJob(md);
-      }
-    }
-  }
-  activeKp=null;
-  document.getElementById('kpTray').classList.remove('open');
-  render();
-}
-
-function closeKpSilent() {
-  activeKp=null;
-  var t=document.getElementById('kpTray'); if(t) t.classList.remove('open');
-}
-
-// ─── MODAL SYSTEM ─────────────────────────────────────────────────────────────
 function renderModal() {
-  var root=document.getElementById('root');
-  var bg=el('div',{C:'modal-bg'});
-  if (showModal==='jobs') renderJobsModal(bg);
-  else if (showModal==='newjob') renderNewJobModal(bg);
+  var root = document.getElementById('root');
+  var bg = el('div', {C:'modal-bg'});
+  var mod = el('div', {C:'modal'});
+
+  if (showModal === 'jobs') {
+    mod.appendChild(el('div', {C:'modal-head', t:'Select Customer'}));
+    var body = el('div', {C:'modal-body'});
+    var list = el('div', {C:'jobs-list'});
+    
+    var jobs = getAllJobs();
+    if (jobs.length === 0) {
+      list.appendChild(el('div', {style:'text-align:center;color:var(--s400);padding:20px;', t:'No customers found.'}));
+    }
+
+    jobs.forEach(function(j) {
+      var row = el('div', {
+        C: 'job-row' + (activeJobId === j.id ? ' active' : ''),
+        click: function() { activeJobId = j.id; showModal = null; render(); }
+      });
+
+      var info = el('div', {C:'job-info'});
+      info.appendChild(el('div', {C:'job-name', t:j.name}));
+      info.appendChild(el('div', {C:'job-addr', t:j.address || 'No address provided'}));
+      row.appendChild(info);
+
+      // DELETE BUTTON
+      var delBtn = el('button', {
+        C: 'job-del',
+        t: '🗑️',
+        click: function(e) { deleteJob(j.id, e); }
+      });
+      row.appendChild(delBtn);
+
+      list.appendChild(row);
+    });
+    
+    body.appendChild(list);
+    var addBtn = el('div', {C:'new-job-btn', t:'+ Add New Customer', click:function(){ showModal='newjob'; render(); }});
+    body.appendChild(addBtn);
+    mod.appendChild(body);
+    
+    var foot = el('div', {C:'modal-foot'});
+    foot.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Close', click:function(){ showModal=null; render(); }}));
+    mod.appendChild(foot);
+  }
+
+  if (showModal === 'newjob') {
+    mod.appendChild(el('div', {C:'modal-head', t:'Add Customer'}));
+    var body = el('div', {C:'modal-body'});
+    
+    var nameIn = el('input', {C:'fi', placeholder:'Customer Name'});
+    var addrIn = el('input', {C:'fi', placeholder:'Address'});
+    
+    body.appendChild(el('div', {}, [el('label', {C:'fl', t:'Name'}), nameIn]));
+    body.appendChild(el('div', {}, [el('label', {C:'fl', t:'Address'}), addrIn]));
+    mod.appendChild(body);
+    
+    var foot = el('div', {C:'modal-foot'});
+    foot.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Cancel', click:function(){ showModal=null; render(); }}));
+    foot.appendChild(el('button', {C:'modal-btn modal-ok', t:'Create Job', click:function(){
+      var jobs = getAllJobs();
+      var j = newJob(nameIn.value, addrIn.value);
+      jobs.push(j);
+      saveAllJobs(jobs);
+      activeJobId = j.id;
+      showModal = null;
+      render();
+    }}));
+    mod.appendChild(foot);
+  }
+
+  bg.appendChild(mod);
   root.appendChild(bg);
 }
 
-function renderJobsModal(bg) {
-  var m=el('div',{C:'modal'});
-  m.appendChild(el('div',{C:'modal-head',t:'Job Files'}));
-  var mb=el('div',{C:'modal-body'});
-  var jobs=getAllJobs();
-  var list=el('div',{C:'jobs-list'});
-  if (!jobs.length) list.appendChild(el('div',{style:'color:#94a3b8;font-size:0.78rem;font-weight:700;text-align:center;padding:20px',t:'No jobs yet.'}));
-  jobs.slice().reverse().forEach(function(j){
-    var row=el('div',{C:'job-row'+(j.id===activeJobId?' active':'')});
-    var info=el('div',{C:'job-info'});
-    info.appendChild(el('div',{C:'job-name',t:j.name}));
-    if(j.address) info.appendChild(el('div',{C:'job-addr',t:'📍 '+j.address}));
-    info.addEventListener('click',function(){ activeJobId=j.id; showModal=null; render(); });
-    row.appendChild(info);
-    if (j.id!==activeJobId) {
-      var del=el('button',{C:'job-del',t:'DEL',click:function(){
-        if(confirm('Delete job "'+j.name+'"? This cannot be undone.')){
-          var all=getAllJobs().filter(function(x){ return x.id!==j.id; });
-          saveAllJobs(all);
-          if(activeJobId===j.id) activeJobId=all.length?all[all.length-1].id:null;
-          if(!activeJobId) showModal='newjob'; else showModal=null;
-          render();
-        }
-      }});
-      row.appendChild(del);
-    }
-    list.appendChild(row);
-  });
-  mb.appendChild(list);
-  mb.appendChild(el('button',{C:'new-job-btn',t:'+ New Job',click:function(){ showModal='newjob'; newJobDraft={name:'',address:''}; render(); }}));
-  m.appendChild(mb);
-  var mf=el('div',{C:'modal-foot'});
-  mf.appendChild(el('button',{C:'modal-btn modal-cancel',t:'Close',click:function(){ showModal=null; render(); }}));
-  m.appendChild(mf); bg.appendChild(m);
+function renderNoJob(root) {
+  var wrap = el('div', {style:'padding:100px 24px;text-align:center'});
+  wrap.appendChild(el('div', {style:'font-size:3rem;margin-bottom:16px', t:'📋'}));
+  wrap.appendChild(el('div', {style:'font-size:1.2rem;font-weight:900;color:var(--teal-dark);', t:'THS Field Measure'}));
+  wrap.appendChild(el('button', {style:'margin-top:20px;background:var(--teal-dark);color:white;border:none;border-radius:10px;padding:14px 28px;font-weight:900;text-transform:uppercase;cursor:pointer', t:'+ New Job', click:function(){ showModal='newjob'; render(); }}));
+  root.appendChild(wrap);
 }
 
-function renderNewJobModal(bg) {
-  var m=el('div',{C:'modal'});
-  m.appendChild(el('div',{C:'modal-head',t:'New Job'}));
-  var mb=el('div',{C:'modal-body'});
-  mb.appendChild(lf('Customer / Job Name *'));
-  var ni=el('input',{C:'fi',placeholder:'e.g. Smith Residence'}); ni.value=newJobDraft.name;
-  ni.addEventListener('input',function(){ newJobDraft.name=this.value; });
-  mb.appendChild(ni);
-  mb.appendChild(lf('Address'));
-  var ai=el('input',{C:'fi',placeholder:'e.g. 123 Oak St, Marietta'}); ai.value=newJobDraft.address;
-  ai.addEventListener('input',function(){ newJobDraft.address=this.value; });
-  mb.appendChild(ai);
-  m.appendChild(mb);
-  var mf=el('div',{C:'modal-foot'});
-  if(getAllJobs().length>0) mf.appendChild(el('button',{C:'modal-btn modal-cancel',t:'Cancel',click:function(){ showModal=null; render(); }}));
-  mf.appendChild(el('button',{C:'modal-btn modal-ok',t:'Create Job',click:function(){
-    if(!newJobDraft.name.trim()){ ni.style.borderColor='#dc2626'; ni.focus(); return; }
-    var j=newJob(newJobDraft.name, newJobDraft.address);
-    var all=getAllJobs(); all.push(j); saveAllJobs(all);
-    activeJobId=j.id; newJobDraft={name:'',address:''}; showModal=null; render();
-  }}));
-  m.appendChild(mf); bg.appendChild(m);
-  setTimeout(function(){ if(ni) ni.focus(); }, 100);
-}
-
-// ─── ABC EMAIL DRAFT ──────────────────────────────────────────────────────────
-function draftABC(md, job) {
-  if(!abcEmail){ alert('Add your ABC rep\'s email in the Sign Off tab first.'); return; }
-  var mfr=getMfr(md.manufacturer);
-  var lines=md.units.map(function(u,i){
-    var n=i+1;
-    if(u.category==='misc') return n+'. '+(u.qty||1)+'× '+u.type+(u.unitNotes?' — '+u.unitNotes:'');
-    var series=u.series?'['+u.series+'] ':'';
-    if(u.category==='door') return n+'. '+(u.qty||1)+'× '+series+u.type+' | '+u.width+'" W × '+u.height+'" H | '+u.swing+' | Jamb '+u.jambDepth+' | '+u.color+' | Glass: '+u.glass+(u.sidelites?' | Sidelites':'')+' | Loc: '+u.location;
-    return n+'. '+(u.qty||1)+'× '+series+u.type+' | '+u.width+'" W × '+u.height+'" H | '+u.color+' | Grids: '+u.grids+' | Glass: '+u.glass+' | Loc: '+u.location;
-  }).join('\n');
-  var flags=Object.keys(md.flags).filter(function(k){ return md.flags[k]; }).map(function(k){ return k.toUpperCase(); }).join(', ');
-  var body='Hi,\n\nPlease provide a quote for the following job:\n\nCustomer: '+job.name+'\nAddress: '+(job.address||'')+'\nManufacturer: '+mfr.label+'\n\nScope:\n'+lines+(flags?'\n\nSite Flags: '+flags:'')+(md.jobNotes?'\n\nField Notes: '+md.jobNotes:'')+'\n\nThank you,\nCameron\nTotal Home Services of Georgia';
-  var subj='Quote Request — '+mfr.label+' — '+job.name+(job.address?' / '+job.address:'');
-  window.open('mailto:'+encodeURIComponent(abcEmail)+'?subject='+encodeURIComponent(subj)+'&body='+encodeURIComponent(body),'_blank');
-  showToast('✓ ABC email opened');
-}
-
-// ─── PRINT / EXPORT ──────────────────────────────────────────────────────────
-function printJob(md, job) {
-  var mfr=getMfr(md.manufacturer);
-  var lines=md.units.map(function(u,i){
-    var n=i+1;
-    var base='<strong>'+n+'. '+(u.location||u.type||'Unit')+'</strong>';
-    var series=u.series?'<em> ['+u.series+']</em>':'';
-    if(u.category==='misc') return base+': '+(u.qty||1)+'× '+u.type+(u.unitNotes?' — '+u.unitNotes:'');
-    if(u.category==='door') return base+series+'<br>'+(u.qty||1)+'× '+u.type+' | '+u.width+'" × '+u.height+'" | Swing: '+u.swing+' | Jamb: '+u.jambDepth+' | '+u.color+' | Glass: '+u.glass;
-    return base+series+'<br>'+(u.qty||1)+'× '+u.type+' | '+u.width+'" × '+u.height+'" | '+u.color+' | Grids: '+u.grids+' | Glass: '+u.glass;
-  }).join('<br><br>');
-  var flags=Object.keys(md.flags).filter(function(k){ return md.flags[k]; }).map(function(k){ return k.toUpperCase(); }).join(', ');
-  var win=window.open('','_blank');
-  win.document.write('<!DOCTYPE html><html><head><title>Measure — '+job.name+'</title><style>body{font-family:sans-serif;max-width:700px;margin:40px auto;color:#1e293b;font-size:14px;line-height:1.6}h1{font-size:1.2rem;font-weight:900;color:#065f55;margin-bottom:4px}h2{font-size:0.75rem;font-weight:900;text-transform:uppercase;letter-spacing:0.06em;color:#64748b;margin:24px 0 8px;border-bottom:2px solid #e2e8f0;padding-bottom:4px}.flag-badge{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:12px;padding:2px 10px;font-size:0.7rem;font-weight:800;text-transform:uppercase;display:inline-block;margin-right:4px}.mfr-tag{background:#fef9e7;color:#a37b0a;border:1px solid #c8960c;border-radius:12px;padding:2px 10px;font-size:0.7rem;font-weight:800;display:inline-block}@media print{@page{margin:20mm}}</style></head><body>');
-  win.document.write('<h1>'+job.name+'</h1>');
-  win.document.write('<div style="color:#64748b;font-size:0.82rem">'+(job.address||'')+' &nbsp;·&nbsp; '+todayISO()+'</div>');
-  win.document.write('<div style="margin-top:10px"><span class="mfr-tag">'+mfr.label+'</span></div>');
-  if (flags) {
-    win.document.write('<div style="margin-top:12px">');
-    flags.split(', ').forEach(function(f){ win.document.write('<span class="flag-badge">'+f+'</span>'); });
-    win.document.write('</div>');
-  }
-  if (md.accessNotes) win.document.write('<h2>Access Notes</h2><p>'+md.accessNotes+'</p>');
-  if (lines) win.document.write('<h2>Units ('+md.units.length+')</h2><p>'+lines+'</p>');
-  if (md.jobNotes) win.document.write('<h2>Field Notes</h2><p>'+md.jobNotes+'</p>');
-  if (md.signature) win.document.write('<h2>Customer Signature</h2><img src="'+md.signature+'" style="max-width:300px;border:1px solid #e2e8f0;border-radius:8px">');
-  win.document.write('</body></html>');
-  win.document.close(); win.print();
-}
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var jobs = getAllJobs();
+  if (jobs.length > 0) activeJobId = jobs[jobs.length-1].id;
+  render();
+});
 </script>
+
 </body>
 </html>
