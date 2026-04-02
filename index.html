@@ -6,11 +6,7 @@
   <title>THS — Field Measure Pro</title>
   <style>
     :root {
-      /* High-Contrast Palette */
-      --teal-dark:#04413a; /* Darker for sun glare */
-      --teal-mid:#0a7c6e;
-      --gold:#c8960c;
-      --gold-dark:#8a6808;
+      --teal-dark:#04413a; --teal-mid:#0a7c6e; --gold:#c8960c; --gold-dark:#8a6808;
       --s50:#f8fafc; --s100:#f1f5f9; --s200:#e2e8f0; --s800:#1e293b;
       --red:#dc2626; --warning:#f59e0b; --border:#cbd5e1;
     }
@@ -24,44 +20,38 @@
     .hdr-menu, .hdr-save{padding:10px 15px; border-radius:8px; font-weight:900; text-transform:uppercase; font-size:0.7rem; border:none; cursor:pointer}
     .hdr-menu{background:rgba(255,255,255,0.15); color:white}
     .hdr-save{background:var(--gold); color:black}
-    .save-status{font-size:0.55rem; color:rgba(255,255,255,0.6); text-align:center; margin-top:4px}
 
-    /* ── BIG TAPPABLE CARDS ── */
+    /* ── MAIN CONTENT ── */
     .main{padding:12px; max-width:650px; margin:0 auto}
     .card{background:white; border-radius:16px; border:1px solid var(--border); margin-bottom:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05); overflow:hidden}
-    .card-head{background:var(--teal-dark); color:white; padding:14px; font-weight:900; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; display:flex; justify-content:space-between}
+    .card-head{background:var(--teal-dark); color:white; padding:14px; font-weight:900; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em}
     .card-body{padding:16px; display:flex; flex-direction:column; gap:12px}
 
-    /* ── UNIT FLAGS (Tempered, Egress, etc) ── */
-    .flag-chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:4px}
-    .chip{padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--s50); font-size:0.65rem; font-weight:800; color:var(--s800); cursor:pointer}
-    .chip.on{background:var(--teal-mid); color:white; border-color:var(--teal-dark)}
+    /* ── MFR SELECTOR ── */
+    .mfr-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(100px, 1fr)); gap:6px; margin-top:5px}
+    .mfr-pill{padding:10px 5px; border-radius:8px; border:1.5px solid var(--border); background:var(--s50); font-size:0.6rem; font-weight:900; text-align:center; text-transform:uppercase; cursor:pointer}
+    .mfr-pill.on{background:var(--teal-mid); color:white; border-color:var(--teal-dark)}
 
-    /* ── MEASUREMENT INPUTS (Common Sense Alerts) ── */
+    /* ── DIMENSIONS & INPUTS ── */
     .dim-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     .dim-box{background:var(--s50); border:2px solid var(--border); border-radius:10px; padding:12px; text-align:center; cursor:pointer}
-    .dim-box.active{border-color:var(--gold); background:white}
-    .dim-box.warn{border-color:var(--warning); background:#fffbeb} /* Visual warning for odd sizes */
+    .dim-box.warn{border-color:var(--warning); background:#fffbeb}
     .dim-label{font-size:0.6rem; font-weight:900; color:var(--s800); margin-bottom:4px; display:block}
     .dim-val{font-size:1.4rem; font-weight:900}
-
-    /* ── VOICE INPUT ── */
-    .voice-wrap{position:relative}
-    .fi{width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:1rem; outline:none}
-    .mic-btn{position:absolute; right:10px; top:10px; background:var(--s200); border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.2rem}
-    .mic-btn.active{background:var(--red); color:white; animation:pulse 1.5s infinite}
+    .fi{width:100%; padding:14px; border:1.5px solid var(--border); border-radius:10px; font-size:1rem; outline:none; background:var(--s50)}
 
     /* ── UNIT CARDS ── */
-    .unit-row{border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden}
+    .unit-row{border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; background:white}
     .unit-hdr{background:var(--s100); padding:15px; display:flex; align-items:center; gap:12px; cursor:pointer}
-    .unit-num{background:var(--teal-dark); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.8rem}
+    .unit-num{background:var(--teal-dark); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900}
+    .unit-badge{background:var(--gold); color:black; font-size:0.55rem; font-weight:900; padding:2px 6px; border-radius:4px; text-transform:uppercase}
     .unit-body{padding:15px; border-top:1px solid var(--border); display:none}
     .unit-body.open{display:block}
 
-    /* ── JOBS LIST & DELETE ── */
-    .job-row{display:flex; align-items:center; padding:15px; background:white; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; gap:12px}
-    .job-info{flex:1}
-    .job-del{background:#fee2e2; border:1px solid #fecaca; color:var(--red); padding:12px; border-radius:10px; font-size:1.1rem; cursor:pointer}
+    /* ── FLAGS ── */
+    .flag-chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:8px}
+    .chip{padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--s50); font-size:0.65rem; font-weight:800; cursor:pointer}
+    .chip.on{background:var(--teal-mid); color:white}
 
     /* ── KEYPAD ── */
     .kp-tray{position:fixed; bottom:0; left:0; right:0; background:var(--teal-dark); border-top:4px solid var(--gold); padding:15px 15px 30px; transform:translateY(100%); transition:0.3s; z-index:1000}
@@ -70,9 +60,9 @@
     .kbtn{background:rgba(255,255,255,0.1); border:none; border-radius:10px; padding:18px 5px; color:white; font-size:1.2rem; font-weight:900}
     .kbtn.gold{background:var(--gold); color:black}
 
-    /* ── TOAST & ANIMATION ── */
-    @keyframes pulse{0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1}}
-    .toast{position:fixed; bottom:110px; left:50%; transform:translateX(-50%); background:black; color:white; padding:12px 24px; border-radius:30px; font-weight:800; z-index:2000; opacity:0; transition:0.3s; pointer-events:none}
+    .job-row{display:flex; align-items:center; padding:15px; background:white; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; gap:12px}
+    .job-del{background:#fee2e2; border:1px solid #fecaca; color:var(--red); padding:12px; border-radius:10px; font-size:1.1rem; cursor:pointer}
+    .toast{position:fixed; bottom:110px; left:50%; transform:translateX(-50%); background:black; color:white; padding:12px 24px; border-radius:30px; font-weight:800; z-index:2000; opacity:0; transition:0.3s}
     .toast.show{opacity:1}
   </style>
 </head>
@@ -82,7 +72,7 @@
 <div class="toast" id="toast"></div>
 
 <div class="kp-tray" id="kpTray">
-  <div style="color:var(--gold); text-align:center; font-weight:900; margin-bottom:10px;" id="kpLabel">WIDTH</div>
+  <div id="kpLabel" style="color:var(--gold); text-align:center; font-weight:900; margin-bottom:10px; text-transform:uppercase">Dimension</div>
   <div id="kpDisplay" style="background:rgba(0,0,0,0.3); padding:15px; border-radius:10px; color:white; font-size:2rem; font-weight:900; text-align:center; margin-bottom:15px">0</div>
   <div class="kp-grid">
     <button class="kbtn" onclick="kp('7')">7</button><button class="kbtn" onclick="kp('8')">8</button><button class="kbtn" onclick="kp('9')">9</button><button class="kbtn" onclick="kp('CLR')" style="background:var(--red)">C</button>
@@ -93,20 +83,17 @@
 </div>
 
 <script>
-// ─── CONFIG & STORAGE ──────────────────────────────────────────────────────────
-var activeJobId = null;
-var showModal = null;
-var activeKp = { unitIdx: null, field: null, value: '' };
-var STORE_KEY = 'ths_field_data_v3';
-
+// ─── DATA ────────────────────────────────────────────────────────────────────
+var MFR_LIST = ['Provia', 'Simonton', 'Andersen', 'Pella', 'Vinylmax', 'PMI', 'Therma-Tru'];
 var UNIT_FLAGS = ['Tempered', 'Egress', 'Mulled Unit', 'Lead Paint', 'Oversize'];
+
+var activeJobId = null;
+var activeKp = { unitIdx: null, field: null, value: '' };
+var STORE_KEY = 'ths_field_pro_v4';
 
 function safeGet() { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
 function safeSet(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
-
-function getActiveJob() { 
-  return safeGet().find(j => j.id === activeJobId) || null; 
-}
+function getActiveJob() { return safeGet().find(j => j.id === activeJobId) || null; }
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function showToast(msg) {
@@ -115,42 +102,19 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-// Common Sense Logic: Returns true if the size is "unusual" for a window/door
+function updateJob(job) {
+  var data = safeGet();
+  var idx = data.findIndex(j => j.id === job.id);
+  data[idx] = job;
+  safeSet(data);
+}
+
 function isUnusual(val) {
   var n = parseFloat(val);
   return (n > 0 && (n < 12 || n > 102));
 }
 
-// ─── VOICE TO TEXT ───────────────────────────────────────────────────────────
-function startVoice(targetId) {
-  var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-  var btn = document.querySelector(`[data-mic="${targetId}"]`);
-  
-  recognition.onstart = () => btn.classList.add('active');
-  recognition.onend = () => btn.classList.remove('active');
-  
-  recognition.onresult = (event) => {
-    var transcript = event.results[0][0].transcript;
-    var input = document.getElementById(targetId);
-    input.value = (input.value + " " + transcript).trim();
-    // Trigger the save logic manually
-    input.dispatchEvent(new Event('input'));
-  };
-  recognition.start();
-}
-
 // ─── APP LOGIC ───────────────────────────────────────────────────────────────
-function deleteJob(id, e) {
-  e.stopPropagation();
-  var job = safeGet().find(j => j.id === id);
-  if (confirm(`DELETE JOB: "${job.name}"?\nThis cannot be undone.`)) {
-    var data = safeGet().filter(j => j.id !== id);
-    safeSet(data);
-    if (activeJobId === id) activeJobId = data.length ? data[0].id : null;
-    render();
-  }
-}
-
 function openKp(unitIdx, field, label) {
   activeKp = { unitIdx, field, value: '' };
   document.getElementById('kpLabel').textContent = label;
@@ -172,23 +136,35 @@ function kp(key) {
   document.getElementById('kpDisplay').textContent = activeKp.value || '0';
 }
 
-function updateJob(job) {
-  var data = safeGet();
-  var idx = data.findIndex(j => j.id === job.id);
-  data[idx] = job;
-  safeSet(data);
+function toggleFlag(idx, flag) {
+  var job = getActiveJob();
+  var u = job.measure.units[idx];
+  if (!u.flags) u.flags = [];
+  u.flags = u.flags.includes(flag) ? u.flags.filter(f => f !== flag) : [...u.flags, flag];
+  updateJob(job);
+  render();
 }
 
-// ─── RENDERING ───────────────────────────────────────────────────────────────
+function setMfr(level, val, unitIdx = null) {
+  var job = getActiveJob();
+  if (level === 'job') {
+    job.measure.primaryMfr = val;
+    // Set all units to this MFR if they don't have one
+    job.measure.units.forEach(u => u.mfr = val);
+  } else {
+    job.measure.units[unitIdx].mfr = val;
+  }
+  updateJob(job);
+  render();
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
 function render() {
   var root = document.getElementById('root');
   root.innerHTML = '';
   var job = getActiveJob();
 
-  if (!job) {
-    renderJobList(root);
-    return;
-  }
+  if (!job) { renderHome(root); return; }
 
   // Header
   var hdr = document.createElement('div');
@@ -197,57 +173,60 @@ function render() {
     <div class="hdr-top">
       <button class="hdr-menu" onclick="activeJobId=null; render()">Jobs</button>
       <div class="hdr-title">${job.name}</div>
-      <button class="hdr-save" onclick="showToast('Data Synced')">Done</button>
+      <button class="hdr-save" onclick="showToast('✓ Synced')">Done</button>
     </div>
-    <div class="save-status">Auto-saving to device...</div>
   `;
   root.appendChild(hdr);
 
   var main = document.createElement('div');
   main.className = 'main';
 
-  // Site Info Card
-  var infoCard = createCard('Site Conditions');
-  var infoBody = infoCard.querySelector('.card-body');
-  
-  var voiceWrap = document.createElement('div');
-  voiceWrap.className = 'voice-wrap';
-  voiceWrap.innerHTML = `
-    <label class="dim-label">FIELD NOTES (Tap Mic to speak)</label>
-    <textarea id="fieldNotes" class="fi" rows="3">${job.measure.jobNotes || ''}</textarea>
-    <button class="mic-btn" data-mic="fieldNotes" onclick="startVoice('fieldNotes')">🎤</button>
-  `;
-  voiceWrap.querySelector('textarea').oninput = (e) => {
-    job.measure.jobNotes = e.target.value;
-    updateJob(job);
-  };
-  infoBody.appendChild(voiceWrap);
-  main.appendChild(infoCard);
+  // Card 1: Job Details
+  var siteCard = createCard('Primary Manufacturer');
+  var sBody = siteCard.querySelector('.card-body');
+  var mfrGrid = document.createElement('div');
+  mfrGrid.className = 'mfr-grid';
+  MFR_LIST.forEach(m => {
+    var p = document.createElement('div');
+    p.className = 'mfr-pill ' + (job.measure.primaryMfr === m ? 'on' : '');
+    p.textContent = m;
+    p.onclick = () => setMfr('job', m);
+    mfrGrid.appendChild(p);
+  });
+  sBody.appendChild(mfrGrid);
+  main.appendChild(siteCard);
 
-  // Units Card
+  // Card 2: Units
   var unitCard = createCard('Windows & Doors');
   var uBody = unitCard.querySelector('.card-body');
 
   job.measure.units.forEach((u, idx) => {
-    var uRow = document.createElement('div');
-    uRow.className = 'unit-row';
-    
+    var row = document.createElement('div');
+    row.className = 'unit-row';
     var wWarn = isUnusual(u.width) ? 'warn' : '';
     var hWarn = isUnusual(u.height) ? 'warn' : '';
 
-    uRow.innerHTML = `
+    row.innerHTML = `
       <div class="unit-hdr">
         <div class="unit-num">${idx+1}</div>
         <div style="flex:1">
           <div style="font-weight:900">${u.location || 'New Unit'}</div>
-          <div style="font-size:0.7rem; color:var(--teal-mid)">${u.width || '0'}" x ${u.height || '0'}"</div>
+          <span class="unit-badge">${u.mfr || job.measure.primaryMfr || 'No MFR'}</span>
         </div>
-        <button style="border:none; background:none; font-size:1.2rem">▼</button>
+        <div style="text-align:right; font-weight:900; font-size:0.8rem; color:var(--teal-mid)">
+          ${u.width || '—'}" x ${u.height || '—'}"
+        </div>
       </div>
       <div class="unit-body">
-        <label class="dim-label">Location / Room</label>
-        <input class="fi" style="margin-bottom:10px" value="${u.location || ''}" placeholder="e.g. Master Bed Left" oninput="saveUnitField(${idx}, 'location', this.value)">
+        <label class="dim-label">Room / Location</label>
+        <input class="fi" style="margin-bottom:12px" value="${u.location || ''}" placeholder="Kitchen Sink..." oninput="saveField(${idx}, 'location', this.value)">
         
+        <label class="dim-label">Manufacturer Override</label>
+        <select class="fi" style="margin-bottom:12px" onchange="setMfr('unit', this.value, ${idx})">
+           <option value="">Use Job Primary</option>
+           ${MFR_LIST.map(m => `<option value="${m}" ${u.mfr === m ? 'selected' : ''}>${m}</option>`).join('')}
+        </select>
+
         <div class="dim-row">
           <div class="dim-box ${wWarn}" onclick="openKp(${idx}, 'width', 'WIDTH')">
             <span class="dim-label">WIDTH</span>
@@ -260,33 +239,24 @@ function render() {
         </div>
 
         <div class="flag-chips">
-          ${UNIT_FLAGS.map(f => `
-            <div class="chip ${u.flags && u.flags.includes(f) ? 'on' : ''}" onclick="toggleFlag(${idx}, '${f}')">${f}</div>
-          `).join('')}
+          ${UNIT_FLAGS.map(f => `<div class="chip ${u.flags?.includes(f) ? 'on' : ''}" onclick="toggleFlag(${idx}, '${f}')">${f}</div>`).join('')}
         </div>
       </div>
     `;
-    uRow.querySelector('.unit-hdr').onclick = () => {
-      var b = uRow.querySelector('.unit-body');
-      b.classList.toggle('open');
-    };
-    uBody.appendChild(uRow);
+    row.querySelector('.unit-hdr').onclick = () => row.querySelector('.unit-body').classList.toggle('open');
+    uBody.appendChild(row);
   });
 
   var addBtn = document.createElement('button');
   addBtn.className = 'fi';
-  addBtn.style.background = 'var(--teal-light)';
-  addBtn.style.border = '2px dashed var(--teal-mid)';
-  addBtn.style.color = 'var(--teal-dark)';
-  addBtn.style.fontWeight = '900';
-  addBtn.textContent = '+ ADD UNIT';
+  addBtn.style.cssText = 'background:var(--s100); border:2px dashed var(--teal-mid); color:var(--teal-dark); font-weight:900';
+  addBtn.textContent = '+ ADD NEW UNIT';
   addBtn.onclick = () => {
-    job.measure.units.push({ location: '', width: '', height: '', flags: [] });
+    job.measure.units.push({ location:'', width:'', height:'', mfr: job.measure.primaryMfr, flags:[] });
     updateJob(job);
     render();
   };
   uBody.appendChild(addBtn);
-
   main.appendChild(unitCard);
   root.appendChild(main);
 }
@@ -294,67 +264,50 @@ function render() {
 function createCard(title) {
   var c = document.createElement('div');
   c.className = 'card';
-  c.innerHTML = `<div class="card-head"><span>${title}</span></div><div class="card-body"></div>`;
+  c.innerHTML = `<div class="card-head">${title}</div><div class="card-body"></div>`;
   return c;
 }
 
-function saveUnitField(idx, field, val) {
+function saveField(idx, field, val) {
   var job = getActiveJob();
   job.measure.units[idx][field] = val;
   updateJob(job);
 }
 
-function toggleFlag(idx, flag) {
-  var job = getActiveJob();
-  var u = job.measure.units[idx];
-  if (!u.flags) u.flags = [];
-  if (u.flags.includes(flag)) u.flags = u.flags.filter(f => f !== flag);
-  else u.flags.push(flag);
-  updateJob(job);
-  render();
-}
-
-function renderJobList(root) {
-  var main = document.createElement('div');
-  main.className = 'main';
-  main.innerHTML = `<h2 style="margin:20px 0 10px; font-weight:900; text-align:center">THS MEASURE PRO</h2>`;
-  
+function renderHome(root) {
+  root.innerHTML = `<div class="main"><h2 style="text-align:center; margin:30px 0 20px; font-weight:900">THS FIELD PRO</h2><div id="jobList"></div></div>`;
+  var list = root.querySelector('#jobList');
   var jobs = safeGet();
+  
   jobs.forEach(j => {
-    var row = document.createElement('div');
-    row.className = 'job-row';
-    row.onclick = () => { activeJobId = j.id; render(); };
-    row.innerHTML = `
-      <div class="job-info">
-        <div class="job-name" style="font-weight:900">${j.name}</div>
-        <div class="job-addr" style="font-size:0.7rem; color:#666">${j.address}</div>
-      </div>
-      <button class="job-del" onclick="deleteJob('${j.id}', event)">🗑️</button>
-    `;
-    main.appendChild(row);
+    var div = document.createElement('div');
+    div.className = 'job-row';
+    div.onclick = () => { activeJobId = j.id; render(); };
+    div.innerHTML = `<div style="flex:1"><div style="font-weight:900">${j.name}</div><div style="font-size:0.7rem; color:#666">${j.address || 'No address'}</div></div><button class="job-del" onclick="event.stopPropagation(); deleteJob('${j.id}')">🗑️</button>`;
+    list.appendChild(div);
   });
 
-  var newBtn = document.createElement('button');
-  newBtn.className = 'fi';
-  newBtn.style.marginTop = '20px';
-  newBtn.style.background = 'var(--teal-dark)';
-  newBtn.style.color = 'white';
-  newBtn.textContent = '+ NEW CUSTOMER';
-  newBtn.onclick = () => {
+  var b = document.createElement('button');
+  b.className = 'fi';
+  b.style.cssText = 'background:var(--teal-dark); color:white; margin-top:10px';
+  b.textContent = '+ NEW CUSTOMER';
+  b.onclick = () => {
     var name = prompt("Customer Name:");
-    if (!name) return;
+    if(!name) return;
     var data = safeGet();
-    var j = { id: 'j'+Date.now(), name, address: '', measure: { units: [], jobNotes: '' } };
-    data.push(j);
-    safeSet(data);
-    activeJobId = j.id;
-    render();
+    var nj = { id:'j'+Date.now(), name, address:'', measure:{ primaryMfr:'Andersen', units:[] } };
+    data.push(nj); safeSet(data); activeJobId = nj.id; render();
   };
-  main.appendChild(newBtn);
-  root.appendChild(main);
+  list.appendChild(b);
 }
 
-// Boot
+function deleteJob(id) {
+  if(confirm('Delete this job permanently?')) {
+    var data = safeGet().filter(j => j.id !== id);
+    safeSet(data); render();
+  }
+}
+
 document.addEventListener('DOMContentLoaded', render);
 </script>
 
