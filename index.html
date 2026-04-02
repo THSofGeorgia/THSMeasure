@@ -3,111 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>THS — Field Measure</title>
+  <title>THS — Field Measure Pro</title>
   <style>
     :root {
-      --teal:#0a7c6e; --teal-dark:#065f55; --teal-mid:#0e9e8d; --teal-light:#e6f7f5;
-      --gold:#c8960c; --gold-light:#fef9e7; --gold-dark:#a37b0a;
-      --s50:#f8fafc; --s100:#f1f5f9; --s200:#e2e8f0; --s300:#cbd5e1;
-      --s400:#94a3b8; --s500:#64748b; --s600:#475569; --s700:#334155; --s800:#1e293b;
-      --red:#dc2626; --redl:#fef2f2; --border:#e2e8f0;
+      /* High-Contrast Palette */
+      --teal-dark:#04413a; /* Darker for sun glare */
+      --teal-mid:#0a7c6e;
+      --gold:#c8960c;
+      --gold-dark:#8a6808;
+      --s50:#f8fafc; --s100:#f1f5f9; --s200:#e2e8f0; --s800:#1e293b;
+      --red:#dc2626; --warning:#f59e0b; --border:#cbd5e1;
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-    body{background:var(--s100);color:var(--s800);font-family:ui-sans-serif,system-ui,sans-serif;min-height:100vh;overscroll-behavior-y:contain;padding-bottom:110px}
+    body{background:var(--s100);color:var(--s800);font-family:ui-sans-serif,system-ui,sans-serif;min-height:100vh;padding-bottom:120px}
 
     /* ── HEADER ── */
-    .hdr{background:var(--teal-dark);padding:12px 14px 0;border-bottom:4px solid var(--gold);position:sticky;top:0;z-index:200}
+    .hdr{background:var(--teal-dark);padding:12px 14px 8px;border-bottom:5px solid var(--gold);position:sticky;top:0;z-index:200}
     .hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .hdr-title{font-size:0.9rem;font-weight:900;color:white;flex:1;text-align:center;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .hdr-save{background:var(--gold);color:#1a0e00;border:none;border-radius:7px;padding:7px 13px;font-size:0.65rem;font-weight:900;text-transform:uppercase;cursor:pointer}
-    .hdr-menu{background:rgba(255,255,255,0.12);color:white;border:none;border-radius:7px;padding:7px 11px;font-size:0.65rem;font-weight:800;text-transform:uppercase;cursor:pointer}
-    .hdr-addr{font-size:0.58rem;color:rgba(255,255,255,0.6);text-align:center;padding-bottom:4px;margin-top:-2px}
+    .hdr-title{font-size:1rem;font-weight:900;color:white;text-align:center;flex:1}
+    .hdr-menu, .hdr-save{padding:10px 15px; border-radius:8px; font-weight:900; text-transform:uppercase; font-size:0.7rem; border:none; cursor:pointer}
+    .hdr-menu{background:rgba(255,255,255,0.15); color:white}
+    .hdr-save{background:var(--gold); color:black}
+    .save-status{font-size:0.55rem; color:rgba(255,255,255,0.6); text-align:center; margin-top:4px}
 
-    /* ── MANUFACTURER BAR ── */
-    .mfr-bar{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:6px 0 8px;margin:0 -2px}
-    .mfr-bar::-webkit-scrollbar{display:none}
-    .mfr-pill{flex-shrink:0;padding:5px 11px;border-radius:20px;border:1.5px solid rgba(255,255,255,0.25);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.65);font-size:0.58rem;font-weight:900;text-transform:uppercase;letter-spacing:0.05em;cursor:pointer;white-space:nowrap;transition:all 0.15s}
-    .mfr-pill.on{background:var(--gold);border-color:var(--gold);color:#1a0e00}
+    /* ── BIG TAPPABLE CARDS ── */
+    .main{padding:12px; max-width:650px; margin:0 auto}
+    .card{background:white; border-radius:16px; border:1px solid var(--border); margin-bottom:15px; box-shadow:0 4px 12px rgba(0,0,0,0.05); overflow:hidden}
+    .card-head{background:var(--teal-dark); color:white; padding:14px; font-weight:900; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.05em; display:flex; justify-content:space-between}
+    .card-body{padding:16px; display:flex; flex-direction:column; gap:12px}
 
-    /* ── TABS ── */
-    .tabs{display:flex;background:rgba(0,0,0,0.2);border-radius:8px;padding:3px;gap:3px;margin-bottom:10px}
-    .tab{flex:1;padding:7px 4px;font-size:0.6rem;font-weight:900;text-transform:uppercase;border:none;border-radius:6px;background:transparent;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.15s}
-    .tab.on{background:var(--gold);color:#1a0e00}
+    /* ── UNIT FLAGS (Tempered, Egress, etc) ── */
+    .flag-chips{display:flex; gap:6px; flex-wrap:wrap; margin-top:4px}
+    .chip{padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--s50); font-size:0.65rem; font-weight:800; color:var(--s800); cursor:pointer}
+    .chip.on{background:var(--teal-mid); color:white; border-color:var(--teal-dark)}
 
-    /* ── MAIN ── */
-    .main{padding:12px 12px 20px;max-width:680px;margin:0 auto}
+    /* ── MEASUREMENT INPUTS (Common Sense Alerts) ── */
+    .dim-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .dim-box{background:var(--s50); border:2px solid var(--border); border-radius:10px; padding:12px; text-align:center; cursor:pointer}
+    .dim-box.active{border-color:var(--gold); background:white}
+    .dim-box.warn{border-color:var(--warning); background:#fffbeb} /* Visual warning for odd sizes */
+    .dim-label{font-size:0.6rem; font-weight:900; color:var(--s800); margin-bottom:4px; display:block}
+    .dim-val{font-size:1.4rem; font-weight:900}
 
-    /* ── CARDS ── */
-    .card{background:white;border-radius:14px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;box-shadow:0 2px 10px rgba(10,124,110,0.06)}
-    .card-head{background:linear-gradient(135deg,var(--teal-dark) 0%,var(--teal-mid) 100%);padding:12px 14px;color:white;font-size:0.68rem;font-weight:900;text-transform:uppercase;letter-spacing:0.08em;display:flex;justify-content:space-between;align-items:center}
-    .card-body{padding:14px;display:flex;flex-direction:column;gap:10px}
-
-    /* ── FIELDS ── */
-    .fl{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.08em;color:var(--s400);display:block;margin-bottom:4px}
-    .fi{width:100%;background:var(--s50);border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--s800);font-size:0.85rem;font-family:inherit;outline:none}
-    .fi:focus{border-color:var(--teal)}
-    select.fi{-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2364748b' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
-    textarea.fi{resize:none;min-height:70px;line-height:1.5}
+    /* ── VOICE INPUT ── */
+    .voice-wrap{position:relative}
+    .fi{width:100%; padding:12px; border:1px solid var(--border); border-radius:8px; font-size:1rem; outline:none}
+    .mic-btn{position:absolute; right:10px; top:10px; background:var(--s200); border:none; border-radius:50%; width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:1.2rem}
+    .mic-btn.active{background:var(--red); color:white; animation:pulse 1.5s infinite}
 
     /* ── UNIT CARDS ── */
-    .unit{background:white;border-radius:10px;border:1.5px solid var(--border);overflow:hidden;margin-bottom:8px}
-    .unit.win{border-left:5px solid var(--teal)}
-    .unit.door{border-left:5px solid var(--gold)}
-    .unit-hdr{display:flex;align-items:center;padding:10px 12px;cursor:pointer;background:var(--s50)}
-    .unit-num{width:26px;height:26px;border-radius:6px;background:var(--s200);font-size:0.68rem;font-weight:900;display:flex;align-items:center;justify-content:center;color:var(--s600)}
-    .unit-info{flex:1;padding:0 10px}
-    .unit-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
-    .unit-sub{font-size:0.6rem;color:var(--s400)}
+    .unit-row{border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden}
+    .unit-hdr{background:var(--s100); padding:15px; display:flex; align-items:center; gap:12px; cursor:pointer}
+    .unit-num{background:var(--teal-dark); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:0.8rem}
+    .unit-body{padding:15px; border-top:1px solid var(--border); display:none}
+    .unit-body.open{display:block}
+
+    /* ── JOBS LIST & DELETE ── */
+    .job-row{display:flex; align-items:center; padding:15px; background:white; border:1px solid var(--border); border-radius:12px; margin-bottom:8px; gap:12px}
+    .job-info{flex:1}
+    .job-del{background:#fee2e2; border:1px solid #fecaca; color:var(--red); padding:12px; border-radius:10px; font-size:1.1rem; cursor:pointer}
 
     /* ── KEYPAD ── */
-    .kp-tray{position:fixed;bottom:0;left:0;right:0;z-index:500;background:var(--teal-dark);border-top:3px solid var(--gold);padding:12px 12px 24px;transform:translateY(100%);transition:transform 0.25s}
+    .kp-tray{position:fixed; bottom:0; left:0; right:0; background:var(--teal-dark); border-top:4px solid var(--gold); padding:15px 15px 30px; transform:translateY(100%); transition:0.3s; z-index:1000}
     .kp-tray.open{transform:translateY(0)}
-    .kbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:14px 6px;font-size:1rem;font-weight:900;color:white;cursor:pointer}
-    .kbtn.gold{background:var(--gold);color:#1a0e00}
+    .kp-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:8px}
+    .kbtn{background:rgba(255,255,255,0.1); border:none; border-radius:10px; padding:18px 5px; color:white; font-size:1.2rem; font-weight:900}
+    .kbtn.gold{background:var(--gold); color:black}
 
-    /* ── BOTTOM BAR ── */
-    .bar{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--border);padding:10px 12px 28px;display:flex;gap:8px;z-index:100}
-    .bar-btn{flex:1;padding:13px;border:none;border-radius:10px;font-size:0.72rem;font-weight:900;text-transform:uppercase;cursor:pointer}
-    .bar-save{background:var(--teal-dark);color:white}
-    .bar-sec{background:var(--gold-light);color:var(--gold-dark);border:1px solid var(--gold)}
-
-    /* ── MODAL ── */
-    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:900;display:flex;align-items:center;justify-content:center;padding:20px}
-    .modal{background:white;border-radius:16px;width:100%;max-width:420px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
-    .modal-head{background:var(--teal-dark);padding:16px 20px;color:white;font-size:0.8rem;font-weight:900;text-transform:uppercase;border-bottom:3px solid var(--gold)}
-    .modal-body{padding:20px;display:flex;flex-direction:column;gap:14px}
-    .modal-foot{padding:12px 20px 20px;display:flex;gap:10px}
-    .modal-btn{flex:1;padding:12px;border:none;border-radius:9px;font-size:0.72rem;font-weight:900;text-transform:uppercase;cursor:pointer}
-    .modal-ok{background:var(--teal-dark);color:white}
-    .modal-cancel{background:var(--s100);color:var(--s600)}
-
-    /* ── JOB SWITCHER ── */
-    .jobs-list{display:flex;flex-direction:column;gap:6px;max-height:350px;overflow-y:auto}
-    .job-row{display:flex;align-items:center;padding:12px;background:var(--s50);border:1.5px solid var(--border);border-radius:9px;gap:10px;cursor:pointer}
-    .job-row.active{border-color:var(--teal);background:var(--teal-light)}
-    .job-info{flex:1}
-    .job-name{font-size:0.82rem;font-weight:800;color:var(--s800)}
-    .job-addr{font-size:0.6rem;color:var(--s400)}
-    
-    /* DELETE BUTTON STYLE */
-    .job-del {
-      background: var(--redl);
-      border: 1px solid #fecaca;
-      color: var(--red);
-      border-radius: 8px;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 8px;
-      transition: all 0.1s;
-    }
-    .job-del:active { background: #fee2e2; transform: scale(0.95); }
-
-    .new-job-btn{padding:11px;background:var(--teal-light);border:2px dashed var(--teal-mid);border-radius:9px;color:var(--teal-dark);font-size:0.68rem;font-weight:900;text-transform:uppercase;cursor:pointer;text-align:center}
-    .toast{position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--teal-dark);color:white;border-radius:10px;padding:9px 18px;font-size:0.72rem;font-weight:700;z-index:700;opacity:0;transition:opacity 0.3s;pointer-events:none}
+    /* ── TOAST & ANIMATION ── */
+    @keyframes pulse{0%{opacity:1} 50%{opacity:0.5} 100%{opacity:1}}
+    .toast{position:fixed; bottom:110px; left:50%; transform:translateX(-50%); background:black; color:white; padding:12px 24px; border-radius:30px; font-weight:800; z-index:2000; opacity:0; transition:0.3s; pointer-events:none}
     .toast.show{opacity:1}
   </style>
 </head>
@@ -116,199 +81,281 @@
 <div id="root"></div>
 <div class="toast" id="toast"></div>
 
+<div class="kp-tray" id="kpTray">
+  <div style="color:var(--gold); text-align:center; font-weight:900; margin-bottom:10px;" id="kpLabel">WIDTH</div>
+  <div id="kpDisplay" style="background:rgba(0,0,0,0.3); padding:15px; border-radius:10px; color:white; font-size:2rem; font-weight:900; text-align:center; margin-bottom:15px">0</div>
+  <div class="kp-grid">
+    <button class="kbtn" onclick="kp('7')">7</button><button class="kbtn" onclick="kp('8')">8</button><button class="kbtn" onclick="kp('9')">9</button><button class="kbtn" onclick="kp('CLR')" style="background:var(--red)">C</button>
+    <button class="kbtn" onclick="kp('4')">4</button><button class="kbtn" onclick="kp('5')">5</button><button class="kbtn" onclick="kp('6')">6</button><button class="kbtn gold" onclick="kp('1/4')">¼</button>
+    <button class="kbtn" onclick="kp('1')">1</button><button class="kbtn" onclick="kp('2')">2</button><button class="kbtn" onclick="kp('3')">3</button><button class="kbtn gold" onclick="kp('1/2')">½</button>
+    <button class="kbtn" onclick="kp('0')" style="grid-column: span 2">0</button><button class="kbtn gold" onclick="kp('3/4')">¾</button><button class="kbtn gold" onclick="kp('DONE')" style="background:var(--teal-mid)">OK</button>
+  </div>
+</div>
+
 <script>
-// ─── STATE & STORAGE ──────────────────────────────────────────────────────────
+// ─── CONFIG & STORAGE ──────────────────────────────────────────────────────────
 var activeJobId = null;
 var showModal = null;
-var STORE_JOBS = 'ths_measure_jobs_v2';
+var activeKp = { unitIdx: null, field: null, value: '' };
+var STORE_KEY = 'ths_field_data_v3';
 
-function safeGet(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch(e) { return fb; } }
-function safeSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
-function getAllJobs() { return safeGet(STORE_JOBS, []); }
-function saveAllJobs(jobs) { safeSet(STORE_JOBS, jobs); }
-function getActiveJob() { return getAllJobs().find(function(j){ return j.id === activeJobId; }) || null; }
+var UNIT_FLAGS = ['Tempered', 'Egress', 'Mulled Unit', 'Lead Paint', 'Oversize'];
 
-function newJob(name, address) {
-  return {
-    id: 'job_' + Date.now(),
-    name: name.trim() || 'New Customer',
-    address: address.trim(),
-    createdAt: new Date().toISOString(),
-    measure: { manufacturer:'andersen', units:[], jobNotes:'', flags:{} }
-  };
+function safeGet() { return JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); }
+function safeSet(data) { localStorage.setItem(STORE_KEY, JSON.stringify(data)); }
+
+function getActiveJob() { 
+  return safeGet().find(j => j.id === activeJobId) || null; 
 }
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function showToast(msg) {
   var t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
-  setTimeout(function(){ t.classList.remove('show'); }, 2200);
+  setTimeout(() => t.classList.remove('show'), 2000);
 }
 
-function el(tag, props, children) {
-  var e = document.createElement(tag);
-  for (var k in props) {
-    if (k==='C') e.className=props[k];
-    else if (k==='t') e.textContent=props[k];
-    else if (k==='click') e.addEventListener('click', props[k]);
-    else e[k]=props[k];
-  }
-  if (children) children.forEach(function(c){ if(c) e.appendChild(c); });
-  return e;
+// Common Sense Logic: Returns true if the size is "unusual" for a window/door
+function isUnusual(val) {
+  var n = parseFloat(val);
+  return (n > 0 && (n < 12 || n > 102));
 }
 
-// ─── DELETE LOGIC ────────────────────────────────────────────────────────────
-function deleteJob(jobId, event) {
-  if (event) event.stopPropagation(); // Prevents the row click from firing
-
-  var jobs = getAllJobs();
-  var jobToDelete = jobs.find(function(j) { return j.id === jobId; });
+// ─── VOICE TO TEXT ───────────────────────────────────────────────────────────
+function startVoice(targetId) {
+  var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+  var btn = document.querySelector(`[data-mic="${targetId}"]`);
   
-  if (!jobToDelete) return;
-
-  // ARE YOU SURE? Prompt
-  var confirmed = confirm("Are you sure you want to delete '" + jobToDelete.name + "'? \n\nThis will permanently remove all measurement data and photos for this job.");
+  recognition.onstart = () => btn.classList.add('active');
+  recognition.onend = () => btn.classList.remove('active');
   
-  if (confirmed) {
-    var updatedJobs = jobs.filter(function(j) { return j.id !== jobId; });
-    saveAllJobs(updatedJobs);
-    
-    // Switch to another job if we just deleted the active one
-    if (activeJobId === jobId) {
-      activeJobId = updatedJobs.length > 0 ? updatedJobs[0].id : null;
-    }
-    
-    showToast("Job Deleted Successfully");
+  recognition.onresult = (event) => {
+    var transcript = event.results[0][0].transcript;
+    var input = document.getElementById(targetId);
+    input.value = (input.value + " " + transcript).trim();
+    // Trigger the save logic manually
+    input.dispatchEvent(new Event('input'));
+  };
+  recognition.start();
+}
+
+// ─── APP LOGIC ───────────────────────────────────────────────────────────────
+function deleteJob(id, e) {
+  e.stopPropagation();
+  var job = safeGet().find(j => j.id === id);
+  if (confirm(`DELETE JOB: "${job.name}"?\nThis cannot be undone.`)) {
+    var data = safeGet().filter(j => j.id !== id);
+    safeSet(data);
+    if (activeJobId === id) activeJobId = data.length ? data[0].id : null;
     render();
   }
+}
+
+function openKp(unitIdx, field, label) {
+  activeKp = { unitIdx, field, value: '' };
+  document.getElementById('kpLabel').textContent = label;
+  document.getElementById('kpDisplay').textContent = '—';
+  document.getElementById('kpTray').classList.add('open');
+}
+
+function kp(key) {
+  if (key === 'DONE') {
+    var job = getActiveJob();
+    job.measure.units[activeKp.unitIdx][activeKp.field] = activeKp.value;
+    updateJob(job);
+    document.getElementById('kpTray').classList.remove('open');
+    render();
+    return;
+  }
+  if (key === 'CLR') { activeKp.value = ''; }
+  else { activeKp.value += (activeKp.value ? ' ' : '') + key; }
+  document.getElementById('kpDisplay').textContent = activeKp.value || '0';
+}
+
+function updateJob(job) {
+  var data = safeGet();
+  var idx = data.findIndex(j => j.id === job.id);
+  data[idx] = job;
+  safeSet(data);
 }
 
 // ─── RENDERING ───────────────────────────────────────────────────────────────
 function render() {
   var root = document.getElementById('root');
   root.innerHTML = '';
-  
-  if (showModal) { renderModal(); return; }
-  
   var job = getActiveJob();
-  if (!job) { renderNoJob(root); return; }
+
+  if (!job) {
+    renderJobList(root);
+    return;
+  }
 
   // Header
-  var hdr = el('div', {C:'hdr'});
-  var top = el('div', {C:'hdr-top'});
-  top.appendChild(el('button', {C:'hdr-menu', t:'Jobs ▾', click:function(){ showModal='jobs'; render(); }}));
-  top.appendChild(el('div', {C:'hdr-title', t:job.name}));
-  top.appendChild(el('button', {C:'hdr-save', t:'Save', click:function(){ showToast('✓ Saved'); }}));
-  hdr.appendChild(top);
-  if (job.address) hdr.appendChild(el('div', {C:'hdr-addr', t:'📍 ' + job.address}));
+  var hdr = document.createElement('div');
+  hdr.className = 'hdr';
+  hdr.innerHTML = `
+    <div class="hdr-top">
+      <button class="hdr-menu" onclick="activeJobId=null; render()">Jobs</button>
+      <div class="hdr-title">${job.name}</div>
+      <button class="hdr-save" onclick="showToast('Data Synced')">Done</button>
+    </div>
+    <div class="save-status">Auto-saving to device...</div>
+  `;
   root.appendChild(hdr);
 
-  // Main Content
-  var main = el('div', {C:'main'});
-  var card = el('div', {C:'card'});
-  card.appendChild(el('div', {C:'card-head', t:'Measurement Data'}));
-  var body = el('div', {C:'card-body'});
-  body.appendChild(el('div', {t:'Manage measurements for ' + job.name + ' here.'}));
-  card.appendChild(body);
-  main.appendChild(card);
+  var main = document.createElement('div');
+  main.className = 'main';
+
+  // Site Info Card
+  var infoCard = createCard('Site Conditions');
+  var infoBody = infoCard.querySelector('.card-body');
+  
+  var voiceWrap = document.createElement('div');
+  voiceWrap.className = 'voice-wrap';
+  voiceWrap.innerHTML = `
+    <label class="dim-label">FIELD NOTES (Tap Mic to speak)</label>
+    <textarea id="fieldNotes" class="fi" rows="3">${job.measure.jobNotes || ''}</textarea>
+    <button class="mic-btn" data-mic="fieldNotes" onclick="startVoice('fieldNotes')">🎤</button>
+  `;
+  voiceWrap.querySelector('textarea').oninput = (e) => {
+    job.measure.jobNotes = e.target.value;
+    updateJob(job);
+  };
+  infoBody.appendChild(voiceWrap);
+  main.appendChild(infoCard);
+
+  // Units Card
+  var unitCard = createCard('Windows & Doors');
+  var uBody = unitCard.querySelector('.card-body');
+
+  job.measure.units.forEach((u, idx) => {
+    var uRow = document.createElement('div');
+    uRow.className = 'unit-row';
+    
+    var wWarn = isUnusual(u.width) ? 'warn' : '';
+    var hWarn = isUnusual(u.height) ? 'warn' : '';
+
+    uRow.innerHTML = `
+      <div class="unit-hdr">
+        <div class="unit-num">${idx+1}</div>
+        <div style="flex:1">
+          <div style="font-weight:900">${u.location || 'New Unit'}</div>
+          <div style="font-size:0.7rem; color:var(--teal-mid)">${u.width || '0'}" x ${u.height || '0'}"</div>
+        </div>
+        <button style="border:none; background:none; font-size:1.2rem">▼</button>
+      </div>
+      <div class="unit-body">
+        <label class="dim-label">Location / Room</label>
+        <input class="fi" style="margin-bottom:10px" value="${u.location || ''}" placeholder="e.g. Master Bed Left" oninput="saveUnitField(${idx}, 'location', this.value)">
+        
+        <div class="dim-row">
+          <div class="dim-box ${wWarn}" onclick="openKp(${idx}, 'width', 'WIDTH')">
+            <span class="dim-label">WIDTH</span>
+            <div class="dim-val">${u.width || '—'}</div>
+          </div>
+          <div class="dim-box ${hWarn}" onclick="openKp(${idx}, 'height', 'HEIGHT')">
+            <span class="dim-label">HEIGHT</span>
+            <div class="dim-val">${u.height || '—'}</div>
+          </div>
+        </div>
+
+        <div class="flag-chips">
+          ${UNIT_FLAGS.map(f => `
+            <div class="chip ${u.flags && u.flags.includes(f) ? 'on' : ''}" onclick="toggleFlag(${idx}, '${f}')">${f}</div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    uRow.querySelector('.unit-hdr').onclick = () => {
+      var b = uRow.querySelector('.unit-body');
+      b.classList.toggle('open');
+    };
+    uBody.appendChild(uRow);
+  });
+
+  var addBtn = document.createElement('button');
+  addBtn.className = 'fi';
+  addBtn.style.background = 'var(--teal-light)';
+  addBtn.style.border = '2px dashed var(--teal-mid)';
+  addBtn.style.color = 'var(--teal-dark)';
+  addBtn.style.fontWeight = '900';
+  addBtn.textContent = '+ ADD UNIT';
+  addBtn.onclick = () => {
+    job.measure.units.push({ location: '', width: '', height: '', flags: [] });
+    updateJob(job);
+    render();
+  };
+  uBody.appendChild(addBtn);
+
+  main.appendChild(unitCard);
   root.appendChild(main);
-
-  // Bottom Bar
-  var bar = el('div', {C:'bar'});
-  bar.appendChild(el('button', {C:'bar-btn bar-save', t:'💾 Save Measure'}));
-  root.appendChild(bar);
 }
 
-function renderModal() {
-  var root = document.getElementById('root');
-  var bg = el('div', {C:'modal-bg'});
-  var mod = el('div', {C:'modal'});
-
-  if (showModal === 'jobs') {
-    mod.appendChild(el('div', {C:'modal-head', t:'Select Customer'}));
-    var body = el('div', {C:'modal-body'});
-    var list = el('div', {C:'jobs-list'});
-    
-    var jobs = getAllJobs();
-    if (jobs.length === 0) {
-      list.appendChild(el('div', {style:'text-align:center;color:var(--s400);padding:20px;', t:'No customers found.'}));
-    }
-
-    jobs.forEach(function(j) {
-      var row = el('div', {
-        C: 'job-row' + (activeJobId === j.id ? ' active' : ''),
-        click: function() { activeJobId = j.id; showModal = null; render(); }
-      });
-
-      var info = el('div', {C:'job-info'});
-      info.appendChild(el('div', {C:'job-name', t:j.name}));
-      info.appendChild(el('div', {C:'job-addr', t:j.address || 'No address provided'}));
-      row.appendChild(info);
-
-      // DELETE BUTTON
-      var delBtn = el('button', {
-        C: 'job-del',
-        t: '🗑️',
-        click: function(e) { deleteJob(j.id, e); }
-      });
-      row.appendChild(delBtn);
-
-      list.appendChild(row);
-    });
-    
-    body.appendChild(list);
-    var addBtn = el('div', {C:'new-job-btn', t:'+ Add New Customer', click:function(){ showModal='newjob'; render(); }});
-    body.appendChild(addBtn);
-    mod.appendChild(body);
-    
-    var foot = el('div', {C:'modal-foot'});
-    foot.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Close', click:function(){ showModal=null; render(); }}));
-    mod.appendChild(foot);
-  }
-
-  if (showModal === 'newjob') {
-    mod.appendChild(el('div', {C:'modal-head', t:'Add Customer'}));
-    var body = el('div', {C:'modal-body'});
-    
-    var nameIn = el('input', {C:'fi', placeholder:'Customer Name'});
-    var addrIn = el('input', {C:'fi', placeholder:'Address'});
-    
-    body.appendChild(el('div', {}, [el('label', {C:'fl', t:'Name'}), nameIn]));
-    body.appendChild(el('div', {}, [el('label', {C:'fl', t:'Address'}), addrIn]));
-    mod.appendChild(body);
-    
-    var foot = el('div', {C:'modal-foot'});
-    foot.appendChild(el('button', {C:'modal-btn modal-cancel', t:'Cancel', click:function(){ showModal=null; render(); }}));
-    foot.appendChild(el('button', {C:'modal-btn modal-ok', t:'Create Job', click:function(){
-      var jobs = getAllJobs();
-      var j = newJob(nameIn.value, addrIn.value);
-      jobs.push(j);
-      saveAllJobs(jobs);
-      activeJobId = j.id;
-      showModal = null;
-      render();
-    }}));
-    mod.appendChild(foot);
-  }
-
-  bg.appendChild(mod);
-  root.appendChild(bg);
+function createCard(title) {
+  var c = document.createElement('div');
+  c.className = 'card';
+  c.innerHTML = `<div class="card-head"><span>${title}</span></div><div class="card-body"></div>`;
+  return c;
 }
 
-function renderNoJob(root) {
-  var wrap = el('div', {style:'padding:100px 24px;text-align:center'});
-  wrap.appendChild(el('div', {style:'font-size:3rem;margin-bottom:16px', t:'📋'}));
-  wrap.appendChild(el('div', {style:'font-size:1.2rem;font-weight:900;color:var(--teal-dark);', t:'THS Field Measure'}));
-  wrap.appendChild(el('button', {style:'margin-top:20px;background:var(--teal-dark);color:white;border:none;border-radius:10px;padding:14px 28px;font-weight:900;text-transform:uppercase;cursor:pointer', t:'+ New Job', click:function(){ showModal='newjob'; render(); }}));
-  root.appendChild(wrap);
+function saveUnitField(idx, field, val) {
+  var job = getActiveJob();
+  job.measure.units[idx][field] = val;
+  updateJob(job);
 }
 
-// ─── BOOT ────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', function() {
-  var jobs = getAllJobs();
-  if (jobs.length > 0) activeJobId = jobs[jobs.length-1].id;
+function toggleFlag(idx, flag) {
+  var job = getActiveJob();
+  var u = job.measure.units[idx];
+  if (!u.flags) u.flags = [];
+  if (u.flags.includes(flag)) u.flags = u.flags.filter(f => f !== flag);
+  else u.flags.push(flag);
+  updateJob(job);
   render();
-});
+}
+
+function renderJobList(root) {
+  var main = document.createElement('div');
+  main.className = 'main';
+  main.innerHTML = `<h2 style="margin:20px 0 10px; font-weight:900; text-align:center">THS MEASURE PRO</h2>`;
+  
+  var jobs = safeGet();
+  jobs.forEach(j => {
+    var row = document.createElement('div');
+    row.className = 'job-row';
+    row.onclick = () => { activeJobId = j.id; render(); };
+    row.innerHTML = `
+      <div class="job-info">
+        <div class="job-name" style="font-weight:900">${j.name}</div>
+        <div class="job-addr" style="font-size:0.7rem; color:#666">${j.address}</div>
+      </div>
+      <button class="job-del" onclick="deleteJob('${j.id}', event)">🗑️</button>
+    `;
+    main.appendChild(row);
+  });
+
+  var newBtn = document.createElement('button');
+  newBtn.className = 'fi';
+  newBtn.style.marginTop = '20px';
+  newBtn.style.background = 'var(--teal-dark)';
+  newBtn.style.color = 'white';
+  newBtn.textContent = '+ NEW CUSTOMER';
+  newBtn.onclick = () => {
+    var name = prompt("Customer Name:");
+    if (!name) return;
+    var data = safeGet();
+    var j = { id: 'j'+Date.now(), name, address: '', measure: { units: [], jobNotes: '' } };
+    data.push(j);
+    safeSet(data);
+    activeJobId = j.id;
+    render();
+  };
+  main.appendChild(newBtn);
+  root.appendChild(main);
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', render);
 </script>
 
 </body>
