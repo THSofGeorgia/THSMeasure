@@ -1,182 +1,1604 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>THS Field Pro — ABC Dispatch</title>
-  <style>
-    :root { --teal:#04413a; --gold:#c8960c; --bg:#f1f5f9; --border:#cbd5e1; }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: var(--bg); color: #1e293b; padding-bottom: 120px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>THS Field Measure</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --navy:#1B2A4A;
+  --orange:#E8650A;
+  --bg:#F5F5F5;
+  --card:#fff;
+  --text:#222;
+  --muted:#666;
+  --border:#ddd;
+  --radius:10px;
+  --safe-bottom:env(safe-area-inset-bottom,0px);
+  --safe-top:env(safe-area-inset-top,0px);
+  --header-h:56px;
+  --nav-h:60px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);font-size:16px;}
+/* HEADER */
+#app-header{
+  position:fixed;top:0;left:0;right:0;
+  height:calc(var(--header-h) + var(--safe-top));
+  padding-top:var(--safe-top);
+  background:var(--navy);
+  display:flex;align-items:center;padding-left:16px;padding-right:16px;
+  z-index:100;
+  gap:8px;
+}
+#header-title{color:#fff;font-size:18px;font-weight:700;flex:1;}
+#header-job{color:#aec6f5;font-size:13px;max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:right;}
+/* SCREENS */
+#screens{
+  position:fixed;
+  top:calc(var(--header-h) + var(--safe-top));
+  bottom:calc(var(--nav-h) + var(--safe-bottom));
+  left:0;right:0;
+  overflow:hidden;
+}
+.screen{
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  overflow-y:auto;-webkit-overflow-scrolling:touch;
+  display:none;
+  padding:16px 16px 24px;
+}
+.screen.active{display:block;}
+/* BOTTOM NAV */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(var(--nav-h) + var(--safe-bottom));
+  padding-bottom:var(--safe-bottom);
+  background:#fff;
+  border-top:1px solid var(--border);
+  display:flex;
+  z-index:100;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:none;background:none;cursor:pointer;font-size:11px;color:var(--muted);
+  min-height:48px;gap:3px;
+  -webkit-tap-highlight-color:transparent;
+  padding:0;
+}
+.nav-btn.active{color:var(--navy);}
+.nav-btn svg{width:24px;height:24px;}
+.nav-btn.active svg path,.nav-btn.active svg rect,.nav-btn.active svg circle,.nav-btn.active svg polyline,.nav-btn.active svg line,.nav-btn.active svg polygon{stroke:var(--navy);}
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:12px;overflow:hidden;}
+.field-group{padding:16px;display:flex;flex-direction:column;gap:12px;}
+.field-row{display:flex;gap:10px;}
+.field-row .field-wrap{flex:1;}
+.field-wrap{display:flex;flex-direction:column;gap:4px;}
+.field-wrap label{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+input[type=text],input[type=date],select,textarea{
+  width:100%;border:1.5px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-size:16px;color:var(--text);background:#fff;
+  -webkit-appearance:none;appearance:none;
+  min-height:48px;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);}
+textarea{min-height:80px;resize:vertical;line-height:1.4;}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:36px;}
+/* PRIMARY BUTTON */
+.btn-primary{
+  width:100%;min-height:52px;background:var(--navy);color:#fff;
+  border:none;border-radius:var(--radius);font-size:17px;font-weight:600;
+  cursor:pointer;letter-spacing:.01em;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-primary:active{opacity:.85;}
+.btn-orange{background:var(--orange);}
+/* PILL TOGGLE */
+.pill-toggle{display:flex;background:#eee;border-radius:20px;padding:3px;gap:0;}
+.pill-toggle button{
+  flex:1;border:none;background:none;border-radius:16px;
+  padding:7px 10px;font-size:14px;font-weight:500;cursor:pointer;
+  transition:background .15s,color .15s;color:var(--muted);
+  min-height:36px;
+  -webkit-tap-highlight-color:transparent;
+}
+.pill-toggle button.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.15);}
+.pill-navy .pill-toggle button.active{background:var(--navy);color:#fff;}
+.pill-orange .pill-toggle button.active{background:var(--orange);color:#fff;}
+/* MEASURE CARDS */
+.measure-card{background:var(--card);border-radius:var(--radius);box-shadow:0 1px 4px rgba(0,0,0,.1);margin-bottom:12px;overflow:hidden;}
+.measure-card-header{
+  display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  user-select:none;
+}
+.card-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.card-summary{flex:1;font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.card-summary .placeholder{color:var(--muted);}
+.card-chevron{width:20px;height:20px;flex-shrink:0;transition:transform .2s;}
+.measure-card.expanded .card-chevron{transform:rotate(180deg);}
+.card-header-band{
+  padding:8px 14px 6px;
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:#fff;
+}
+.window-band{background:var(--navy);}
+.door-band{background:var(--orange);}
+.card-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.measure-card.expanded .card-body{max-height:2000px;}
+.card-fields{padding:12px 14px 6px;display:flex;flex-direction:column;gap:10px;}
+.card-actions{display:flex;align-items:center;padding:10px 14px 14px;gap:10px;}
+.btn-delete{
+  margin-left:auto;border:1.5px solid #e53935;color:#e53935;background:none;
+  border-radius:8px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn-photo{
+  border:1.5px solid var(--border);color:var(--muted);background:none;
+  border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;
+  -webkit-tap-highlight-color:transparent;
+}
+.photo-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+/* FABs */
+#fab-container{
+  position:fixed;
+  bottom:calc(var(--nav-h) + var(--safe-bottom) + 16px);
+  right:16px;
+  display:flex;flex-direction:column;gap:12px;
+  z-index:90;
+}
+.fab{
+  width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;
+  box-shadow:0 3px 8px rgba(0,0,0,.25);
+  font-size:22px;font-weight:900;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:transparent;
+  letter-spacing:0;
+}
+.fab-window{background:var(--navy);}
+.fab-door{background:var(--orange);}
+.fab-label{
+  position:absolute;right:68px;white-space:nowrap;
+  background:rgba(0,0,0,.7);color:#fff;
+  font-size:12px;padding:4px 8px;border-radius:4px;pointer-events:none;
+  opacity:0;
+}
+/* FRACTION KEYPAD MODAL */
+#kp-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;
+  display:none;align-items:flex-end;
+}
+#kp-overlay.open{display:flex;}
+#kp-sheet{
+  background:#fff;width:100%;border-radius:20px 20px 0 0;
+  padding-bottom:var(--safe-bottom);
+  animation:slideUp .2s ease;
+}
+@keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+#kp-display{
+  font-size:28px;font-weight:600;text-align:center;
+  padding:20px 24px 12px;min-height:68px;color:var(--text);
+  border-bottom:1px solid var(--border);
+  letter-spacing:.02em;
+}
+#kp-display.empty::after{content:'Tap to enter';font-size:18px;color:var(--muted);font-weight:400;}
+/* ── Fraction drum/wheel picker ── */
+#kp-frac-wrap{
+  position:relative;
+  height:120px;
+  background:#f7f7f7;
+  border-bottom:1px solid var(--border);
+  overflow:hidden;
+  display:flex;align-items:center;
+}
+#kp-frac-wrap::before,#kp-frac-wrap::after{
+  content:'';position:absolute;left:0;right:0;z-index:2;pointer-events:none;
+}
+#kp-frac-wrap::before{
+  top:0;height:calc(50% - 24px);
+  background:linear-gradient(to bottom,#f7f7f7 60%,transparent);
+}
+#kp-frac-wrap::after{
+  bottom:0;height:calc(50% - 24px);
+  background:linear-gradient(to top,#f7f7f7 60%,transparent);
+}
+#kp-frac-selector{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:120px;height:48px;
+  border:2px solid var(--orange);border-radius:10px;
+  pointer-events:none;z-index:3;
+}
+#kp-frac-drum{
+  display:flex;flex-direction:column;
+  align-items:center;
+  overflow-y:scroll;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:y mandatory;
+  height:100%;
+  width:100%;
+  scrollbar-width:none;
+  padding:36px 0;
+}
+#kp-frac-drum::-webkit-scrollbar{display:none;}
+.kp-drum-item{
+  flex:0 0 48px;
+  display:flex;align-items:center;justify-content:center;
+  scroll-snap-align:center;
+  font-size:22px;font-weight:600;color:var(--muted);
+  width:100%;cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  transition:color .12s,font-size .12s;
+}
+.kp-drum-item.no-frac{font-size:14px;font-weight:500;}
+.kp-drum-item.drum-active{color:var(--orange);font-size:26px;}
+/* digit/action grid */
+#kp-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+  background:var(--border);
+}
+.kp-btn{
+  background:#fff;border:none;padding:0;
+  font-size:22px;font-weight:500;color:var(--text);
+  min-height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  -webkit-tap-highlight-color:rgba(0,0,0,.08);
+}
+.kp-btn:active{background:#f0f0f0;}
+.kp-btn.special{color:var(--orange);font-size:22px;}
+.kp-btn.done{background:var(--navy);color:#fff;font-size:16px;font-weight:700;}
+.kp-btn.back{color:#e53935;}
+/* SUMMARY SCREEN */
+.summary-section{margin-bottom:20px;}
+.summary-section h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px;}
+.summary-item{
+  background:var(--card);border-radius:8px;padding:12px 14px;margin-bottom:8px;
+  border-left:4px solid var(--border);font-size:14px;line-height:1.5;
+}
+.summary-item.window-item{border-left-color:var(--navy);}
+.summary-item.door-item{border-left-color:var(--orange);}
+.summary-item .item-title{font-weight:700;margin-bottom:2px;}
+.summary-item .item-detail{color:var(--muted);font-size:13px;}
+.api-key-wrap{position:relative;}
+.api-key-wrap input{padding-right:80px;}
+.api-key-save{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:var(--navy);color:#fff;border:none;border-radius:6px;
+  padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;min-height:36px;
+}
+#scope-output{
+  width:100%;min-height:120px;border:1.5px solid var(--border);border-radius:8px;
+  padding:12px;font-size:14px;line-height:1.6;resize:vertical;
+  background:#f9f9f9;
+}
+.btn-row{display:flex;gap:10px;margin-top:10px;}
+.btn-row button{flex:1;}
+.btn-secondary{
+  min-height:48px;background:#fff;color:var(--navy);
+  border:1.5px solid var(--navy);border-radius:var(--radius);
+  font-size:15px;font-weight:600;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+/* BORDER-LEFT COLORS for measure cards */
+.measure-card.window-card{border-left:4px solid var(--navy);}
+.measure-card.door-card{border-left:4px solid var(--orange);}
+/* MODIFIERS */
+.checkbox-group{display:flex;flex-wrap:wrap;gap:8px;}
+.checkbox-item{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;}
+.checkbox-item input[type=checkbox]{width:20px;height:20px;cursor:pointer;accent-color:var(--orange);}
+/* DIMENSION INPUT */
+.dim-input{
+  width:100%;border:1.5px solid var(--border);border-radius:8px;
+  padding:10px 12px;font-size:18px;font-weight:600;color:var(--text);background:#fff;
+  min-height:48px;cursor:pointer;caret-color:transparent;
+  -webkit-appearance:none;appearance:none;
+  text-align:center;letter-spacing:.04em;
+}
+.dim-input:focus{outline:none;border-color:var(--navy);background:#f0f4ff;}
+.dim-label{font-size:11px;text-align:center;color:var(--muted);margin-top:2px;}
+.dim-pair{display:flex;align-items:flex-end;gap:6px;}
+.dim-sep{font-size:20px;font-weight:700;color:var(--muted);padding-bottom:10px;}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 24px;color:var(--muted);}
+.empty-state .empty-icon{font-size:48px;margin-bottom:12px;}
+.empty-state p{font-size:15px;line-height:1.5;}
+/* PROVIA SIZE REFERENCE CARD */
+.provia-size-card{
+  background:#f0f4ff;border:1.5px solid #c5d3f5;border-radius:8px;
+  padding:10px 14px;display:flex;flex-direction:column;gap:6px;
+}
+.provia-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;}
+.provia-lbl{color:var(--muted);font-weight:500;}
+.provia-val{font-weight:700;color:var(--navy);font-size:15px;letter-spacing:.02em;}
+.provia-row:first-child .provia-val{color:var(--orange);font-size:17px;}
 
-    /* ── APP UI ── */
-    .hdr { background: var(--teal); padding: 15px; border-bottom: 5px solid var(--gold); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; }
-    .hdr-title { color: white; font-weight: 900; font-size: 0.9rem; }
-    .btn-abc { background: var(--gold); color: black; border: none; padding: 10px 15px; border-radius: 8px; font-weight: 900; font-size: 0.75rem; cursor: pointer; }
-    
-    .main { padding: 15px; max-width: 700px; margin: auto; }
-    .line-card { background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-    .line-hdr { background: #f8fafc; padding: 12px; border-bottom: 2px solid #e2e8f0; display: flex; gap: 10px; align-items: center; }
-    
-    .unit-row { padding: 15px; border-bottom: 1px solid #f1f5f9; position: relative; }
-    .unit-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-    
-    .fi { width: 100%; padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 1rem; outline: none; background: #fff; }
-    .fi:focus { border-color: var(--teal); }
-    
-    /* ── FLASH LABEL SYSTEM ── */
-    #flashOverlay { display: none; position: fixed; inset: 0; background: white; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    #flashOverlay.active { display: flex; }
-    .flash-num { font-size: 10rem; font-weight: 900; color: var(--teal); line-height: 1; }
-    .flash-loc { font-size: 2rem; font-weight: 700; color: var(--gold); text-transform: uppercase; }
-
-    /* ── BUTTONS ── */
-    .btn-add { background: var(--teal); color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: 900; font-size: 1rem; margin-top: 10px; cursor: pointer; }
-    .btn-label { background: #e2e8f0; border: none; padding: 8px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; color: var(--teal); cursor: pointer; }
-    .btn-del { color: #ef4444; border: none; background: none; font-size: 0.7rem; cursor: pointer; }
-
-    /* ── PRINT REPORT (FOR JOSHUA) ── */
-    #printArea { display: none; }
-    @media print {
-      body * { display: none !important; }
-      #printArea { display: block !important; padding: 30px; background: white; }
-      .p-group { border: 2px solid var(--teal); margin-bottom: 25px; page-break-inside: avoid; }
-      .p-group-hdr { background: var(--teal); color: white; padding: 10px; font-weight: bold; font-size: 1.2rem; }
-      table { width: 100%; border-collapse: collapse; }
-      th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
-      th { background: #f8fafc; }
-    }
-  </style>
+/* QUANTITY ROW */
+.qty-row{display:flex;align-items:center;gap:12px;}
+.qty-btn{
+  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);
+  background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+}
+.qty-val{min-width:32px;text-align:center;font-size:16px;font-weight:600;}
+/* PRINT */
+@media print{
+  #app-header,#bottom-nav,#fab-container,.btn-delete,.btn-photo,.btn-primary,
+  .card-chevron,.kp-overlay,.fab,#scope-section .btn-row,.api-key-wrap{display:none!important;}
+  body,html{overflow:visible!important;height:auto!important;}
+  #screens,.screen{position:static!important;overflow:visible!important;height:auto!important;}
+  .screen{display:block!important;}
+  .card-body{max-height:none!important;}
+  .measure-card{break-inside:avoid;border:1px solid #ccc!important;}
+  body{background:#fff;font-size:12px;}
+}
+</style>
 </head>
 <body>
 
-<div id="flashOverlay" onclick="this.classList.remove('active')">
-  <div class="flash-loc" id="fLoc">KITCHEN</div>
-  <div class="flash-num" id="fNum">4</div>
-  <p style="margin-top:20px; color:#666;">Snap a photo of this screen,<br>then the window.</p>
+<!-- HEADER -->
+<div id="app-header">
+  <div id="header-title">🏠 Total Home Services</div>
+  <div id="header-job"></div>
 </div>
 
-<div id="app">
-  <div class="hdr">
-    <div class="hdr-title" onclick="location.reload()">THS FIELD PRO</div>
-    <button class="btn-abc" onclick="generateABCReport()">SEND TO JOSHUA ✉️</button>
+<!-- SCREENS -->
+<div id="screens">
+
+  <!-- SCREEN 1: JOB INFO -->
+  <div class="screen active" id="screen-job">
+    <div class="card">
+      <div class="field-group">
+        <div class="field-wrap">
+          <label>Customer Name</label>
+          <input type="text" id="job-name" placeholder="e.g. John Smith" autocomplete="name">
+        </div>
+        <div class="field-wrap">
+          <label>Address</label>
+          <input type="text" id="job-address" placeholder="Street address, city, zip" autocomplete="street-address">
+        </div>
+        <div class="field-wrap">
+          <label>Date</label>
+          <input type="date" id="job-date">
+        </div>
+        <div class="field-wrap">
+          <label>Project Notes</label>
+          <textarea id="job-notes" placeholder="Any general notes about the project…"></textarea>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btn-start">Start Measuring →</button>
   </div>
 
-  <div class="main">
-    <input class="fi" id="jobName" placeholder="Customer Name (e.g. Smith Residence)" style="font-weight:900; margin-bottom:20px; font-size:1.2rem;">
-    <div id="linesContainer"></div>
-    <button class="btn-add" onclick="addLine()">+ NEW WINDOW/DOOR LINE</button>
+  <!-- SCREEN 2: MEASURE -->
+  <div class="screen" id="screen-measure">
+    <div id="items-container">
+      <div class="empty-state" id="empty-measure">
+        <div class="empty-icon">📐</div>
+        <p>Tap <strong style="color:var(--navy)">+ Window</strong> or <strong style="color:var(--orange)">+ Door</strong> to add measurements</p>
+      </div>
+    </div>
+    <div style="height:80px;"></div>
   </div>
+
+  <!-- SCREEN 3: SUMMARY -->
+  <div class="screen" id="screen-summary">
+    <div class="summary-section" id="sum-job-section">
+      <h3>Job Info</h3>
+      <div class="card" id="sum-job-card" style="padding:14px 16px;font-size:14px;line-height:1.7;"></div>
+    </div>
+    <button class="btn-primary" style="margin-bottom:16px;" onclick="shareMeasurements()">📤 Share Measurements</button>
+    <div class="summary-section" id="sum-items-section">
+      <h3>Measurements</h3>
+      <div id="sum-items-list"></div>
+    </div>
+    <div class="summary-section" id="scope-section">
+      <h3>Generate Scope of Work</h3>
+      <div class="card" style="padding:14px 16px;">
+        <div class="field-wrap" style="margin-bottom:12px;">
+          <label>Claude API Key</label>
+          <div class="api-key-wrap">
+            <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off">
+            <button class="api-key-save" id="api-key-save-btn">Save</button>
+          </div>
+          <div id="api-key-status" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
+        </div>
+        <button class="btn-primary" id="btn-generate">Generate Scope with Claude</button>
+        <div style="margin-top:14px;">
+          <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">Generated Scope</label>
+          <textarea id="scope-output" placeholder="Generated scope will appear here…" readonly style="margin-top:6px;"></textarea>
+          <div class="btn-row">
+            <button class="btn-secondary" id="btn-copy">Copy to Clipboard</button>
+            <button class="btn-secondary" id="btn-share">Share / Export</button>
+            <button class="btn-secondary" id="btn-print">Print</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<div id="printArea">
-  <h1 style="color:#04413a">FIELD MEASURE REPORT</h1>
-  <p id="pJobInfo" style="font-size:1.2rem; margin:10px 0 20px 0;"></p>
-  <div id="pContent"></div>
-  <div style="margin-top:30px; border-top:1px solid #ccc; padding-top:10px; font-size:0.8rem; color:#666;">
-    Verified by Total Home Services of Georgia. Photos attached to email follow the numeric "Photo Key" in report.
+<!-- BOTTOM NAV -->
+<nav id="bottom-nav">
+  <button class="nav-btn active" data-screen="job" onclick="switchScreen('job')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    Job Info
+  </button>
+  <button class="nav-btn" data-screen="measure" onclick="switchScreen('measure')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 12h20M12 2v20M7 7l10 10M17 7L7 17"/>
+    </svg>
+    Measure
+  </button>
+  <button class="nav-btn" data-screen="summary" onclick="switchScreen('summary')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+    </svg>
+    Summary
+  </button>
+</nav>
+
+<!-- FAB CONTAINER (only on measure screen) -->
+<div id="fab-container" style="display:none;">
+  <button class="fab fab-door" onclick="addItem('door')" title="Add Door">D</button>
+  <button class="fab fab-window" onclick="addItem('window')" title="Add Window">W</button>
+</div>
+
+<!-- FRACTION KEYPAD MODAL -->
+<div id="kp-overlay" onclick="kpOverlayClick(event)">
+  <div id="kp-sheet">
+    <div id="kp-display" class="empty"></div>
+    <div id="kp-frac-wrap">
+      <div id="kp-frac-selector"></div>
+      <div id="kp-frac-drum"></div>
+    </div>
+    <div id="kp-grid"></div>
   </div>
 </div>
 
 <script>
-const JOSHUA = "Joshua.Taylor@abcsupply.com";
-let jobData = JSON.parse(localStorage.getItem('ths_joshua_v1') || '{"name":"","lines":[]}');
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let job = {name:'',address:'',date:'',notes:''};
+let items = []; // {id, type:'window'|'door', ...fields}
+let currentScreen = 'job';
+let kpTarget = null; // {itemId, field}
+let kpValue = '';
 
-function save() { localStorage.setItem('ths_joshua_v1', JSON.stringify(jobData)); }
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  loadData();
+  buildKpad();
+  setDefaultDate();
+  renderJobScreen();
+  renderMeasureScreen();
+  renderSummaryScreen();
+  loadApiKey();
+  attachJobListeners();
+  document.getElementById('btn-start').addEventListener('click', () => switchScreen('measure'));
+  document.getElementById('api-key-save-btn').addEventListener('click', saveApiKey);
+  document.getElementById('btn-generate').addEventListener('click', generateScope);
+  document.getElementById('btn-copy').addEventListener('click', copyScope);
+  document.getElementById('btn-share').addEventListener('click', shareScope);
+  document.getElementById('btn-print').addEventListener('click', () => window.print());
+});
 
-function addLine() {
-  jobData.lines.push({ brand: "", units: [{ loc: "", w: "", h: "", pRef: "" }] });
-  render();
+function setDefaultDate(){
+  const d = document.getElementById('job-date');
+  const today = new Date();
+  const s = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
+  d.value = job.date || s;
+  if(!job.date){ job.date = s; saveData(); }
 }
 
-function addUnit(lIdx) {
-  jobData.lines[lIdx].units.push({ loc: "", w: "", h: "", pRef: "" });
-  render();
+// ─── PERSISTENCE ─────────────────────────────────────────────────────────────
+// In-memory only — works reliably on iPhone from iCloud Drive
+function saveData(){ /* state lives in JS variables — no localStorage needed */ }
+function loadData(){
+  job = {name:'',address:'',date:'',notes:''};
+  items = [];
 }
 
-function showFlash(lIdx, uIdx) {
-  const u = jobData.lines[lIdx].units[uIdx];
-  document.getElementById('fLoc').innerText = u.loc || 'NEW UNIT';
-  document.getElementById('fNum').innerText = uIdx + 1;
-  document.getElementById('flashOverlay').classList.add('active');
+// ─── SCREEN NAVIGATION ───────────────────────────────────────────────────────
+function switchScreen(name){
+  currentScreen = name;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.screen === name);
+  });
+  document.getElementById('fab-container').style.display = (name==='measure') ? 'flex' : 'none';
+  if(name==='summary') renderSummaryScreen();
 }
 
-function render() {
-  save();
-  const container = document.getElementById('linesContainer');
-  container.innerHTML = '';
-  document.getElementById('jobName').value = jobData.name;
+// ─── JOB INFO SCREEN ─────────────────────────────────────────────────────────
+function attachJobListeners(){
+  const fields = ['name','address','date','notes'];
+  fields.forEach(f => {
+    const el = document.getElementById('job-'+f);
+    el.addEventListener('input', () => {
+      job[f] = el.value;
+      saveData();
+      updateHeaderJob();
+    });
+    el.addEventListener('change', () => { job[f] = el.value; saveData(); updateHeaderJob(); });
+  });
+}
+function renderJobScreen(){
+  document.getElementById('job-name').value = job.name||'';
+  document.getElementById('job-address').value = job.address||'';
+  document.getElementById('job-date').value = job.date||'';
+  document.getElementById('job-notes').value = job.notes||'';
+  updateHeaderJob();
+}
+function updateHeaderJob(){
+  const hj = document.getElementById('header-job');
+  hj.textContent = job.name ? job.name : '';
+}
 
-  jobData.lines.forEach((line, lIdx) => {
-    let card = document.createElement('div');
-    card.className = 'line-card';
-    card.innerHTML = `
-      <div class="line-hdr">
-        <input class="fi" placeholder="Product Line (e.g. Andersen 400)" value="${line.brand}" oninput="jobData.lines[${lIdx}].brand=this.value; save()">
-        <button class="btn-label" onclick="addUnit(${lIdx})">+ UNIT</button>
-      </div>
-      <div id="units-${lIdx}">
-        ${line.units.map((u, uIdx) => `
-          <div class="unit-row">
-            <div class="unit-grid">
-              <input class="fi" placeholder="Room" value="${u.loc}" oninput="jobData.lines[${lIdx}].units[${uIdx}].loc=this.value; save()">
-              <input class="fi" placeholder="W" value="${u.w}" oninput="jobData.lines[${lIdx}].units[${uIdx}].w=this.value; save()">
-              <input class="fi" placeholder="H" value="${u.h}" oninput="jobData.lines[${lIdx}].units[${uIdx}].h=this.value; save()">
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <button class="btn-label" onclick="showFlash(${lIdx}, ${uIdx})">📸 FLASH LABEL</button>
-              <input class="fi" style="width:100px; padding:5px; font-size:0.7rem; border-color:var(--gold)" placeholder="Photo Ref" value="${u.pRef}" oninput="jobData.lines[${lIdx}].units[${uIdx}].pRef=this.value; save()">
-              <button class="btn-del" onclick="jobData.lines[${lIdx}].units.splice(${uIdx},1); render()">DELETE</button>
-            </div>
-          </div>
-        `).join('')}
-      </div>
-    `;
-    container.appendChild(card);
+// ─── ITEM CREATION ───────────────────────────────────────────────────────────
+function makeId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+function addItem(type){
+  const item = {
+    id: makeId(),
+    type,
+    location:'',
+    mode:'metalout', // metalout | retro
+    dimW:'',
+    dimH:'',
+    qty:1,
+    notes:'',
+    photo:'',
+    expanded:true,
+  };
+  if(type==='window'){
+    item.winType='DH';
+    item.glassType='Clear';
+    item.obscureGlass=false;
+    item.temperedGlass=false;
+    item.grids=false;
+    item.gridPattern='';
+    item.shapeDesc='';
+  } else {
+    item.doorType='Single';
+    item.sizeMode='Standard';
+    item.stdWidth='2\'8';
+    item.stdHeight='6\'8';
+    item.swing='inswing';
+    item.hand='right';
+    item.modifiers={spreadMull:false,transom:false,transomSize:'12"',sideliteL:false,sideliteLSize:'12"',sideliteR:false,sideliteRSize:'12"'};
+    item.bmW='';
+    item.bmH='';
+  }
+  items.push(item);
+  saveData();
+  renderMeasureScreen();
+  // scroll to new card
+  setTimeout(()=>{
+    const el = document.getElementById('card-'+item.id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },100);
+}
+
+// ─── MEASURE SCREEN ──────────────────────────────────────────────────────────
+function renderMeasureScreen(){
+  const container = document.getElementById('items-container');
+  const empty = document.getElementById('empty-measure');
+  if(items.length===0){
+    empty.style.display='';
+    // remove all cards but keep empty
+    container.querySelectorAll('.measure-card').forEach(c=>c.remove());
+    return;
+  }
+  empty.style.display='none';
+  // re-render all
+  container.querySelectorAll('.measure-card').forEach(c=>c.remove());
+  items.forEach(item => {
+    const el = buildCard(item);
+    container.appendChild(el);
   });
 }
 
-function generateABCReport() {
-  jobData.name = document.getElementById('jobName').value;
-  if(!jobData.name) return alert("Enter Customer Name first");
+function buildCard(item){
+  const div = document.createElement('div');
+  div.className = `measure-card ${item.type}-card ${item.expanded?'expanded':''}`;
+  div.id = 'card-'+item.id;
 
-  document.getElementById('pJobInfo').innerText = `JOB: ${jobData.name} | Date: ${new Date().toLocaleDateString()}`;
-  const pContent = document.getElementById('pContent');
-  pContent.innerHTML = '';
+  const dimLabel = item.mode==='isj' ? 'ISJ Opening' : 'OSB Opening';
+  const summary = buildSummaryLine(item);
 
-  jobData.lines.forEach(line => {
-    let section = `
-      <div class="p-group">
-        <div class="p-group-hdr">LINE: ${line.brand || 'Standard'}</div>
-        <table>
-          <thead><tr><th>#</th><th>Location</th><th>Size</th><th>Photo Reference</th></tr></thead>
-          <tbody>
-            ${line.units.map((u, i) => `
-              <tr>
-                <td>${i+1}</td>
-                <td>${u.loc}</td>
-                <td><strong>${u.w}" x ${u.h}"</strong></td>
-                <td style="color:red; font-weight:bold;">${u.pRef || 'See Labels'}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
+  div.innerHTML = `
+    <div class="measure-card-header" onclick="toggleCard('${item.id}')">
+      <div class="card-color-dot" style="background:${item.type==='window'?'var(--navy)':'var(--orange)'}"></div>
+      <div class="card-summary">${summary}</div>
+      <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="card-header-band ${item.type==='window'?'window-band':'door-band'}">
+      ${item.type==='window'?'Window':'Door'} — ${item.type==='window'?'Tap fields to edit':'Tap fields to edit'}
+    </div>
+    <div class="card-body">
+      <div class="card-fields" id="fields-${item.id}">
+        ${buildCardFields(item)}
       </div>
-    `;
-    pContent.innerHTML += section;
-  });
+      <div class="card-actions">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="btn-photo" onclick="triggerPhoto('${item.id}')">
+            📷 Photo
+          </button>
+          ${item.photo ? `<img class="photo-thumb" id="thumb-${item.id}" src="${item.photo}" alt="photo">` : `<span id="thumb-${item.id}"></span>`}
+        </div>
+        <button class="btn-delete" onclick="deleteItem('${item.id}')">Delete</button>
+      </div>
+    </div>`;
 
-  window.print();
+  // hidden file input for photo
+  const fi = document.createElement('input');
+  fi.type='file'; fi.accept='image/*'; fi.capture='environment';
+  fi.style.display='none'; fi.id='photo-input-'+item.id;
+  fi.addEventListener('change', (e)=>handlePhoto(e,item.id));
+  div.appendChild(fi);
 
-  setTimeout(() => {
-    const subject = encodeURIComponent(`MEASURE SHEET: ${jobData.name}`);
-    const body = encodeURIComponent(`Hi Joshua,\n\nI've attached the measure sheet for ${jobData.name}.\n\nI have separated the units into ${jobData.lines.length} specific window/door lines. I used "Flash Labels" in the photos to act as title cards between each unit.\n\nPlease let me know if you need anything else to get the quote started.\n\nThanks,\nCameron\nTotal Home Services of Georgia`);
-    window.location.href = `mailto:${JOSHUA}?subject=${subject}&body=${body}`;
-  }, 1000);
+  return div;
 }
 
-document.getElementById('jobName').oninput = (e) => { jobData.name = e.target.value; save(); };
-render();
+function buildSummaryLine(item){
+  const loc = item.location || '<span class="placeholder">No location</span>';
+  let size = '';
+  if(item.type==='door' && item.sizeMode==='Standard'){
+    const _bs = getProviaSize(item);
+    size = _bs ? `Unit: ${_bs.unit}` : `${item.stdWidth} × ${item.stdHeight}`;
+  } else {
+    size = (item.dimW||'?') + ' × ' + (item.dimH||'?');
+  }
+  const typeLabel = item.type==='window' ? (item.winType||'?') : (item.doorType||'?');
+  const modeLabel = item.type==='window'
+    ? (item.mode==='retro' ? 'Retro' : 'Metal Out')
+    : (item.mode==='isj' ? 'ISJ' : 'OSB');
+  return `${loc} | ${size} | ${typeLabel} | ${modeLabel}`;
+}
+
+function buildCardFields(item){
+  if(item.type==='window') return buildWindowFields(item);
+  return buildDoorFields(item);
+}
+
+function buildWindowFields(item){
+  const isRetro = item.mode==='retro';
+  const dimLabel = isRetro ? 'Jamb Box Size' : 'Opening Size';
+  const dimHint  = isRetro
+    ? 'Even box dimension — e.g. 32×62, 36×74'
+    : 'Tightest interior jamb return measurement';
+  const allWinTypes = ['DH','SH','SL','Picture','Casement','Awning','Bay','Bow','½ Round','Ext Leg Arch','Shaped'];
+  return `
+    <div class="field-wrap">
+      <label>Location</label>
+      <input type="text" value="${esc(item.location)}" placeholder="e.g. Living Room Left"
+        onchange="updateItem('${item.id}','location',this.value)">
+    </div>
+    <div class="field-wrap">
+      <label>Install Type</label>
+      <div class="pill-toggle pill-navy">
+        <button class="${!isRetro?'active':''}" onclick="updateItem('${item.id}','mode','metalout');reRenderCard('${item.id}')">Metal Out</button>
+        <button class="${isRetro?'active':''}" onclick="updateItem('${item.id}','mode','retro');reRenderCard('${item.id}')">Retro</button>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>${dimLabel}</label>
+      <div class="dim-pair">
+        <div style="flex:1">
+          <input class="dim-input" id="dimW-${item.id}" value="${esc(item.dimW)}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','dimW')" onclick="openKpad('${item.id}','dimW')">
+          <div class="dim-label">Width</div>
+        </div>
+        <div class="dim-sep">×</div>
+        <div style="flex:1">
+          <input class="dim-input" id="dimH-${item.id}" value="${esc(item.dimH)}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','dimH')" onclick="openKpad('${item.id}','dimH')">
+          <div class="dim-label">Height</div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px;">💡 ${dimHint}</div>
+    </div>
+    <div class="field-wrap">
+      <label>Quantity</label>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="adjustQty('${item.id}',-1)">−</button>
+        <span class="qty-val" id="qty-${item.id}">${item.qty}</span>
+        <button class="qty-btn" onclick="adjustQty('${item.id}',1)">+</button>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Window Type</label>
+      <select onchange="updateItem('${item.id}','winType',this.value);reRenderCard('${item.id}')">
+        ${allWinTypes.map(t=>`<option ${item.winType===t?'selected':''}>${t}</option>`).join('')}
+      </select>
+    </div>
+    ${item.winType==='Shaped' ? `
+    <div class="field-wrap">
+      <label>Shape Description</label>
+      <input type="text" value="${esc(item.shapeDesc||'')}" placeholder="Describe the shape…"
+        onchange="updateItem('${item.id}','shapeDesc',this.value)">
+    </div>` : ''}
+    <div class="field-row">
+      <div class="field-wrap">
+        <label>Glass Type</label>
+        <select onchange="updateItem('${item.id}','glassType',this.value)">
+          ${['Clear','Low-E 2','Low-E 3'].map(t=>`<option ${(item.glassType||'Clear')===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Glass Options</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.obscureGlass?'checked':''} onchange="updateItem('${item.id}','obscureGlass',this.checked)"> Obscurity Glass
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.temperedGlass?'checked':''} onchange="updateItem('${item.id}','temperedGlass',this.checked)"> Tempered Glass
+        </label>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Grids</label>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.grids?'checked':''} onchange="updateItem('${item.id}','grids',this.checked);reRenderCard('${item.id}')"> Yes
+        </label>
+        ${item.grids ? `
+        <div style="flex:1;min-width:140px;">
+          <input type="text" value="${esc(item.gridPattern||'')}" placeholder="e.g. 3-over-1, colonial…"
+            onchange="updateItem('${item.id}','gridPattern',this.value)" style="min-height:40px;">
+        </div>` : ''}
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Notes</label>
+      <input type="text" value="${esc(item.notes)}" placeholder="Optional notes"
+        onchange="updateItem('${item.id}','notes',this.value)">
+    </div>`;
+}
+
+function buildDoorFields(item){
+  const dimLabel = item.mode==='isj' ? 'ISJ Opening' : 'OSB Opening';
+  const isStd = item.sizeMode !== 'custom';
+  const dt = item.doorType||'Single';
+
+  // ── Provia door size lookup tables (from spec sheet, all in inches) ──
+  // Width data: keyed by door type → array of {nom, unit, rough, osb}
+  const PROVIA_W = {
+    'Single': [
+      {nom:'30"', unit:'31 9/16"', rough:'32"',  osb:'34 1/16"'},
+      {nom:'32"', unit:'33 9/16"', rough:'34"',  osb:'36 1/16"'},
+      {nom:'34"', unit:'35 9/16"', rough:'36"',  osb:'38 1/16"'},
+      {nom:'36"', unit:'37 9/16"', rough:'38"',  osb:'40 1/16"'},
+      {nom:'42"', unit:'43 9/16"', rough:'44"',  osb:'46 1/16"'},
+    ],
+    'French Door': [
+      {nom:'60"', unit:'62 1/8"', rough:'62 7/8"', osb:'64 5/8"'},
+      {nom:'64"', unit:'66 1/8"', rough:'66 7/8"', osb:'68 5/8"'},
+      {nom:'68"', unit:'70 1/8"', rough:'70 7/8"', osb:'72 5/8"'},
+      {nom:'72"', unit:'74 1/8"', rough:'74 7/8"', osb:'76 5/8"'},
+      {nom:'84"', unit:'86 1/8"', rough:'86 7/8"', osb:'88 5/8"'},
+    ],
+    'French Door w/ Two 12" Sidelites': [
+      {nom:'60"', unit:'88 5/8"', rough:'89 1/2"', osb:'91 1/8"'},
+      {nom:'64"', unit:'92 5/8"', rough:'93 1/2"', osb:'95 1/8"'},
+      {nom:'68"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
+      {nom:'72"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
+      {nom:'84"', unit:'112 5/8"', rough:'113 1/2"', osb:'115 1/8"'},
+    ],
+    'French Door w/ Two 14" Sidelites': [
+      {nom:'60"', unit:'92 5/8"', rough:'93 1/2"', osb:'95 1/8"'},
+      {nom:'64"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
+      {nom:'68"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
+      {nom:'72"', unit:'104 5/8"', rough:'105 1/2"', osb:'107 1/8"'},
+      {nom:'84"', unit:'116 5/8"', rough:'117 1/2"', osb:'119 1/8"'},
+    ],
+    'French Door w/ Two 16" Sidelites': [
+      {nom:'60"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
+      {nom:'64"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
+      {nom:'68"', unit:'104 5/8"', rough:'105 1/2"', osb:'107 1/8"'},
+      {nom:'72"', unit:'108 5/8"', rough:'109 1/2"', osb:'111 1/8"'},
+      {nom:'84"', unit:'120 5/8"', rough:'121 1/2"', osb:'123 1/8"'},
+    ],
+    'Single w/ 10" Sidelite': [
+      {nom:'30"', unit:'42 13/16"', rough:'43 9/16"', osb:'45 5/16"'},
+      {nom:'32"', unit:'44 13/16"', rough:'45 9/16"', osb:'47 5/16"'},
+      {nom:'34"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
+      {nom:'36"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
+    ],
+    'Single w/ 12" Sidelite': [
+      {nom:'30"', unit:'44 13/16"', rough:'45 9/16"', osb:'47 5/16"'},
+      {nom:'32"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
+      {nom:'34"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
+      {nom:'36"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
+    ],
+    'Single w/ 14" Sidelite': [
+      {nom:'30"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
+      {nom:'32"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
+      {nom:'34"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
+      {nom:'36"', unit:'52 13/16"', rough:'53 9/16"', osb:'55 5/16"'},
+    ],
+    'Single w/ 16" Sidelite': [
+      {nom:'30"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
+      {nom:'32"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
+      {nom:'34"', unit:'52 13/16"', rough:'53 9/16"', osb:'55 5/16"'},
+      {nom:'36"', unit:'54 13/16"', rough:'55 9/16"', osb:'57 5/16"'},
+    ],
+    'Single w/ Two 10" Sidelites': [
+      {nom:'30"', unit:'54 1/16"', rough:'54 13/16"', osb:'56 9/16"'},
+      {nom:'32"', unit:'56 1/16"', rough:'56 13/16"', osb:'58 9/16"'},
+      {nom:'34"', unit:'58 1/16"', rough:'58 13/16"', osb:'60 9/16"'},
+      {nom:'36"', unit:'60 1/16"', rough:'60 13/16"', osb:'62 9/16"'},
+    ],
+    'Single w/ Two 12" Sidelites': [
+      {nom:'30"', unit:'58 1/16"', rough:'58 13/16"', osb:'60 9/16"'},
+      {nom:'32"', unit:'60 1/16"', rough:'60 13/16"', osb:'62 9/16"'},
+      {nom:'34"', unit:'62 1/16"', rough:'62 13/16"', osb:'64 9/16"'},
+      {nom:'36"', unit:'64 1/16"', rough:'64 13/16"', osb:'66 9/16"'},
+    ],
+    'Single w/ Two 14" Sidelites': [
+      {nom:'30"', unit:'62 1/16"', rough:'62 13/16"', osb:'64 9/16"'},
+      {nom:'32"', unit:'64 1/16"', rough:'64 13/16"', osb:'66 9/16"'},
+      {nom:'34"', unit:'66 1/16"', rough:'66 13/16"', osb:'68 9/16"'},
+      {nom:'36"', unit:'68 1/16"', rough:'68 13/16"', osb:'70 9/16"'},
+    ],
+    'Single w/ Two 16" Sidelites': [
+      {nom:'30"', unit:'66 1/16"', rough:'66 13/16"', osb:'68 9/16"'},
+      {nom:'32"', unit:'68 1/16"', rough:'68 13/16"', osb:'70 9/16"'},
+      {nom:'34"', unit:'70 1/16"', rough:'70 13/16"', osb:'72 9/16"'},
+      {nom:'36"', unit:'72 1/16"', rough:'72 13/16"', osb:'74 9/16"'},
+    ],
+    'Patio Slider': [
+      {nom:"5'0\"", unit:'59 1/2"', rough:'60"',  osb:'60"'},
+      {nom:"6'0\"", unit:'71 1/2"', rough:'72"',  osb:'72"'},
+      {nom:"8'0\"", unit:'95 1/2"', rough:'96"',  osb:'96"'},
+    ],
+    'Bi-fold': [
+      {nom:"2'0\"", unit:'23 1/2"', rough:'24"', osb:'24"'},
+      {nom:"2'4\"", unit:'27 1/2"', rough:'28"', osb:'28"'},
+      {nom:"2'8\"", unit:'31 1/2"', rough:'32"', osb:'32"'},
+      {nom:"3'0\"", unit:'35 1/2"', rough:'36"', osb:'36"'},
+    ],
+  };
+  // Height data (same for Single, French, most types)
+  const PROVIA_H = [
+    {nom:'80"', unit:'81 5/8"', rough:'82"', osb:'82 7/8"'},
+    {nom:'84"', unit:'85 5/8"', rough:'86"', osb:'86 7/8"'},
+    {nom:'96"', unit:'97 5/8"', rough:'98"', osb:'98 7/8"'},
+  ];
+
+  const widthRows = PROVIA_W[dt] || PROVIA_W['Single'];
+  const curW = item.stdWidth || widthRows[0].nom;
+  const curH = item.stdHeight || PROVIA_H[0].nom;
+  const selW = widthRows.find(r=>r.nom===curW) || widthRows[0];
+  const selH = PROVIA_H.find(r=>r.nom===curH) || PROVIA_H[0];
+
+  // Compute the displayed size depending on mode
+  const modeW = item.mode==='osb' ? selW.osb : selW.unit;
+  const modeH = item.mode==='isj' ? selH.unit : selH.osb;
+
+  const doorTypes = ['Single','French Door',
+    'French Door w/ Two 12" Sidelites','French Door w/ Two 14" Sidelites','French Door w/ Two 16" Sidelites',
+    'Single w/ 10" Sidelite','Single w/ 12" Sidelite','Single w/ 14" Sidelite','Single w/ 16" Sidelite',
+    'Single w/ Two 10" Sidelites','Single w/ Two 12" Sidelites','Single w/ Two 14" Sidelites','Single w/ Two 16" Sidelites',
+    'Patio Slider','Bi-fold','Storm'];
+
+  return `
+    <div class="field-wrap">
+      <label>Location</label>
+      <input type="text" value="${esc(item.location)}" placeholder="e.g. Front Entry"
+        onchange="updateItem('${item.id}','location',this.value)">
+    </div>
+    <div class="field-wrap">
+      <label>Measurement Type</label>
+      <div class="pill-toggle pill-orange">
+        <button class="${item.mode==='osb'?'active':''}" onclick="updateItem('${item.id}','mode','osb');reRenderCard('${item.id}')">OSB</button>
+        <button class="${item.mode==='isj'?'active':''}" onclick="updateItem('${item.id}','mode','isj');reRenderCard('${item.id}')">ISJ</button>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Door Type</label>
+      <select onchange="updateItem('${item.id}','doorType',this.value);reRenderCard('${item.id}')">
+        ${doorTypes.map(t=>`<option ${dt===t?'selected':''}>${t}</option>`).join('')}
+      </select>
+    </div>
+    <div class="field-wrap">
+      <label>Size Mode</label>
+      <div class="pill-toggle pill-orange">
+        <button class="${isStd?'active':''}" onclick="updateItem('${item.id}','sizeMode','Standard');reRenderCard('${item.id}')">Standard</button>
+        <button class="${!isStd?'active':''}" onclick="updateItem('${item.id}','sizeMode','custom');reRenderCard('${item.id}')">Custom</button>
+      </div>
+    </div>
+    ${isStd ? `
+    <div class="field-row">
+      <div class="field-wrap">
+        <label>Nominal Width</label>
+        <select onchange="updateItem('${item.id}','stdWidth',this.value);reRenderCard('${item.id}')">
+          ${widthRows.map(r=>`<option ${curW===r.nom?'selected':''}>${r.nom}</option>`).join('')}
+        </select>
+      </div>
+      <div class="field-wrap">
+        <label>Nominal Height</label>
+        <select onchange="updateItem('${item.id}','stdHeight',this.value);reRenderCard('${item.id}')">
+          ${PROVIA_H.map(r=>`<option ${curH===r.nom?'selected':''}>${r.nom}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="provia-size-card">
+      <div class="provia-row">
+        <span class="provia-lbl">Unit Size</span>
+        <span class="provia-val">${selW.unit} × ${selH.unit}</span>
+      </div>
+      <div class="provia-row">
+        <span class="provia-lbl">Rough Opening</span>
+        <span class="provia-val">${selW.rough} × ${selH.rough}</span>
+      </div>
+      <div class="provia-row">
+        <span class="provia-lbl">OSB (Brickmold)</span>
+        <span class="provia-val">${selW.osb} × ${selH.osb}</span>
+      </div>
+    </div>` : `
+    <div class="field-wrap">
+      <label>${dimLabel}</label>
+      <div class="dim-pair">
+        <div style="flex:1">
+          <input class="dim-input" id="dimW-${item.id}" value="${esc(item.dimW)}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','dimW')" onclick="openKpad('${item.id}','dimW')">
+          <div class="dim-label">Width</div>
+        </div>
+        <div class="dim-sep">×</div>
+        <div style="flex:1">
+          <input class="dim-input" id="dimH-${item.id}" value="${esc(item.dimH)}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','dimH')" onclick="openKpad('${item.id}','dimH')">
+          <div class="dim-label">Height</div>
+        </div>
+      </div>
+    </div>`}
+    <div class="field-row">
+      <div class="field-wrap">
+        <label>Swing</label>
+        <div class="pill-toggle pill-orange">
+          <button class="${item.swing==='inswing'?'active':''}" onclick="updateItem('${item.id}','swing','inswing')">Inswing</button>
+          <button class="${item.swing==='outswing'?'active':''}" onclick="updateItem('${item.id}','swing','outswing')">Outswing</button>
+        </div>
+      </div>
+    </div>
+    ${dt!=='Patio Slider'&&dt!=='Bi-fold' ? `
+    <div class="field-wrap">
+      <label>Hand</label>
+      <div class="pill-toggle pill-orange">
+        <button class="${item.hand==='left'?'active':''}" onclick="updateItem('${item.id}','hand','left')">Left Hand</button>
+        <button class="${item.hand==='right'?'active':''}" onclick="updateItem('${item.id}','hand','right')">Right Hand</button>
+      </div>
+    </div>` : ''}
+    <div class="field-wrap">
+      <label>Brickmold Measurement</label>
+      <div class="dim-pair">
+        <div style="flex:1">
+          <input class="dim-input" id="bmW-${item.id}" value="${esc(item.bmW||'')}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','bmW')" onclick="openKpad('${item.id}','bmW')">
+          <div class="dim-label">Brickmold Width</div>
+        </div>
+        <div class="dim-sep">×</div>
+        <div style="flex:1">
+          <input class="dim-input" id="bmH-${item.id}" value="${esc(item.bmH||'')}" placeholder="0'0&quot;"
+            readonly onfocus="openKpad('${item.id}','bmH')" onclick="openKpad('${item.id}','bmH')">
+          <div class="dim-label">Sill-to-Brick Height</div>
+        </div>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Modifiers</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.modifiers.spreadMull?'checked':''} onchange="updateMod('${item.id}','spreadMull',this.checked)"> Spread Mull
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.modifiers.transom?'checked':''} onchange="updateMod('${item.id}','transom',this.checked);reRenderCard('${item.id}')"> Transom
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.modifiers.sideliteL?'checked':''} onchange="updateMod('${item.id}','sideliteL',this.checked);reRenderCard('${item.id}')"> Sidelite Left
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" ${item.modifiers.sideliteR?'checked':''} onchange="updateMod('${item.id}','sideliteR',this.checked);reRenderCard('${item.id}')"> Sidelite Right
+        </label>
+      </div>
+      ${item.modifiers.transom ? `
+      <div class="field-wrap" style="margin-top:10px;">
+        <label>Transom Height</label>
+        <select onchange="updateMod('${item.id}','transomSize',this.value)">
+          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.transomSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>` : ''}
+      ${item.modifiers.sideliteL ? `
+      <div class="field-wrap" style="margin-top:10px;">
+        <label>Sidelite Left Width</label>
+        <select onchange="updateMod('${item.id}','sideliteLSize',this.value)">
+          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.sideliteLSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>` : ''}
+      ${item.modifiers.sideliteR ? `
+      <div class="field-wrap" style="margin-top:10px;">
+        <label>Sidelite Right Width</label>
+        <select onchange="updateMod('${item.id}','sideliteRSize',this.value)">
+          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.sideliteRSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>` : ''}
+    </div>
+    <div class="field-wrap">
+      <label>Quantity</label>
+      <div class="qty-row">
+        <button class="qty-btn" onclick="adjustQty('${item.id}',-1)">−</button>
+        <span class="qty-val" id="qty-${item.id}">${item.qty}</span>
+        <button class="qty-btn" onclick="adjustQty('${item.id}',1)">+</button>
+      </div>
+    </div>
+    <div class="field-wrap">
+      <label>Notes</label>
+      <input type="text" value="${esc(item.notes)}" placeholder="Optional notes"
+        onchange="updateItem('${item.id}','notes',this.value)">
+    </div>`;
+}
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ─── ITEM OPERATIONS ─────────────────────────────────────────────────────────
+function updateItem(id, field, value){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item[field] = value;
+  saveData();
+  updateCardSummary(id);
+}
+function updateMod(id, mod, val){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item.modifiers[mod] = val;
+  saveData();
+  updateCardSummary(id);
+}
+function adjustQty(id, delta){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item.qty = Math.max(1, (item.qty||1)+delta);
+  saveData();
+  const el = document.getElementById('qty-'+id);
+  if(el) el.textContent = item.qty;
+  updateCardSummary(id);
+}
+function toggleCard(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  item.expanded = !item.expanded;
+  saveData();
+  const card = document.getElementById('card-'+id);
+  if(card) card.classList.toggle('expanded', item.expanded);
+}
+function reRenderCard(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  saveData();
+  const old = document.getElementById('card-'+id);
+  if(!old) return;
+  const neu = buildCard(item);
+  old.parentNode.replaceChild(neu, old);
+}
+function updateCardSummary(id){
+  const item = items.find(i=>i.id===id);
+  if(!item) return;
+  const card = document.getElementById('card-'+id);
+  if(!card) return;
+  const sumEl = card.querySelector('.card-summary');
+  if(sumEl) sumEl.innerHTML = buildSummaryLine(item);
+}
+function deleteItem(id){
+  if(!confirm('Delete this item?')) return;
+  items = items.filter(i=>i.id!==id);
+  saveData();
+  const card = document.getElementById('card-'+id);
+  if(card) card.remove();
+  if(items.length===0) document.getElementById('empty-measure').style.display='';
+}
+
+// ─── PHOTO ───────────────────────────────────────────────────────────────────
+function triggerPhoto(id){
+  const fi = document.getElementById('photo-input-'+id);
+  if(fi) fi.click();
+}
+function handlePhoto(e, id){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const item = items.find(i=>i.id===id);
+    if(!item) return;
+    // compress
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const MAX=800;
+      let w=img.width, h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      canvas.width=w; canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      item.photo = canvas.toDataURL('image/jpeg',0.7);
+      saveData();
+      const thumb = document.getElementById('thumb-'+id);
+      if(thumb){
+        if(thumb.tagName==='IMG'){ thumb.src=item.photo; }
+        else {
+          const ni = document.createElement('img');
+          ni.className='photo-thumb'; ni.src=item.photo; ni.id='thumb-'+id; ni.alt='photo';
+          thumb.parentNode.replaceChild(ni, thumb);
+        }
+      }
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ─── FRACTION KEYPAD ─────────────────────────────────────────────────────────
+// All 15 fractions found on a standard US measuring tape (16ths-based)
+const TAPE_FRACS = [
+  {label:'¹⁄₁₆', val:'1/16'},
+  {label:'⅛',    val:'1/8'},
+  {label:'³⁄₁₆', val:'3/16'},
+  {label:'¼',    val:'1/4'},
+  {label:'⁵⁄₁₆', val:'5/16'},
+  {label:'⅜',    val:'3/8'},
+  {label:'⁷⁄₁₆', val:'7/16'},
+  {label:'½',    val:'1/2'},
+  {label:'⁹⁄₁₆', val:'9/16'},
+  {label:'⅝',    val:'5/8'},
+  {label:'¹¹⁄₁₆',val:'11/16'},
+  {label:'¾',    val:'3/4'},
+  {label:'¹³⁄₁₆',val:'13/16'},
+  {label:'⅞',    val:'7/8'},
+  {label:'¹⁵⁄₁₆',val:'15/16'},
+];
+const FRAC_VALS = TAPE_FRACS.map(f=>f.val);
+
+// ── Provia width lookup (top-level for summary/scope use) ──
+const PROVIA_W_GLOBAL = {
+  'Single': [
+    {nom:'30"',unit:'31 9/16"',rough:'32"',osb:'34 1/16"'},
+    {nom:'32"',unit:'33 9/16"',rough:'34"',osb:'36 1/16"'},
+    {nom:'34"',unit:'35 9/16"',rough:'36"',osb:'38 1/16"'},
+    {nom:'36"',unit:'37 9/16"',rough:'38"',osb:'40 1/16"'},
+    {nom:'42"',unit:'43 9/16"',rough:'44"',osb:'46 1/16"'},
+  ],
+  'French Door': [
+    {nom:'60"',unit:'62 1/8"',rough:'62 7/8"',osb:'64 5/8"'},
+    {nom:'64"',unit:'66 1/8"',rough:'66 7/8"',osb:'68 5/8"'},
+    {nom:'68"',unit:'70 1/8"',rough:'70 7/8"',osb:'72 5/8"'},
+    {nom:'72"',unit:'74 1/8"',rough:'74 7/8"',osb:'76 5/8"'},
+    {nom:'84"',unit:'86 1/8"',rough:'86 7/8"',osb:'88 5/8"'},
+  ],
+  'French Door w/ Two 12" Sidelites':[{nom:'60"',unit:'88 5/8"',rough:'89 1/2"',osb:'91 1/8"'},{nom:'64"',unit:'92 5/8"',rough:'93 1/2"',osb:'95 1/8"'},{nom:'68"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'72"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'84"',unit:'112 5/8"',rough:'113 1/2"',osb:'115 1/8"'}],
+  'French Door w/ Two 14" Sidelites':[{nom:'60"',unit:'92 5/8"',rough:'93 1/2"',osb:'95 1/8"'},{nom:'64"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'68"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'72"',unit:'104 5/8"',rough:'105 1/2"',osb:'107 1/8"'},{nom:'84"',unit:'116 5/8"',rough:'117 1/2"',osb:'119 1/8"'}],
+  'French Door w/ Two 16" Sidelites':[{nom:'60"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'64"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'68"',unit:'104 5/8"',rough:'105 1/2"',osb:'107 1/8"'},{nom:'72"',unit:'108 5/8"',rough:'109 1/2"',osb:'111 1/8"'},{nom:'84"',unit:'120 5/8"',rough:'121 1/2"',osb:'123 1/8"'}],
+  'Single w/ 10" Sidelite':[{nom:'30"',unit:'42 13/16"',rough:'43 9/16"',osb:'45 5/16"'},{nom:'32"',unit:'44 13/16"',rough:'45 9/16"',osb:'47 5/16"'},{nom:'34"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'36"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'}],
+  'Single w/ 12" Sidelite':[{nom:'30"',unit:'44 13/16"',rough:'45 9/16"',osb:'47 5/16"'},{nom:'32"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'34"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'36"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'}],
+  'Single w/ 14" Sidelite':[{nom:'30"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'32"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'34"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'},{nom:'36"',unit:'52 13/16"',rough:'53 9/16"',osb:'55 5/16"'}],
+  'Single w/ 16" Sidelite':[{nom:'30"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'32"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'},{nom:'34"',unit:'52 13/16"',rough:'53 9/16"',osb:'55 5/16"'},{nom:'36"',unit:'54 13/16"',rough:'55 9/16"',osb:'57 5/16"'}],
+  'Single w/ Two 10" Sidelites':[{nom:'30"',unit:'54 1/16"',rough:'54 13/16"',osb:'56 9/16"'},{nom:'32"',unit:'56 1/16"',rough:'56 13/16"',osb:'58 9/16"'},{nom:'34"',unit:'58 1/16"',rough:'58 13/16"',osb:'60 9/16"'},{nom:'36"',unit:'60 1/16"',rough:'60 13/16"',osb:'62 9/16"'}],
+  'Single w/ Two 12" Sidelites':[{nom:'30"',unit:'58 1/16"',rough:'58 13/16"',osb:'60 9/16"'},{nom:'32"',unit:'60 1/16"',rough:'60 13/16"',osb:'62 9/16"'},{nom:'34"',unit:'62 1/16"',rough:'62 13/16"',osb:'64 9/16"'},{nom:'36"',unit:'64 1/16"',rough:'64 13/16"',osb:'66 9/16"'}],
+  'Single w/ Two 14" Sidelites':[{nom:'30"',unit:'62 1/16"',rough:'62 13/16"',osb:'64 9/16"'},{nom:'32"',unit:'64 1/16"',rough:'64 13/16"',osb:'66 9/16"'},{nom:'34"',unit:'66 1/16"',rough:'66 13/16"',osb:'68 9/16"'},{nom:'36"',unit:'68 1/16"',rough:'68 13/16"',osb:'70 9/16"'}],
+  'Single w/ Two 16" Sidelites':[{nom:'30"',unit:'66 1/16"',rough:'66 13/16"',osb:'68 9/16"'},{nom:'32"',unit:'68 1/16"',rough:'68 13/16"',osb:'70 9/16"'},{nom:'34"',unit:'70 1/16"',rough:'70 13/16"',osb:'72 9/16"'},{nom:'36"',unit:'72 1/16"',rough:'72 13/16"',osb:'74 9/16"'}],
+};
+const PROVIA_H_GLOBAL = [
+  {nom:'80"',unit:'81 5/8"',rough:'82"',osb:'82 7/8"'},
+  {nom:'84"',unit:'85 5/8"',rough:'86"',osb:'86 7/8"'},
+  {nom:'96"',unit:'97 5/8"',rough:'98"',osb:'98 7/8"'},
+];
+function getProviaSize(item){
+  if(item.type!=='door'||item.sizeMode==='custom') return null;
+  const rows = PROVIA_W_GLOBAL[item.doorType] || PROVIA_W_GLOBAL['Single'];
+  const rW = rows.find(r=>r.nom===item.stdWidth) || rows[0];
+  const rH = PROVIA_H_GLOBAL.find(r=>r.nom===item.stdHeight) || PROVIA_H_GLOBAL[0];
+  return {unit: rW.unit+' × '+rH.unit, rough: rW.rough+' × '+rH.rough, osb: rW.osb+' × '+rH.osb};
+}
+
+// drum scroll state
+let drumScrollTimer = null;
+
+function buildKpad(){
+  // ── Fraction drum wheel ──
+  const drum = document.getElementById('kp-frac-drum');
+
+  // "None" option at top
+  const noneEl = document.createElement('div');
+  noneEl.className = 'kp-drum-item no-frac';
+  noneEl.dataset.frac = '';
+  noneEl.textContent = 'none';
+  drum.appendChild(noneEl);
+
+  TAPE_FRACS.forEach(f => {
+    const el = document.createElement('div');
+    el.className = 'kp-drum-item';
+    el.dataset.frac = f.val;
+    el.textContent = f.label;
+    drum.appendChild(el);
+  });
+
+  // Tap any item → jump to it
+  drum.addEventListener('click', e => {
+    const item = e.target.closest('.kp-drum-item');
+    if(!item) return;
+    scrollDrumToFrac(item.dataset.frac, true);
+    kpSelectFrac(item.dataset.frac);
+  });
+
+  // On scroll end → just update visual highlight, don't commit value
+  drum.addEventListener('scroll', () => {
+    clearTimeout(drumScrollTimer);
+    drumScrollTimer = setTimeout(() => {
+      const snapped = getDrumCentreItem();
+      if(!snapped) return;
+      drum.querySelectorAll('.kp-drum-item').forEach(el=>{
+        el.classList.toggle('drum-active', el === snapped);
+      });
+    }, 80);
+  }, {passive:true});
+
+  // ── Digit / action grid (4-column) ──
+  const grid = document.getElementById('kp-grid');
+  const buttons = [
+    {label:'7',val:'7'},{label:'8',val:'8'},{label:'9',val:'9'},{label:'⌫',val:'back',cls:'back'},
+    {label:'4',val:'4'},{label:'5',val:'5'},{label:'6',val:'6'},{label:"'",val:"'",cls:'special'},
+    {label:'1',val:'1'},{label:'2',val:'2'},{label:'3',val:'3'},{label:'"',val:'"',cls:'special'},
+    {label:'0',val:'0'},{label:'',val:'',cls:'disabled'},{label:'',val:'',cls:'disabled'},{label:'✓ Done',val:'done',cls:'done'},
+  ];
+  buttons.forEach(b => {
+    const btn = document.createElement('button');
+    btn.className = 'kp-btn'+(b.cls?' '+b.cls:'');
+    btn.textContent = b.label;
+    if(b.val && b.val!=='') btn.addEventListener('click',()=>kpPress(b.val));
+    grid.appendChild(btn);
+  });
+}
+
+function getDrumCentreItem(){
+  const drum = document.getElementById('kp-frac-drum');
+  const drumMid = drum.scrollTop + drum.clientHeight / 2;
+  let best = null, bestDist = Infinity;
+  drum.querySelectorAll('.kp-drum-item').forEach(el => {
+    const mid = el.offsetTop + el.offsetHeight / 2;
+    const dist = Math.abs(mid - drumMid);
+    if(dist < bestDist){ bestDist = dist; best = el; }
+  });
+  return best;
+}
+
+function scrollDrumToFrac(fracVal, animate){
+  const drum = document.getElementById('kp-frac-drum');
+  const target = drum.querySelector(`[data-frac="${fracVal}"]`);
+  if(!target) return;
+  const targetMid = target.offsetTop + target.offsetHeight / 2;
+  const scrollTo = targetMid - drum.clientHeight / 2;
+  drum.scrollTo({top: scrollTo, behavior: animate ? 'smooth' : 'instant'});
+}
+
+function kpSelectFrac(fracVal){
+  // Strip any existing trailing fraction (with optional leading space)
+  kpValue = kpValue.replace(/\s*\d+\/\d+$/, '');
+  // Append new fraction with a space separator if there's already content
+  if(fracVal){
+    kpValue = (kpValue ? kpValue + ' ' : '') + fracVal;
+  }
+  updateKpadDisplay();
+  // Highlight centre item
+  const drum = document.getElementById('kp-frac-drum');
+  drum.querySelectorAll('.kp-drum-item').forEach(el => {
+    el.classList.toggle('drum-active', el.dataset.frac === fracVal);
+  });
+}
+
+function openKpad(itemId, field){
+  const item = items.find(i=>i.id===itemId);
+  if(!item) return;
+  kpTarget = {itemId, field};
+  kpValue = item[field]||'';
+  updateKpadDisplay();
+  document.getElementById('kp-overlay').classList.add('open');
+  // Scroll drum to current fraction (or "none") after paint
+  requestAnimationFrame(()=>{
+    const fracMatch = kpValue.match(/(\d+\/\d+)$/);
+    const cur = fracMatch ? fracMatch[1] : '';
+    scrollDrumToFrac(cur, false);
+    // highlight
+    const drum = document.getElementById('kp-frac-drum');
+    drum.querySelectorAll('.kp-drum-item').forEach(el => {
+      el.classList.toggle('drum-active', el.dataset.frac === cur);
+    });
+  });
+}
+function kpOverlayClick(e){
+  if(e.target === document.getElementById('kp-overlay')) closeKpad();
+}
+function closeKpad(){ document.getElementById('kp-overlay').classList.remove('open'); kpTarget=null; }
+function updateKpadDisplay(){
+  const disp = document.getElementById('kp-display');
+  if(kpValue){ disp.textContent = kpValue; disp.classList.remove('empty'); }
+  else { disp.textContent=''; disp.classList.add('empty'); }
+}
+function kpPress(val){
+  if(val==='done'){ commitKpad(); return; }
+  if(val==='back'){
+    // Remove trailing " fraction" as a single unit, otherwise one char
+    if(/\s*\d+\/\d+$/.test(kpValue)){
+      kpValue = kpValue.replace(/\s*\d+\/\d+$/, '');
+    } else {
+      kpValue = kpValue.slice(0,-1);
+    }
+    updateKpadDisplay();
+    // sync drum to "none" if no trailing fraction
+    const stillFrac = kpValue.match(/(\d+\/\d+)$/);
+    const cur = stillFrac ? stillFrac[1] : '';
+    scrollDrumToFrac(cur, true);
+    const drum = document.getElementById('kp-frac-drum');
+    drum.querySelectorAll('.kp-drum-item').forEach(el=>{
+      el.classList.toggle('drum-active', el.dataset.frac===cur);
+    });
+    return;
+  }
+  if(FRAC_VALS.includes(val)){
+    // handled by drum scroll → kpSelectFrac; but also allow direct call
+    kpSelectFrac(val);
+    scrollDrumToFrac(val, true);
+  } else {
+    kpValue += val;
+    updateKpadDisplay();
+  }
+}
+function commitKpad(){
+  if(!kpTarget) return;
+  const item = items.find(i=>i.id===kpTarget.itemId);
+  if(item){ item[kpTarget.field] = kpValue; saveData(); }
+  const inp = document.getElementById(`${kpTarget.field}-${kpTarget.itemId}`);
+  if(inp) inp.value = kpValue;
+  updateCardSummary(kpTarget.itemId);
+  closeKpad();
+}
+
+// ─── SUMMARY SCREEN ──────────────────────────────────────────────────────────
+function renderSummaryScreen(){
+  // Job card
+  const jc = document.getElementById('sum-job-card');
+  jc.innerHTML = `
+    <strong>${esc(job.name)||'<em>No name</em>'}</strong><br>
+    ${esc(job.address)||'<em>No address</em>'}<br>
+    ${esc(job.date)||''}<br>
+    ${job.notes?'<em>'+esc(job.notes)+'</em>':''}
+  `;
+  // Items
+  const list = document.getElementById('sum-items-list');
+  list.innerHTML='';
+  if(items.length===0){
+    list.innerHTML='<p style="color:var(--muted);font-size:14px;">No measurements yet.</p>';
+    return;
+  }
+  items.forEach(item=>{
+    const d = document.createElement('div');
+    d.className = `summary-item ${item.type}-item`;
+    let size = '';
+    if(item.type==='door'&&item.sizeMode==='Standard'){
+      const ps = getProviaSize(item);
+      size = ps ? `Unit: ${ps.unit}` : `${item.stdWidth} × ${item.stdHeight}`;
+    } else {
+      size = `${item.dimW||'?'} × ${item.dimH||'?'}`;
+    }
+    const modeStr = item.type==='window'
+      ? (item.mode==='retro'?'Retro':'Metal Out')
+      : (item.mode==='isj'?'ISJ':'OSB');
+    let detail = `${modeStr} | ${size}`;
+    if(item.type==='window'){
+      detail += ` | ${item.winType}`;
+      const glass = [item.glassType||'Clear', item.obscureGlass?'Obscurity':'', item.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
+      detail += ` | ${glass}`;
+      if(item.grids) detail += ` | Grids${item.gridPattern?': '+item.gridPattern:''}`;
+      if(item.winType==='Shaped'&&item.shapeDesc) detail += ` | Shape: ${item.shapeDesc}`;
+    }
+    if(item.type==='door'){
+      detail += ` | ${item.doorType}`;
+      if(item.doorType!=='Patio Slider'&&item.doorType!=='Bi-fold') detail += ` | ${item.swing==='inswing'?'Inswing':'Outswing'}, ${item.hand==='left'?'LH':'RH'}`;
+      const mods=[];
+      if(item.modifiers.spreadMull) mods.push('Spread Mull');
+      if(item.modifiers.transom) mods.push(`Transom ${item.modifiers.transomSize||''}`);
+      if(item.modifiers.sideliteL) mods.push(`Sidelite L ${item.modifiers.sideliteLSize||''}`);
+      if(item.modifiers.sideliteR) mods.push(`Sidelite R ${item.modifiers.sideliteRSize||''}`);
+      if(mods.length) detail += ` | ${mods.join(', ')}`;
+      if(item.bmW||item.bmH) detail += ` | BM: ${item.bmW||'?'} × ${item.bmH||'?'}`;
+    }
+    if(item.qty>1) detail += ` | Qty: ${item.qty}`;
+    if(item.notes) detail += ` | ${item.notes}`;
+    d.innerHTML=`<div class="item-title">${item.type==='window'?'🪟':'🚪'} ${esc(item.location)||'(no location)'}</div><div class="item-detail">${esc(detail)}</div>`;
+    list.appendChild(d);
+  });
+}
+
+// ─── API KEY ─────────────────────────────────────────────────────────────────
+function loadApiKey(){ /* not persisted — enter each session */ }
+function saveApiKey(){
+  const k = document.getElementById('api-key-input').value.trim();
+  if(!k) return;
+  document.getElementById('api-key-status').textContent = 'API key ready ✓';
+}
+
+// ─── CLAUDE SCOPE GENERATION ─────────────────────────────────────────────────
+async function generateScope(){
+  const key = document.getElementById('api-key-input').value.trim();
+  if(!key){ alert('Please enter and save your Claude API key first.'); return; }
+
+  const btn = document.getElementById('btn-generate');
+  btn.disabled=true;
+  btn.innerHTML='<span class="spinner"></span> Generating…';
+
+  const windows = items.filter(i=>i.type==='window');
+  const doors = items.filter(i=>i.type==='door');
+
+  const winLines = windows.map((w,i)=>{
+    const size = `${w.dimW||'?'} × ${w.dimH||'?'}`;
+    const glassOpts = [w.glassType||'Clear', w.obscureGlass?'Obscurity':'', w.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
+    const gridInfo = w.grids ? `Grids${w.gridPattern?': '+w.gridPattern:''}` : 'No Grids';
+    return `Window ${i+1}: ${w.location||'(no location)'}, ${w.winType}, ${size}, ${w.mode==='retro'?'Retro (Jamb Box)':'Metal Out (Opening)'}, ${glassOpts}, ${gridInfo}, Qty ${w.qty}${w.notes?', Note: '+w.notes:''}`;
+  }).join('\n');
+
+  const doorLines = doors.map((d,i)=>{
+    const _ps = getProviaSize(d);
+    let size = d.sizeMode==='Standard' && _ps ? `Unit: ${_ps.unit} (Nom: ${d.stdWidth} × ${d.stdHeight})` : `${d.dimW||'?'} × ${d.dimH||'?'}`;
+    const mods=[];
+    if(d.modifiers.spreadMull) mods.push('Spread Mull');
+    if(d.modifiers.transom) mods.push(`Transom (${d.modifiers.transomSize||'12"'} height)`);
+    if(d.modifiers.sideliteL) mods.push(`Sidelite Left (${d.modifiers.sideliteLSize||'12"'} wide)`);
+    if(d.modifiers.sideliteR) mods.push(`Sidelite Right (${d.modifiers.sideliteRSize||'12"'} wide)`);
+    const bmNote = (d.bmW||d.bmH) ? `, Brickmold: ${d.bmW||'?'} × ${d.bmH||'?'}` : '';
+    return `Door ${i+1}: ${d.location||'(no location)'}, ${d.doorType}, ${size}, ${d.mode==='retro'?'ISJ':'OSB'}, ${d.swing==='inswing'?'Inswing':'Outswing'} ${d.hand==='left'?'Left Hand':'Right Hand'}${bmNote}${mods.length?', '+mods.join(', '):''}${d.notes?', Note: '+d.notes:''}`;
+  }).join('\n');
+
+  const userContent = `Job address: ${job.address||'(unknown)'}
+Customer: ${job.name||'(unknown)'}
+Date: ${job.date||'(unknown)'}
+${job.notes?'Project notes: '+job.notes:''}
+
+WINDOWS (${windows.length} total):
+${winLines||'None'}
+
+DOORS (${doors.length} total):
+${doorLines||'None'}
+
+Please write a professional scope-of-work paragraph for a window and door replacement proposal. Mention the address, total window count by type, total door count by type, note which items are metal-out vs retro installations, and flag any special conditions like spread mulls, transoms, or sidelites.`;
+
+  try{
+    const resp = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': key,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
+      body: JSON.stringify({
+        model:'claude-haiku-4-5',
+        max_tokens:1024,
+        system:'You are a professional estimator for a window and door replacement contractor. Write clear, concise scope-of-work paragraphs suitable for homeowner proposals. Use formal but friendly language.',
+        messages:[{role:'user',content:userContent}]
+      })
+    });
+    if(!resp.ok){
+      const err = await resp.json().catch(()=>({error:{message:resp.statusText}}));
+      throw new Error(err.error?.message||resp.statusText);
+    }
+    const data = await resp.json();
+    document.getElementById('scope-output').value = data.content[0].text;
+  } catch(e){
+    alert('Error generating scope: '+e.message);
+  } finally{
+    btn.disabled=false;
+    btn.innerHTML='Generate Scope with Claude';
+  }
+}
+
+function copyScope(){
+  const ta = document.getElementById('scope-output');
+  if(!ta.value){ alert('Nothing to copy yet.'); return; }
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(ta.value).then(()=>alert('Copied to clipboard!')).catch(()=>fallbackCopy(ta));
+  } else { fallbackCopy(ta); }
+}
+function fallbackCopy(ta){
+  const text = ta.value||ta;
+  if(typeof text === 'string'){
+    const el = document.createElement('textarea');
+    el.value = text; el.style.position='fixed'; el.style.opacity='0';
+    document.body.appendChild(el); el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+  } else {
+    ta.select(); document.execCommand('copy');
+  }
+}
+function buildShareText(){
+  const lines = [];
+  lines.push('THS FIELD MEASUREMENTS');
+  lines.push('======================');
+  lines.push(`Customer: ${job.name||'(none)'}`);
+  lines.push(`Address:  ${job.address||'(none)'}`);
+  lines.push(`Date:     ${job.date||'(none)'}`);
+  if(job.notes) lines.push(`Notes:    ${job.notes}`);
+  lines.push('');
+  const wins = items.filter(i=>i.type==='window');
+  const doors = items.filter(i=>i.type==='door');
+  if(wins.length){
+    lines.push(`WINDOWS (${wins.length})`);
+    lines.push('--------');
+    wins.forEach((w,i)=>{
+      const size = `${w.dimW||'?'} × ${w.dimH||'?'}`;
+      const installType = w.mode==='retro' ? 'Retro (Jamb Box)' : 'Metal Out (Opening)';
+      const glass = [w.glassType||'Clear', w.obscureGlass?'Obscurity':'', w.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
+      const grids = w.grids ? `Grids${w.gridPattern?': '+w.gridPattern:''}` : 'No Grids';
+      lines.push(`W${i+1}: ${w.location||'(no location)'}`);
+      lines.push(`     ${w.winType} | ${installType} | ${size} | Qty ${w.qty}`);
+      lines.push(`     Glass: ${glass} | ${grids}`);
+      if(w.notes) lines.push(`     Note: ${w.notes}`);
+    });
+    lines.push('');
+  }
+  if(doors.length){
+    lines.push(`DOORS (${doors.length})`);
+    lines.push('------');
+    doors.forEach((d,i)=>{
+      const ps = getProviaSize(d);
+      const size = d.sizeMode==='Standard'&&ps ? `Unit: ${ps.unit}` : `${d.dimW||'?'} × ${d.dimH||'?'}`;
+      const install = d.mode==='isj'?'ISJ':'OSB';
+      const mods=[];
+      if(d.modifiers.spreadMull) mods.push('Spread Mull');
+      if(d.modifiers.transom) mods.push(`Transom ${d.modifiers.transomSize||''}`);
+      if(d.modifiers.sideliteL) mods.push(`Sidelite L ${d.modifiers.sideliteLSize||''}`);
+      if(d.modifiers.sideliteR) mods.push(`Sidelite R ${d.modifiers.sideliteRSize||''}`);
+      lines.push(`D${i+1}: ${d.location||'(no location)'}`);
+      lines.push(`     ${d.doorType} | ${install} | ${size} | Qty ${d.qty}`);
+      if(d.doorType!=='Patio Slider'&&d.doorType!=='Bi-fold')
+        lines.push(`     ${d.swing==='inswing'?'Inswing':'Outswing'}, ${d.hand==='left'?'LH':'RH'}`);
+      if(mods.length) lines.push(`     ${mods.join(', ')}`);
+      if(d.bmW||d.bmH) lines.push(`     Brickmold: ${d.bmW||'?'} × ${d.bmH||'?'}`);
+      if(d.notes) lines.push(`     Note: ${d.notes}`);
+    });
+  }
+  return lines.join('\n');
+}
+
+async function shareMeasurements(){
+  const text = buildShareText();
+  if(navigator.share){
+    try{
+      await navigator.share({ title: `THS Measure — ${job.name||job.address||'Job'}`, text });
+    } catch(e){ if(e.name!=='AbortError') fallbackCopy({value:text}); }
+  } else {
+    fallbackCopy({value:text});
+    alert('Measurements copied to clipboard!');
+  }
+}
+
+async function shareScope(){
+  const ta = document.getElementById('scope-output');
+  if(!ta.value){ alert('Generate a scope first.'); return; }
+  if(navigator.share){
+    try{
+      await navigator.share({ title: `Scope — ${job.name||job.address||'Job'}`, text: ta.value });
+    } catch(e){ if(e.name!=='AbortError') fallbackCopy(ta); }
+  } else {
+    fallbackCopy(ta);
+    alert('Scope copied to clipboard!');
+  }
+}
 </script>
 </body>
 </html>
