@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="THS Measure">
+<meta name="theme-color" content="#1B2A4A">
+<meta name="description" content="Total Home Services field measurement tool">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231B2A4A'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E🏠%3C/text%3E%3C/svg%3E">
 <title>THS Field Measure</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -396,26 +400,11 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
       <div id="sum-items-list"></div>
     </div>
     <div class="summary-section" id="scope-section">
-      <h3>Generate Scope of Work</h3>
-      <div class="card" style="padding:14px 16px;">
-        <div class="field-wrap" style="margin-bottom:12px;">
-          <label>Claude API Key</label>
-          <div class="api-key-wrap">
-            <input type="password" id="api-key-input" placeholder="sk-ant-…" autocomplete="off">
-            <button class="api-key-save" id="api-key-save-btn">Save</button>
-          </div>
-          <div id="api-key-status" style="font-size:12px;color:var(--muted);margin-top:4px;"></div>
-        </div>
-        <button class="btn-primary" id="btn-generate">Generate Scope with Claude</button>
-        <div style="margin-top:14px;">
-          <label style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;">Generated Scope</label>
-          <textarea id="scope-output" placeholder="Generated scope will appear here…" readonly style="margin-top:6px;"></textarea>
-          <div class="btn-row">
-            <button class="btn-secondary" id="btn-copy">Copy to Clipboard</button>
-            <button class="btn-secondary" id="btn-share">Share / Export</button>
-            <button class="btn-secondary" id="btn-print">Print</button>
-          </div>
-        </div>
+      <h3>Export</h3>
+      <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn-primary" id="btn-share-full">📤 Share Measurements</button>
+        <button class="btn-secondary" id="btn-copy-full">📋 Copy to Clipboard</button>
+        <button class="btn-secondary" id="btn-print">🖨 Print / Save PDF</button>
       </div>
     </div>
   </div>
@@ -481,10 +470,8 @@ document.addEventListener('DOMContentLoaded', () => {
   loadApiKey();
   attachJobListeners();
   document.getElementById('btn-start').addEventListener('click', () => switchScreen('measure'));
-  document.getElementById('api-key-save-btn').addEventListener('click', saveApiKey);
-  document.getElementById('btn-generate').addEventListener('click', generateScope);
-  document.getElementById('btn-copy').addEventListener('click', copyScope);
-  document.getElementById('btn-share').addEventListener('click', shareScope);
+  document.getElementById('btn-share-full').addEventListener('click', shareMeasurements);
+  document.getElementById('btn-copy-full').addEventListener('click', copyMeasurements);
   document.getElementById('btn-print').addEventListener('click', () => window.print());
 });
 
@@ -497,11 +484,16 @@ function setDefaultDate(){
 }
 
 // ─── PERSISTENCE ─────────────────────────────────────────────────────────────
-// In-memory only — works reliably on iPhone from iCloud Drive
-function saveData(){ /* state lives in JS variables — no localStorage needed */ }
+function saveData(){
+  try{
+    localStorage.setItem('ths_job', JSON.stringify(job));
+    localStorage.setItem('ths_items', JSON.stringify(items));
+  } catch(e){}
+}
 function loadData(){
-  job = {name:'',address:'',date:'',notes:''};
-  items = [];
+  try{ job = JSON.parse(localStorage.getItem('ths_job'))||{}; } catch(e){ job={}; }
+  try{ items = JSON.parse(localStorage.getItem('ths_items'))||[]; } catch(e){ items=[]; }
+  job.name=job.name||''; job.address=job.address||''; job.date=job.date||''; job.notes=job.notes||'';
 }
 
 // ─── SCREEN NAVIGATION ───────────────────────────────────────────────────────
@@ -1426,104 +1418,27 @@ function renderSummaryScreen(){
 }
 
 // ─── API KEY ─────────────────────────────────────────────────────────────────
-function loadApiKey(){ /* not persisted — enter each session */ }
-function saveApiKey(){
-  const k = document.getElementById('api-key-input').value.trim();
-  if(!k) return;
-  document.getElementById('api-key-status').textContent = 'API key ready ✓';
-}
+// ─── EXPORT & SHARE ──────────────────────────────────────────────────────────
+function loadApiKey(){ }
+function saveApiKey(){ }
 
-// ─── CLAUDE SCOPE GENERATION ─────────────────────────────────────────────────
-async function generateScope(){
-  const key = document.getElementById('api-key-input').value.trim();
-  if(!key){ alert('Please enter and save your Claude API key first.'); return; }
-
-  const btn = document.getElementById('btn-generate');
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner"></span> Generating…';
-
-  const windows = items.filter(i=>i.type==='window');
-  const doors = items.filter(i=>i.type==='door');
-
-  const winLines = windows.map((w,i)=>{
-    const size = `${w.dimW||'?'} × ${w.dimH||'?'}`;
-    const glassOpts = [w.glassType||'Clear', w.obscureGlass?'Obscurity':'', w.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
-    const gridInfo = w.grids ? `Grids${w.gridPattern?': '+w.gridPattern:''}` : 'No Grids';
-    return `Window ${i+1}: ${w.location||'(no location)'}, ${w.winType}, ${size}, ${w.mode==='retro'?'Retro (Jamb Box)':'Metal Out (Opening)'}, ${glassOpts}, ${gridInfo}, Qty ${w.qty}${w.notes?', Note: '+w.notes:''}`;
-  }).join('\n');
-
-  const doorLines = doors.map((d,i)=>{
-    const _ps = getProviaSize(d);
-    let size = d.sizeMode==='Standard' && _ps ? `Unit: ${_ps.unit} (Nom: ${d.stdWidth} × ${d.stdHeight})` : `${d.dimW||'?'} × ${d.dimH||'?'}`;
-    const mods=[];
-    if(d.modifiers.spreadMull) mods.push('Spread Mull');
-    if(d.modifiers.transom) mods.push(`Transom (${d.modifiers.transomSize||'12"'} height)`);
-    if(d.modifiers.sideliteL) mods.push(`Sidelite Left (${d.modifiers.sideliteLSize||'12"'} wide)`);
-    if(d.modifiers.sideliteR) mods.push(`Sidelite Right (${d.modifiers.sideliteRSize||'12"'} wide)`);
-    const bmNote = (d.bmW||d.bmH) ? `, Brickmold: ${d.bmW||'?'} × ${d.bmH||'?'}` : '';
-    return `Door ${i+1}: ${d.location||'(no location)'}, ${d.doorType}, ${size}, ${d.mode==='retro'?'ISJ':'OSB'}, ${d.swing==='inswing'?'Inswing':'Outswing'} ${d.hand==='left'?'Left Hand':'Right Hand'}${bmNote}${mods.length?', '+mods.join(', '):''}${d.notes?', Note: '+d.notes:''}`;
-  }).join('\n');
-
-  const userContent = `Job address: ${job.address||'(unknown)'}
-Customer: ${job.name||'(unknown)'}
-Date: ${job.date||'(unknown)'}
-${job.notes?'Project notes: '+job.notes:''}
-
-WINDOWS (${windows.length} total):
-${winLines||'None'}
-
-DOORS (${doors.length} total):
-${doorLines||'None'}
-
-Please write a professional scope-of-work paragraph for a window and door replacement proposal. Mention the address, total window count by type, total door count by type, note which items are metal-out vs retro installations, and flag any special conditions like spread mulls, transoms, or sidelites.`;
-
-  try{
-    const resp = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key': key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body: JSON.stringify({
-        model:'claude-haiku-4-5',
-        max_tokens:1024,
-        system:'You are a professional estimator for a window and door replacement contractor. Write clear, concise scope-of-work paragraphs suitable for homeowner proposals. Use formal but friendly language.',
-        messages:[{role:'user',content:userContent}]
-      })
-    });
-    if(!resp.ok){
-      const err = await resp.json().catch(()=>({error:{message:resp.statusText}}));
-      throw new Error(err.error?.message||resp.statusText);
-    }
-    const data = await resp.json();
-    document.getElementById('scope-output').value = data.content[0].text;
-  } catch(e){
-    alert('Error generating scope: '+e.message);
-  } finally{
-    btn.disabled=false;
-    btn.innerHTML='Generate Scope with Claude';
-  }
-}
-
-function copyScope(){
-  const ta = document.getElementById('scope-output');
-  if(!ta.value){ alert('Nothing to copy yet.'); return; }
+function copyMeasurements(){
+  const text = buildShareText();
   if(navigator.clipboard){
-    navigator.clipboard.writeText(ta.value).then(()=>alert('Copied to clipboard!')).catch(()=>fallbackCopy(ta));
-  } else { fallbackCopy(ta); }
-}
-function fallbackCopy(ta){
-  const text = ta.value||ta;
-  if(typeof text === 'string'){
-    const el = document.createElement('textarea');
-    el.value = text; el.style.position='fixed'; el.style.opacity='0';
-    document.body.appendChild(el); el.select(); document.execCommand('copy');
-    document.body.removeChild(el);
+    navigator.clipboard.writeText(text)
+      .then(()=>alert('Copied to clipboard!'))
+      .catch(()=>{ fallbackCopyText(text); alert('Copied!'); });
   } else {
-    ta.select(); document.execCommand('copy');
+    fallbackCopyText(text);
+    alert('Copied!');
   }
+}
+
+function fallbackCopyText(text){
+  const el = document.createElement('textarea');
+  el.value = text; el.style.position='fixed'; el.style.opacity='0';
+  document.body.appendChild(el); el.select(); document.execCommand('copy');
+  document.body.removeChild(el);
 }
 function buildShareText(){
   const lines = [];
@@ -1579,25 +1494,38 @@ async function shareMeasurements(){
   const text = buildShareText();
   if(navigator.share){
     try{
-      await navigator.share({ title: `THS Measure — ${job.name||job.address||'Job'}`, text });
-    } catch(e){ if(e.name!=='AbortError') fallbackCopy({value:text}); }
+      await navigator.share({ title:`THS Measure — ${job.name||job.address||'Job'}`, text });
+    } catch(e){ if(e.name!=='AbortError'){ fallbackCopyText(text); alert('Copied to clipboard!'); } }
   } else {
-    fallbackCopy({value:text});
-    alert('Measurements copied to clipboard!');
+    fallbackCopyText(text);
+    alert('Copied to clipboard!');
   }
 }
-
-async function shareScope(){
-  const ta = document.getElementById('scope-output');
-  if(!ta.value){ alert('Generate a scope first.'); return; }
-  if(navigator.share){
-    try{
-      await navigator.share({ title: `Scope — ${job.name||job.address||'Job'}`, text: ta.value });
-    } catch(e){ if(e.name!=='AbortError') fallbackCopy(ta); }
-  } else {
-    fallbackCopy(ta);
-    alert('Scope copied to clipboard!');
-  }
+</script>
+<script>
+// Register service worker for offline use
+if('serviceWorker' in navigator){
+  window.addEventListener('load', () => {
+    // Inline service worker via blob
+    const sw = `
+      const CACHE = 'ths-measure-v1';
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.add('/')));
+        self.skipWaiting();
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(
+          caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+            const clone = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+            return res;
+          }))
+        );
+      });
+    `;
+    const blob = new Blob([sw], {type:'application/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+  });
 }
 </script>
 </body>
