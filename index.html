@@ -26,7 +26,8 @@
   --header-h:56px;
   --nav-h:60px;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);font-size:16px;}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);font-size:16px;-webkit-user-select:none;user-select:none;}
+body *{-webkit-touch-callout:none;}
 /* HEADER */
 #app-header{
   position:fixed;top:0;left:0;right:0;
@@ -70,6 +71,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-sy
   min-height:48px;gap:3px;
   -webkit-tap-highlight-color:transparent;
   padding:0;
+  touch-action:manipulation;
 }
 .nav-btn.active{color:var(--navy);}
 .nav-btn svg{width:24px;height:24px;}
@@ -86,6 +88,7 @@ input[type=text],input[type=date],select,textarea{
   padding:10px 12px;font-size:16px;color:var(--text);background:#fff;
   -webkit-appearance:none;appearance:none;
   min-height:48px;
+  touch-action:manipulation;
 }
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--navy);}
 textarea{min-height:80px;resize:vertical;line-height:1.4;}
@@ -96,6 +99,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   border:none;border-radius:var(--radius);font-size:17px;font-weight:600;
   cursor:pointer;letter-spacing:.01em;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 .btn-primary:active{opacity:.85;}
 .btn-orange{background:var(--orange);}
@@ -107,6 +111,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   transition:background .15s,color .15s;color:var(--muted);
   min-height:36px;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 .pill-toggle button.active{background:#fff;color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.15);}
 .pill-navy .pill-toggle button.active{background:var(--navy);color:#fff;}
@@ -117,6 +122,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer;
   -webkit-tap-highlight-color:transparent;
   user-select:none;
+  touch-action:manipulation;
 }
 .card-color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 .card-summary{flex:1;font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -131,20 +137,26 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 .window-band{background:var(--navy);}
 .door-band{background:var(--orange);}
 .card-body{max-height:0;overflow:hidden;transition:max-height .25s ease;}
-.measure-card.expanded .card-body{max-height:2000px;}
+.measure-card.expanded .card-body{max-height:3000px;}
 .card-fields{padding:12px 14px 6px;display:flex;flex-direction:column;gap:10px;}
-.card-actions{display:flex;align-items:center;padding:10px 14px 14px;gap:10px;}
+.card-actions{display:flex;align-items:center;padding:10px 14px 14px;gap:10px;flex-wrap:wrap;}
 .btn-delete{
   margin-left:auto;border:1.5px solid #e53935;color:#e53935;background:none;
   border-radius:8px;padding:8px 14px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
 .btn-photo{
   border:1.5px solid var(--border);color:var(--muted);background:none;
   border-radius:8px;padding:8px 14px;font-size:14px;cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
-.photo-thumb{width:44px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--border);}
+.photo-gallery{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+.photo-thumb{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid var(--border);cursor:pointer;position:relative;}
+.photo-label{position:absolute;bottom:2px;right:2px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;padding:2px 4px;border-radius:3px;}
+.photo-delete{position:absolute;top:-8px;right:-8px;width:24px;height:24px;background:#e53935;color:#fff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;opacity:0;transition:opacity .2s;}
+.photo-thumb:hover .photo-delete{opacity:1;}
 /* FABs */
 #fab-container{
   position:fixed;
@@ -160,6 +172,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   display:flex;align-items:center;justify-content:center;
   -webkit-tap-highlight-color:transparent;
   letter-spacing:0;
+  touch-action:manipulation;
 }
 .fab-window{background:var(--navy);}
 .fab-door{background:var(--orange);}
@@ -173,6 +186,7 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
 #kp-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;
   display:none;align-items:flex-end;
+  touch-action:manipulation;
 }
 #kp-overlay.open{display:flex;}
 #kp-sheet{
@@ -186,183 +200,122 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
   padding:20px 24px 12px;min-height:68px;color:var(--text);
   border-bottom:1px solid var(--border);
   letter-spacing:.02em;
+  touch-action:manipulation;
 }
 #kp-display.empty::after{content:'Tap to enter';font-size:18px;color:var(--muted);font-weight:400;}
 /* ── Fraction drum/wheel picker ── */
 #kp-frac-wrap{
   position:relative;
-  height:120px;
-  background:#f7f7f7;
-  border-bottom:1px solid var(--border);
+  height:180px;margin:16px 0;
   overflow:hidden;
-  display:flex;align-items:center;
-}
-#kp-frac-wrap::before,#kp-frac-wrap::after{
-  content:'';position:absolute;left:0;right:0;z-index:2;pointer-events:none;
-}
-#kp-frac-wrap::before{
-  top:0;height:calc(50% - 24px);
-  background:linear-gradient(to bottom,#f7f7f7 60%,transparent);
-}
-#kp-frac-wrap::after{
-  bottom:0;height:calc(50% - 24px);
-  background:linear-gradient(to top,#f7f7f7 60%,transparent);
-}
-#kp-frac-selector{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:120px;height:48px;
-  border:2px solid var(--orange);border-radius:10px;
-  pointer-events:none;z-index:3;
 }
 #kp-frac-drum{
   display:flex;flex-direction:column;
-  align-items:center;
-  overflow-y:scroll;
-  -webkit-overflow-scrolling:touch;
-  scroll-snap-type:y mandatory;
+  align-items:center;justify-content:center;
   height:100%;
-  width:100%;
-  scrollbar-width:none;
-  padding:36px 0;
+  transform:translateY(0);
+  transition:transform .1s linear;
 }
-#kp-frac-drum::-webkit-scrollbar{display:none;}
-.kp-drum-item{
-  flex:0 0 48px;
-  display:flex;align-items:center;justify-content:center;
-  scroll-snap-align:center;
-  font-size:22px;font-weight:600;color:var(--muted);
-  width:100%;cursor:pointer;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
-  transition:color .12s,font-size .12s;
+.kp-frac-item{
+  width:100%;min-height:45px;display:flex;align-items:center;justify-content:center;
+  font-size:18px;font-weight:500;color:var(--muted);cursor:pointer;
+  touch-action:manipulation;
 }
-.kp-drum-item.no-frac{font-size:14px;font-weight:500;}
-.kp-drum-item.drum-active{color:var(--orange);font-size:26px;}
-/* digit/action grid */
-#kp-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--border);
+.kp-frac-item.drum-active{color:var(--navy);font-weight:700;}
+#kp-frac-center{
+  position:absolute;top:50%;left:0;right:0;
+  height:50px;pointer-events:none;
+  border-top:2px solid var(--navy);border-bottom:2px solid var(--navy);
+  transform:translateY(-50%);
 }
+/* Number pad */
+#kp-numpad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:16px 24px;}
 .kp-btn{
-  background:#fff;border:none;padding:0;
-  font-size:22px;font-weight:500;color:var(--text);
-  min-height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  -webkit-tap-highlight-color:rgba(0,0,0,.08);
+  border:1.5px solid var(--border);background:#fff;border-radius:8px;
+  padding:12px;font-size:18px;font-weight:600;cursor:pointer;min-height:48px;
+  color:var(--navy);-webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
-.kp-btn:active{background:#f0f0f0;}
-.kp-btn.special{color:var(--orange);font-size:22px;}
-.kp-btn.done{background:var(--navy);color:#fff;font-size:16px;font-weight:700;}
-.kp-btn.back{color:#e53935;}
-/* SUMMARY SCREEN */
-.summary-section{margin-bottom:20px;}
-.summary-section h3{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:10px;}
-.summary-item{
-  background:var(--card);border-radius:8px;padding:12px 14px;margin-bottom:8px;
-  border-left:4px solid var(--border);font-size:14px;line-height:1.5;
+.kp-btn:active{background:var(--border);}
+.kp-btn.kp-clear{background:var(--border);color:var(--text);}
+.kp-btn.kp-submit{background:var(--navy);color:#fff;grid-column:span 2;}
+.kp-btn.kp-delete{grid-column:span 2;border-color:#e53935;color:#e53935;}
+/* MODAL */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;
 }
-.summary-item.window-item{border-left-color:var(--navy);}
+.modal-overlay.open{display:flex;}
+.modal-content{
+  background:#fff;border-radius:16px;padding:24px;max-width:90%;max-height:80vh;overflow-y:auto;
+}
+.modal-title{font-size:20px;font-weight:700;margin-bottom:16px;}
+.modal-actions{display:flex;gap:12px;margin-top:20px;}
+.modal-actions button{flex:1;min-height:44px;}
+/* PHOTO MODAL */
+#photo-modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:250;
+  display:none;align-items:center;justify-content:center;
+}
+#photo-modal-overlay.open{display:flex;}
+#photo-modal-content{
+  position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+}
+#photo-modal-img{max-width:100%;max-height:100%;object-fit:contain;}
+.photo-modal-close{
+  position:absolute;top:20px;right:20px;width:40px;height:40px;
+  background:rgba(0,0,0,.7);color:#fff;border:none;border-radius:50%;
+  font-size:24px;cursor:pointer;z-index:10;
+  touch-action:manipulation;
+}
+/* SUMMARY STYLES */
+.summary-card{background:var(--card);border-radius:var(--radius);padding:16px;margin-bottom:12px;}
+.summary-stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.summary-stat:last-child{border-bottom:none;}
+.summary-stat-label{font-size:14px;color:var(--muted);font-weight:600;}
+.summary-stat-value{font-size:18px;font-weight:700;color:var(--navy);}
+.summary-item{margin-bottom:16px;padding:12px;background:var(--bg);border-radius:8px;border-left:4px solid var(--navy);}
 .summary-item.door-item{border-left-color:var(--orange);}
-.summary-item .item-title{font-weight:700;margin-bottom:2px;}
-.summary-item .item-detail{color:var(--muted);font-size:13px;}
-.api-key-wrap{position:relative;}
-.api-key-wrap input{padding-right:80px;}
-.api-key-save{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
-  background:var(--navy);color:#fff;border:none;border-radius:6px;
-  padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;min-height:36px;
-}
-#scope-output{
-  width:100%;min-height:120px;border:1.5px solid var(--border);border-radius:8px;
-  padding:12px;font-size:14px;line-height:1.6;resize:vertical;
-  background:#f9f9f9;
-}
-.btn-row{display:flex;gap:10px;margin-top:10px;}
-.btn-row button{flex:1;}
-.btn-secondary{
-  min-height:48px;background:#fff;color:var(--navy);
-  border:1.5px solid var(--navy);border-radius:var(--radius);
-  font-size:15px;font-weight:600;cursor:pointer;
+.item-title{font-weight:700;margin-bottom:4px;}
+.item-detail{font-size:13px;color:var(--muted);line-height:1.4;}
+.material-section{margin-bottom:16px;}
+.material-section-title{font-size:12px;font-weight:700;text-transform:uppercase;color:var(--muted);margin:16px 0 8px;}
+.material-row{display:flex;justify-content:space-between;padding:8px 0;font-size:14px;}
+.material-row-label{color:var(--text);}
+.material-row-value{font-weight:600;color:var(--navy);}
+/* EXPORT STYLES */
+.export-btn{
+  display:flex;align-items:center;gap:8px;width:100%;
+  padding:12px 16px;background:var(--card);border:1.5px solid var(--border);
+  border-radius:8px;margin-bottom:12px;cursor:pointer;font-size:14px;
   -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 }
-.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-/* BORDER-LEFT COLORS for measure cards */
-.measure-card.window-card{border-left:4px solid var(--navy);}
-.measure-card.door-card{border-left:4px solid var(--orange);}
-/* MODIFIERS */
-.checkbox-group{display:flex;flex-wrap:wrap;gap:8px;}
-.checkbox-item{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:14px;}
-.checkbox-item input[type=checkbox]{width:20px;height:20px;cursor:pointer;accent-color:var(--orange);}
-/* DIMENSION INPUT */
-.dim-input{
-  width:100%;border:1.5px solid var(--border);border-radius:8px;
-  padding:10px 12px;font-size:18px;font-weight:600;color:var(--text);background:#fff;
-  min-height:48px;cursor:pointer;caret-color:transparent;
-  -webkit-appearance:none;appearance:none;
-  text-align:center;letter-spacing:.04em;
-}
-.dim-input:focus{outline:none;border-color:var(--navy);background:#f0f4ff;}
-.dim-label{font-size:11px;text-align:center;color:var(--muted);margin-top:2px;}
-.dim-pair{display:flex;align-items:flex-end;gap:6px;}
-.dim-sep{font-size:20px;font-weight:700;color:var(--muted);padding-bottom:10px;}
-/* EMPTY STATE */
-.empty-state{text-align:center;padding:60px 24px;color:var(--muted);}
-.empty-state .empty-icon{font-size:48px;margin-bottom:12px;}
-.empty-state p{font-size:15px;line-height:1.5;}
-/* PROVIA SIZE REFERENCE CARD */
-.provia-size-card{
-  background:#f0f4ff;border:1.5px solid #c5d3f5;border-radius:8px;
-  padding:10px 14px;display:flex;flex-direction:column;gap:6px;
-}
-.provia-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;}
-.provia-lbl{color:var(--muted);font-weight:500;}
-.provia-val{font-weight:700;color:var(--navy);font-size:15px;letter-spacing:.02em;}
-.provia-row:first-child .provia-val{color:var(--orange);font-size:17px;}
-
-/* QUANTITY ROW */
-.qty-row{display:flex;align-items:center;gap:12px;}
-.qty-btn{
-  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);
-  background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  -webkit-tap-highlight-color:transparent;
-}
-.qty-val{min-width:32px;text-align:center;font-size:16px;font-weight:600;}
-/* PRINT */
-@media print{
-  #app-header,#bottom-nav,#fab-container,.btn-delete,.btn-photo,.btn-primary,
-  .card-chevron,.kp-overlay,.fab,#scope-section .btn-row,.api-key-wrap{display:none!important;}
-  body,html{overflow:visible!important;height:auto!important;}
-  #screens,.screen{position:static!important;overflow:visible!important;height:auto!important;}
-  .screen{display:block!important;}
-  .card-body{max-height:none!important;}
-  .measure-card{break-inside:avoid;border:1px solid #ccc!important;}
-  body{background:#fff;font-size:12px;}
-}
+.export-btn:active{background:var(--border);}
 </style>
 </head>
 <body>
 
 <!-- HEADER -->
 <div id="app-header">
-  <div id="header-title">🏠 Total Home Services</div>
+  <div id="header-title">THS Measure</div>
   <div id="header-job"></div>
 </div>
 
-<!-- SCREENS -->
+<!-- SCREENS CONTAINER -->
 <div id="screens">
-
-  <!-- SCREEN 1: JOB INFO -->
-  <div class="screen active" id="screen-job">
+  <!-- JOB INFO SCREEN -->
+  <div id="job-screen" class="screen active">
     <div class="card">
       <div class="field-group">
         <div class="field-wrap">
           <label>Customer Name</label>
-          <input type="text" id="job-name" placeholder="e.g. John Smith" autocomplete="name">
+          <input type="text" id="job-name" placeholder="Customer name">
         </div>
         <div class="field-wrap">
           <label>Address</label>
-          <input type="text" id="job-address" placeholder="Street address, city, zip" autocomplete="street-address">
+          <input type="text" id="job-address" placeholder="Job address">
         </div>
         <div class="field-wrap">
           <label>Date</label>
@@ -370,987 +323,610 @@ select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/
         </div>
         <div class="field-wrap">
           <label>Project Notes</label>
-          <textarea id="job-notes" placeholder="Any general notes about the project…"></textarea>
+          <textarea id="job-notes" placeholder="Any special notes about the job..."></textarea>
         </div>
-      </div>
-    </div>
-    <button class="btn-primary" id="btn-start">Start Measuring →</button>
-  </div>
-
-  <!-- SCREEN 2: MEASURE -->
-  <div class="screen" id="screen-measure">
-    <div id="items-container">
-      <div class="empty-state" id="empty-measure">
-        <div class="empty-icon">📐</div>
-        <p>Tap <strong style="color:var(--navy)">+ Window</strong> or <strong style="color:var(--orange)">+ Door</strong> to add measurements</p>
-      </div>
-    </div>
-    <div style="height:80px;"></div>
-  </div>
-
-  <!-- SCREEN 3: SUMMARY -->
-  <div class="screen" id="screen-summary">
-    <div class="summary-section" id="sum-job-section">
-      <h3>Job Info</h3>
-      <div class="card" id="sum-job-card" style="padding:14px 16px;font-size:14px;line-height:1.7;"></div>
-    </div>
-    <button class="btn-primary" style="margin-bottom:16px;" onclick="shareMeasurements()">📤 Share Measurements</button>
-    <div class="summary-section" id="sum-items-section">
-      <h3>Measurements</h3>
-      <div id="sum-items-list"></div>
-    </div>
-    <div class="summary-section" id="scope-section">
-      <h3>Export</h3>
-      <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;">
-        <button class="btn-primary" id="btn-share-full">📤 Share Measurements</button>
-        <button class="btn-secondary" id="btn-copy-full">📋 Copy to Clipboard</button>
-        <button class="btn-secondary" id="btn-print">🖨 Print / Save PDF</button>
+        <button class="btn-primary" onclick="startMeasuring()">Start Measuring →</button>
       </div>
     </div>
   </div>
 
+  <!-- MEASURE SCREEN -->
+  <div id="measure-screen" class="screen">
+    <div id="items-list"></div>
+  </div>
+
+  <!-- SUMMARY SCREEN -->
+  <div id="summary-screen" class="screen">
+    <div id="sum-job-card" class="summary-card"></div>
+    <div id="sum-materials" class="summary-card">
+      <div style="font-weight:700;margin-bottom:12px;">📦 Materials Needed</div>
+      <div id="sum-materials-list"></div>
+    </div>
+    <div id="sum-items-list"></div>
+    <div id="sum-export" class="summary-card">
+      <div style="font-weight:700;margin-bottom:12px;">📤 Export</div>
+      <button class="export-btn" onclick="exportToJSON()">💾 Export as JSON</button>
+      <button class="export-btn" onclick="copyMeasurements()">📋 Copy to Clipboard</button>
+      <button class="export-btn" onclick="exportToPDF()">🖨 Export as PDF</button>
+      <button class="export-btn" onclick="shareMeasurements()">📤 Share</button>
+    </div>
+  </div>
 </div>
 
 <!-- BOTTOM NAV -->
-<nav id="bottom-nav">
-  <button class="nav-btn active" data-screen="job" onclick="switchScreen('job')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-    </svg>
+<div id="bottom-nav">
+  <button class="nav-btn active" onclick="switchScreen('job')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
     Job Info
   </button>
-  <button class="nav-btn" data-screen="measure" onclick="switchScreen('measure')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M2 12h20M12 2v20M7 7l10 10M17 7L7 17"/>
-    </svg>
+  <button class="nav-btn" onclick="switchScreen('measure')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 12h18M12 3v18"/></svg>
     Measure
   </button>
-  <button class="nav-btn" data-screen="summary" onclick="switchScreen('summary')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
-    </svg>
+  <button class="nav-btn" onclick="switchScreen('summary')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20M2 12h20"/></svg>
     Summary
   </button>
-</nav>
-
-<!-- FAB CONTAINER (only on measure screen) -->
-<div id="fab-container" style="display:none;">
-  <button class="fab fab-door" onclick="addItem('door')" title="Add Door">D</button>
-  <button class="fab fab-window" onclick="addItem('window')" title="Add Window">W</button>
 </div>
 
-<!-- FRACTION KEYPAD MODAL -->
-<div id="kp-overlay" onclick="kpOverlayClick(event)">
+<!-- FABs -->
+<div id="fab-container">
+  <button class="fab fab-window" onclick="addWindow()" title="Add Window">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:28px;height:28px;"><rect x="3" y="3" width="18" height="18"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+  </button>
+  <button class="fab fab-door" onclick="addDoor()" title="Add Door">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:28px;height:28px;"><rect x="3" y="3" width="10" height="18"/><circle cx="11" cy="12" r="1"/></svg>
+  </button>
+</div>
+
+<!-- KEYPAD MODAL -->
+<div id="kp-overlay">
   <div id="kp-sheet">
-    <div id="kp-display" class="empty"></div>
+    <div id="kp-display"></div>
     <div id="kp-frac-wrap">
-      <div id="kp-frac-selector"></div>
       <div id="kp-frac-drum"></div>
+      <div id="kp-frac-center"></div>
     </div>
-    <div id="kp-grid"></div>
+    <div id="kp-numpad"></div>
+  </div>
+</div>
+
+<!-- PHOTO MODAL -->
+<div id="photo-modal-overlay">
+  <div id="photo-modal-content">
+    <img id="photo-modal-img" src="">
+    <button class="photo-modal-close" onclick="closePhotoModal()">×</button>
   </div>
 </div>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
-let job = {name:'',address:'',date:'',notes:''};
-let items = []; // {id, type:'window'|'door', ...fields}
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let job = { name:'', address:'', date:'', notes:'' };
+let items = [];
 let currentScreen = 'job';
-let kpTarget = null; // {itemId, field}
+let kpTarget = null;
 let kpValue = '';
+const FRAC_VALS = ['1/16','1/8','3/16','1/4','5/16','3/8','7/16','1/2','9/16','5/8','11/16','3/4','13/16','7/8','15/16'];
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  loadData();
-  buildKpad();
-  setDefaultDate();
-  renderJobScreen();
-  renderMeasureScreen();
-  renderSummaryScreen();
-  loadApiKey();
-  attachJobListeners();
-  document.getElementById('btn-start').addEventListener('click', () => switchScreen('measure'));
-  document.getElementById('btn-share-full').addEventListener('click', shareMeasurements);
-  document.getElementById('btn-copy-full').addEventListener('click', copyMeasurements);
-  document.getElementById('btn-print').addEventListener('click', () => window.print());
-});
-
-function setDefaultDate(){
-  const d = document.getElementById('job-date');
-  const today = new Date();
-  const s = today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0')+'-'+String(today.getDate()).padStart(2,'0');
-  d.value = job.date || s;
-  if(!job.date){ job.date = s; saveData(); }
-}
-
-// ─── PERSISTENCE ─────────────────────────────────────────────────────────────
+// ─── LOAD/SAVE ──────────────────────────────────────────────────────────────
 function saveData(){
-  try{
-    localStorage.setItem('ths_job', JSON.stringify(job));
-    localStorage.setItem('ths_items', JSON.stringify(items));
-  } catch(e){}
+  localStorage.setItem('ths_job', JSON.stringify(job));
+  localStorage.setItem('ths_items', JSON.stringify(items));
 }
 function loadData(){
-  try{ job = JSON.parse(localStorage.getItem('ths_job'))||{}; } catch(e){ job={}; }
-  try{ items = JSON.parse(localStorage.getItem('ths_items'))||[]; } catch(e){ items=[]; }
-  job.name=job.name||''; job.address=job.address||''; job.date=job.date||''; job.notes=job.notes||'';
+  const j = localStorage.getItem('ths_job');
+  const i = localStorage.getItem('ths_items');
+  if(j) job = JSON.parse(j);
+  if(i) items = JSON.parse(i);
+}
+function clearJob(){
+  if(!confirm('Start a new job?')) return;
+  job = { name:'', address:'', date:'', notes:'' };
+  items = [];
+  saveData();
+  location.reload();
 }
 
-// ─── SCREEN NAVIGATION ───────────────────────────────────────────────────────
+// ─── UI SWITCHING ───────────────────────────────────────────────────────────
 function switchScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(name+'-screen').classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  event.target.closest('.nav-btn').classList.add('active');
   currentScreen = name;
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById('screen-'+name).classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.screen === name);
-  });
-  document.getElementById('fab-container').style.display = (name==='measure') ? 'flex' : 'none';
+  if(name==='measure') renderMeasureScreen();
   if(name==='summary') renderSummaryScreen();
+  updateHeader();
+}
+function updateHeader(){
+  document.getElementById('header-job').textContent = job.name || job.address || '(no job)';
+}
+function startMeasuring(){
+  job.name = document.getElementById('job-name').value || '';
+  job.address = document.getElementById('job-address').value || '';
+  job.date = document.getElementById('job-date').value || '';
+  job.notes = document.getElementById('job-notes').value || '';
+  saveData();
+  updateHeader();
+  switchScreen('measure');
 }
 
-// ─── JOB INFO SCREEN ─────────────────────────────────────────────────────────
-function attachJobListeners(){
-  const fields = ['name','address','date','notes'];
-  fields.forEach(f => {
-    const el = document.getElementById('job-'+f);
-    el.addEventListener('input', () => {
-      job[f] = el.value;
-      saveData();
-      updateHeaderJob();
-    });
-    el.addEventListener('change', () => { job[f] = el.value; saveData(); updateHeaderJob(); });
+// ─── WINDOW MANAGEMENT ──────────────────────────────────────────────────────
+function addWindow(){
+  const id = Date.now();
+  items.push({
+    id, type:'window', location:'', mode:'retro', dimW:'', dimH:'',
+    winType:'Single Hung', glassType:'Clear', obscureGlass:false, temperedGlass:false,
+    grids:false, gridPattern:'', shapeDesc:'', qty:1, notes:'',
+    caulkLevel:'Light', coilType:'None',
+    photos:{ before:null, after:null, reference:null }
   });
-}
-function renderJobScreen(){
-  document.getElementById('job-name').value = job.name||'';
-  document.getElementById('job-address').value = job.address||'';
-  document.getElementById('job-date').value = job.date||'';
-  document.getElementById('job-notes').value = job.notes||'';
-  updateHeaderJob();
-}
-function updateHeaderJob(){
-  const hj = document.getElementById('header-job');
-  hj.textContent = job.name ? job.name : '';
-}
-
-// ─── ITEM CREATION ───────────────────────────────────────────────────────────
-function makeId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function addItem(type){
-  const item = {
-    id: makeId(),
-    type,
-    location:'',
-    mode:'metalout', // metalout | retro
-    dimW:'',
-    dimH:'',
-    qty:1,
-    notes:'',
-    photo:'',
-    expanded:true,
-  };
-  if(type==='window'){
-    item.winType='DH';
-    item.glassType='Clear';
-    item.obscureGlass=false;
-    item.temperedGlass=false;
-    item.grids=false;
-    item.gridPattern='';
-    item.shapeDesc='';
-  } else {
-    item.doorType='Single';
-    item.sizeMode='Standard';
-    item.stdWidth='2\'8';
-    item.stdHeight='6\'8';
-    item.swing='inswing';
-    item.hand='right';
-    item.modifiers={spreadMull:false,transom:false,transomSize:'12"',sideliteL:false,sideliteLSize:'12"',sideliteR:false,sideliteRSize:'12"'};
-    item.bmW='';
-    item.bmH='';
-  }
-  items.push(item);
   saveData();
   renderMeasureScreen();
-  // scroll to new card
-  setTimeout(()=>{
-    const el = document.getElementById('card-'+item.id);
-    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-  },100);
+  setTimeout(()=>document.getElementById('card-'+id).scrollIntoView(), 100);
 }
 
-// ─── MEASURE SCREEN ──────────────────────────────────────────────────────────
+function addDoor(){
+  const id = Date.now();
+  items.push({
+    id, type:'door', location:'', sizeMode:'Custom', stdWidth:'', stdHeight:'',
+    dimW:'', dimH:'', doorType:'Entry', swing:'inswing', hand:'right',
+    mode:'isj', bmW:'', bmH:'', qty:1, notes:'',
+    caulkLevel:'Light', coilType:'None',
+    modifiers:{ spreadMull:false, transom:false, transomSize:'', sideliteL:false, sideliteLSize:'', sideliteR:false, sideliteRSize:'' },
+    photos:{ before:null, after:null, reference:null }
+  });
+  saveData();
+  renderMeasureScreen();
+  setTimeout(()=>document.getElementById('card-'+id).scrollIntoView(), 100);
+}
+
+function deleteItem(id){
+  if(!confirm('Delete this item?')) return;
+  items = items.filter(i=>i.id!==id);
+  saveData();
+  renderMeasureScreen();
+}
+
+// ─── RENDER MEASURE SCREEN ──────────────────────────────────────────────────
 function renderMeasureScreen(){
-  const container = document.getElementById('items-container');
-  const empty = document.getElementById('empty-measure');
+  const list = document.getElementById('items-list');
+  list.innerHTML = '';
   if(items.length===0){
-    empty.style.display='';
-    // remove all cards but keep empty
-    container.querySelectorAll('.measure-card').forEach(c=>c.remove());
+    list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:40px 20px;">Tap + Window or + Door to add measurements</p>';
     return;
   }
-  empty.style.display='none';
-  // re-render all
-  container.querySelectorAll('.measure-card').forEach(c=>c.remove());
-  items.forEach(item => {
-    const el = buildCard(item);
-    container.appendChild(el);
+  items.forEach(item=>{
+    const card = document.createElement('div');
+    card.id = 'card-'+item.id;
+    card.className = 'measure-card';
+    
+    const summary = item.type==='window'
+      ? `${item.location||'(no location)'} | ${item.dimW||'?'} × ${item.dimH||'?'}`
+      : `${item.location||'(no location)'} | ${item.dimW||'?'} × ${item.dimH||'?'}`;
+    
+    const bandClass = item.type==='window' ? 'window-band' : 'door-band';
+    const bandText = item.type==='window' ? '🪟 WINDOW' : '🚪 DOOR';
+    
+    card.innerHTML = `
+      <div class="card-header-band ${bandClass}">${bandText}</div>
+      <div class="measure-card-header" onclick="toggleCard(this)">
+        <div class="card-summary">${esc(summary)}</div>
+        <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 12 15 18 9"></polyline></svg>
+      </div>
+      <div class="card-body">
+        <div class="card-fields" id="fields-${item.id}"></div>
+        <div class="card-actions">
+          <button class="btn-photo" onclick="showPhotoMenu(${item.id})">📸 Photos</button>
+          <button class="btn-delete" onclick="deleteItem(${item.id})">Delete</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+    renderCardFields(item, 'fields-'+item.id);
   });
 }
 
-function buildCard(item){
-  const div = document.createElement('div');
-  div.className = `measure-card ${item.type}-card ${item.expanded?'expanded':''}`;
-  div.id = 'card-'+item.id;
-
-  const dimLabel = item.mode==='isj' ? 'ISJ Opening' : 'OSB Opening';
-  const summary = buildSummaryLine(item);
-
-  div.innerHTML = `
-    <div class="measure-card-header" onclick="toggleCard('${item.id}')">
-      <div class="card-color-dot" style="background:${item.type==='window'?'var(--navy)':'var(--orange)'}"></div>
-      <div class="card-summary">${summary}</div>
-      <svg class="card-chevron" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="card-header-band ${item.type==='window'?'window-band':'door-band'}">
-      ${item.type==='window'?'Window':'Door'} — ${item.type==='window'?'Tap fields to edit':'Tap fields to edit'}
-    </div>
-    <div class="card-body">
-      <div class="card-fields" id="fields-${item.id}">
-        ${buildCardFields(item)}
-      </div>
-      <div class="card-actions">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <button class="btn-photo" onclick="triggerPhoto('${item.id}')">
-            📷 Photo
-          </button>
-          ${item.photo ? `<img class="photo-thumb" id="thumb-${item.id}" src="${item.photo}" alt="photo">` : `<span id="thumb-${item.id}"></span>`}
-        </div>
-        <button class="btn-delete" onclick="deleteItem('${item.id}')">Delete</button>
-      </div>
-    </div>`;
-
-  // hidden file input for photo
-  const fi = document.createElement('input');
-  fi.type='file'; fi.accept='image/*'; fi.capture='environment';
-  fi.style.display='none'; fi.id='photo-input-'+item.id;
-  fi.addEventListener('change', (e)=>handlePhoto(e,item.id));
-  div.appendChild(fi);
-
-  return div;
-}
-
-function buildSummaryLine(item){
-  const loc = item.location || '<span class="placeholder">No location</span>';
-  let size = '';
-  if(item.type==='door' && item.sizeMode==='Standard'){
-    const _bs = getProviaSize(item);
-    size = _bs ? `Unit: ${_bs.unit}` : `${item.stdWidth} × ${item.stdHeight}`;
-  } else {
-    size = (item.dimW||'?') + ' × ' + (item.dimH||'?');
-  }
-  const typeLabel = item.type==='window' ? (item.winType||'?') : (item.doorType||'?');
-  const modeLabel = item.type==='window'
-    ? (item.mode==='retro' ? 'Retro' : 'Metal Out')
-    : (item.mode==='isj' ? 'ISJ' : 'OSB');
-  return `${loc} | ${size} | ${typeLabel} | ${modeLabel}`;
-}
-
-function buildCardFields(item){
-  if(item.type==='window') return buildWindowFields(item);
-  return buildDoorFields(item);
-}
-
-function buildWindowFields(item){
-  const isRetro = item.mode==='retro';
-  const dimLabel = isRetro ? 'Jamb Box Size' : 'Opening Size';
-  const dimHint  = isRetro
-    ? 'Even box dimension — e.g. 32×62, 36×74'
-    : 'Tightest interior jamb return measurement';
-  const allWinTypes = ['DH','SH','SL','Picture','Casement','Awning','Bay','Bow','½ Round','Ext Leg Arch','Shaped'];
-  return `
-    <div class="field-wrap">
-      <label>Location</label>
-      <input type="text" value="${esc(item.location)}" placeholder="e.g. Living Room Left"
-        onchange="updateItem('${item.id}','location',this.value)">
-    </div>
-    <div class="field-wrap">
-      <label>Install Type</label>
-      <div class="pill-toggle pill-navy">
-        <button class="${!isRetro?'active':''}" onclick="updateItem('${item.id}','mode','metalout');reRenderCard('${item.id}')">Metal Out</button>
-        <button class="${isRetro?'active':''}" onclick="updateItem('${item.id}','mode','retro');reRenderCard('${item.id}')">Retro</button>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>${dimLabel}</label>
-      <div class="dim-pair">
-        <div style="flex:1">
-          <input class="dim-input" id="dimW-${item.id}" value="${esc(item.dimW)}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','dimW')" onclick="openKpad('${item.id}','dimW')">
-          <div class="dim-label">Width</div>
-        </div>
-        <div class="dim-sep">×</div>
-        <div style="flex:1">
-          <input class="dim-input" id="dimH-${item.id}" value="${esc(item.dimH)}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','dimH')" onclick="openKpad('${item.id}','dimH')">
-          <div class="dim-label">Height</div>
-        </div>
-      </div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px;">💡 ${dimHint}</div>
-    </div>
-    <div class="field-wrap">
-      <label>Quantity</label>
-      <div class="qty-row">
-        <button class="qty-btn" onclick="adjustQty('${item.id}',-1)">−</button>
-        <span class="qty-val" id="qty-${item.id}">${item.qty}</span>
-        <button class="qty-btn" onclick="adjustQty('${item.id}',1)">+</button>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Window Type</label>
-      <select onchange="updateItem('${item.id}','winType',this.value);reRenderCard('${item.id}')">
-        ${allWinTypes.map(t=>`<option ${item.winType===t?'selected':''}>${t}</option>`).join('')}
-      </select>
-    </div>
-    ${item.winType==='Shaped' ? `
-    <div class="field-wrap">
-      <label>Shape Description</label>
-      <input type="text" value="${esc(item.shapeDesc||'')}" placeholder="Describe the shape…"
-        onchange="updateItem('${item.id}','shapeDesc',this.value)">
-    </div>` : ''}
-    <div class="field-row">
-      <div class="field-wrap">
-        <label>Glass Type</label>
-        <select onchange="updateItem('${item.id}','glassType',this.value)">
-          ${['Clear','Low-E 2','Low-E 3'].map(t=>`<option ${(item.glassType||'Clear')===t?'selected':''}>${t}</option>`).join('')}
-        </select>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Glass Options</label>
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.obscureGlass?'checked':''} onchange="updateItem('${item.id}','obscureGlass',this.checked)"> Obscurity Glass
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.temperedGlass?'checked':''} onchange="updateItem('${item.id}','temperedGlass',this.checked)"> Tempered Glass
-        </label>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Grids</label>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.grids?'checked':''} onchange="updateItem('${item.id}','grids',this.checked);reRenderCard('${item.id}')"> Yes
-        </label>
-        ${item.grids ? `
-        <div style="flex:1;min-width:140px;">
-          <input type="text" value="${esc(item.gridPattern||'')}" placeholder="e.g. 3-over-1, colonial…"
-            onchange="updateItem('${item.id}','gridPattern',this.value)" style="min-height:40px;">
-        </div>` : ''}
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Notes</label>
-      <input type="text" value="${esc(item.notes)}" placeholder="Optional notes"
-        onchange="updateItem('${item.id}','notes',this.value)">
-    </div>`;
-}
-
-function buildDoorFields(item){
-  const dimLabel = item.mode==='isj' ? 'ISJ Opening' : 'OSB Opening';
-  const isStd = item.sizeMode !== 'custom';
-  const dt = item.doorType||'Single';
-
-  // ── Provia door size lookup tables (from spec sheet, all in inches) ──
-  // Width data: keyed by door type → array of {nom, unit, rough, osb}
-  const PROVIA_W = {
-    'Single': [
-      {nom:'30"', unit:'31 9/16"', rough:'32"',  osb:'34 1/16"'},
-      {nom:'32"', unit:'33 9/16"', rough:'34"',  osb:'36 1/16"'},
-      {nom:'34"', unit:'35 9/16"', rough:'36"',  osb:'38 1/16"'},
-      {nom:'36"', unit:'37 9/16"', rough:'38"',  osb:'40 1/16"'},
-      {nom:'42"', unit:'43 9/16"', rough:'44"',  osb:'46 1/16"'},
-    ],
-    'French Door': [
-      {nom:'60"', unit:'62 1/8"', rough:'62 7/8"', osb:'64 5/8"'},
-      {nom:'64"', unit:'66 1/8"', rough:'66 7/8"', osb:'68 5/8"'},
-      {nom:'68"', unit:'70 1/8"', rough:'70 7/8"', osb:'72 5/8"'},
-      {nom:'72"', unit:'74 1/8"', rough:'74 7/8"', osb:'76 5/8"'},
-      {nom:'84"', unit:'86 1/8"', rough:'86 7/8"', osb:'88 5/8"'},
-    ],
-    'French Door w/ Two 12" Sidelites': [
-      {nom:'60"', unit:'88 5/8"', rough:'89 1/2"', osb:'91 1/8"'},
-      {nom:'64"', unit:'92 5/8"', rough:'93 1/2"', osb:'95 1/8"'},
-      {nom:'68"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
-      {nom:'72"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
-      {nom:'84"', unit:'112 5/8"', rough:'113 1/2"', osb:'115 1/8"'},
-    ],
-    'French Door w/ Two 14" Sidelites': [
-      {nom:'60"', unit:'92 5/8"', rough:'93 1/2"', osb:'95 1/8"'},
-      {nom:'64"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
-      {nom:'68"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
-      {nom:'72"', unit:'104 5/8"', rough:'105 1/2"', osb:'107 1/8"'},
-      {nom:'84"', unit:'116 5/8"', rough:'117 1/2"', osb:'119 1/8"'},
-    ],
-    'French Door w/ Two 16" Sidelites': [
-      {nom:'60"', unit:'96 5/8"', rough:'97 1/2"', osb:'99 1/8"'},
-      {nom:'64"', unit:'100 5/8"', rough:'101 1/2"', osb:'103 1/8"'},
-      {nom:'68"', unit:'104 5/8"', rough:'105 1/2"', osb:'107 1/8"'},
-      {nom:'72"', unit:'108 5/8"', rough:'109 1/2"', osb:'111 1/8"'},
-      {nom:'84"', unit:'120 5/8"', rough:'121 1/2"', osb:'123 1/8"'},
-    ],
-    'Single w/ 10" Sidelite': [
-      {nom:'30"', unit:'42 13/16"', rough:'43 9/16"', osb:'45 5/16"'},
-      {nom:'32"', unit:'44 13/16"', rough:'45 9/16"', osb:'47 5/16"'},
-      {nom:'34"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
-      {nom:'36"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
-    ],
-    'Single w/ 12" Sidelite': [
-      {nom:'30"', unit:'44 13/16"', rough:'45 9/16"', osb:'47 5/16"'},
-      {nom:'32"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
-      {nom:'34"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
-      {nom:'36"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
-    ],
-    'Single w/ 14" Sidelite': [
-      {nom:'30"', unit:'46 13/16"', rough:'47 9/16"', osb:'49 5/16"'},
-      {nom:'32"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
-      {nom:'34"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
-      {nom:'36"', unit:'52 13/16"', rough:'53 9/16"', osb:'55 5/16"'},
-    ],
-    'Single w/ 16" Sidelite': [
-      {nom:'30"', unit:'48 13/16"', rough:'49 9/16"', osb:'51 5/16"'},
-      {nom:'32"', unit:'50 13/16"', rough:'51 9/16"', osb:'53 5/16"'},
-      {nom:'34"', unit:'52 13/16"', rough:'53 9/16"', osb:'55 5/16"'},
-      {nom:'36"', unit:'54 13/16"', rough:'55 9/16"', osb:'57 5/16"'},
-    ],
-    'Single w/ Two 10" Sidelites': [
-      {nom:'30"', unit:'54 1/16"', rough:'54 13/16"', osb:'56 9/16"'},
-      {nom:'32"', unit:'56 1/16"', rough:'56 13/16"', osb:'58 9/16"'},
-      {nom:'34"', unit:'58 1/16"', rough:'58 13/16"', osb:'60 9/16"'},
-      {nom:'36"', unit:'60 1/16"', rough:'60 13/16"', osb:'62 9/16"'},
-    ],
-    'Single w/ Two 12" Sidelites': [
-      {nom:'30"', unit:'58 1/16"', rough:'58 13/16"', osb:'60 9/16"'},
-      {nom:'32"', unit:'60 1/16"', rough:'60 13/16"', osb:'62 9/16"'},
-      {nom:'34"', unit:'62 1/16"', rough:'62 13/16"', osb:'64 9/16"'},
-      {nom:'36"', unit:'64 1/16"', rough:'64 13/16"', osb:'66 9/16"'},
-    ],
-    'Single w/ Two 14" Sidelites': [
-      {nom:'30"', unit:'62 1/16"', rough:'62 13/16"', osb:'64 9/16"'},
-      {nom:'32"', unit:'64 1/16"', rough:'64 13/16"', osb:'66 9/16"'},
-      {nom:'34"', unit:'66 1/16"', rough:'66 13/16"', osb:'68 9/16"'},
-      {nom:'36"', unit:'68 1/16"', rough:'68 13/16"', osb:'70 9/16"'},
-    ],
-    'Single w/ Two 16" Sidelites': [
-      {nom:'30"', unit:'66 1/16"', rough:'66 13/16"', osb:'68 9/16"'},
-      {nom:'32"', unit:'68 1/16"', rough:'68 13/16"', osb:'70 9/16"'},
-      {nom:'34"', unit:'70 1/16"', rough:'70 13/16"', osb:'72 9/16"'},
-      {nom:'36"', unit:'72 1/16"', rough:'72 13/16"', osb:'74 9/16"'},
-    ],
-    'Patio Slider': [
-      {nom:"5'0\"", unit:'59 1/2"', rough:'60"',  osb:'60"'},
-      {nom:"6'0\"", unit:'71 1/2"', rough:'72"',  osb:'72"'},
-      {nom:"8'0\"", unit:'95 1/2"', rough:'96"',  osb:'96"'},
-    ],
-    'Bi-fold': [
-      {nom:"2'0\"", unit:'23 1/2"', rough:'24"', osb:'24"'},
-      {nom:"2'4\"", unit:'27 1/2"', rough:'28"', osb:'28"'},
-      {nom:"2'8\"", unit:'31 1/2"', rough:'32"', osb:'32"'},
-      {nom:"3'0\"", unit:'35 1/2"', rough:'36"', osb:'36"'},
-    ],
+function renderCardFields(item, containerId){
+  const cont = document.getElementById(containerId);
+  cont.innerHTML = '';
+  
+  const addField = (label, fieldName, type='text', options=null) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'field-wrap';
+    let input;
+    if(type==='select' && options){
+      input = document.createElement('select');
+      options.forEach(opt=>{
+        const o = document.createElement('option');
+        o.value = opt;
+        o.textContent = opt;
+        input.appendChild(o);
+      });
+      input.value = item[fieldName];
+    } else if(type==='checkbox'){
+      input = document.createElement('input');
+      input.type = 'checkbox';
+      input.checked = item[fieldName];
+      input.style.width = 'auto';
+      input.style.minHeight = '20px';
+    } else {
+      input = document.createElement('input');
+      input.type = type;
+      input.value = item[fieldName]||'';
+      if(type==='number') input.onclick = (e)=>openKeypad(item.id, fieldName, e.target);
+    }
+    input.id = `${fieldName}-${item.id}`;
+    input.onchange = ()=>{
+      item[fieldName] = input.type==='checkbox' ? input.checked : input.value;
+      saveData();
+      updateCardSummary(item.id);
+      renderSummaryScreen();
+    };
+    wrap.appendChild(document.createElement('label')).textContent = label;
+    wrap.appendChild(input);
+    cont.appendChild(wrap);
   };
-  // Height data (same for Single, French, most types)
-  const PROVIA_H = [
-    {nom:'80"', unit:'81 5/8"', rough:'82"', osb:'82 7/8"'},
-    {nom:'84"', unit:'85 5/8"', rough:'86"', osb:'86 7/8"'},
-    {nom:'96"', unit:'97 5/8"', rough:'98"', osb:'98 7/8"'},
-  ];
-
-  const widthRows = PROVIA_W[dt] || PROVIA_W['Single'];
-  const curW = item.stdWidth || widthRows[0].nom;
-  const curH = item.stdHeight || PROVIA_H[0].nom;
-  const selW = widthRows.find(r=>r.nom===curW) || widthRows[0];
-  const selH = PROVIA_H.find(r=>r.nom===curH) || PROVIA_H[0];
-
-  // Compute the displayed size depending on mode
-  const modeW = item.mode==='osb' ? selW.osb : selW.unit;
-  const modeH = item.mode==='isj' ? selH.unit : selH.osb;
-
-  const doorTypes = ['Single','French Door',
-    'French Door w/ Two 12" Sidelites','French Door w/ Two 14" Sidelites','French Door w/ Two 16" Sidelites',
-    'Single w/ 10" Sidelite','Single w/ 12" Sidelite','Single w/ 14" Sidelite','Single w/ 16" Sidelite',
-    'Single w/ Two 10" Sidelites','Single w/ Two 12" Sidelites','Single w/ Two 14" Sidelites','Single w/ Two 16" Sidelites',
-    'Patio Slider','Bi-fold','Storm'];
-
-  return `
-    <div class="field-wrap">
-      <label>Location</label>
-      <input type="text" value="${esc(item.location)}" placeholder="e.g. Front Entry"
-        onchange="updateItem('${item.id}','location',this.value)">
-    </div>
-    <div class="field-wrap">
-      <label>Measurement Type</label>
-      <div class="pill-toggle pill-orange">
-        <button class="${item.mode==='osb'?'active':''}" onclick="updateItem('${item.id}','mode','osb');reRenderCard('${item.id}')">OSB</button>
-        <button class="${item.mode==='isj'?'active':''}" onclick="updateItem('${item.id}','mode','isj');reRenderCard('${item.id}')">ISJ</button>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Door Type</label>
-      <select onchange="updateItem('${item.id}','doorType',this.value);reRenderCard('${item.id}')">
-        ${doorTypes.map(t=>`<option ${dt===t?'selected':''}>${t}</option>`).join('')}
-      </select>
-    </div>
-    <div class="field-wrap">
-      <label>Size Mode</label>
-      <div class="pill-toggle pill-orange">
-        <button class="${isStd?'active':''}" onclick="updateItem('${item.id}','sizeMode','Standard');reRenderCard('${item.id}')">Standard</button>
-        <button class="${!isStd?'active':''}" onclick="updateItem('${item.id}','sizeMode','custom');reRenderCard('${item.id}')">Custom</button>
-      </div>
-    </div>
-    ${isStd ? `
-    <div class="field-row">
+  
+  addField('Location', 'location');
+  
+  if(item.type==='window'){
+    addField('Mode', 'mode', 'select', ['Retro', 'Metal Out']);
+    const row1 = document.createElement('div');
+    row1.className = 'field-row';
+    row1.innerHTML = `
       <div class="field-wrap">
-        <label>Nominal Width</label>
-        <select onchange="updateItem('${item.id}','stdWidth',this.value);reRenderCard('${item.id}')">
-          ${widthRows.map(r=>`<option ${curW===r.nom?'selected':''}>${r.nom}</option>`).join('')}
-        </select>
+        <label>Width</label>
+        <input type="text" id="dimW-${item.id}" value="${item.dimW||''}" onclick="openKeypad(${item.id},'dimW',this)" placeholder="0-00/00">
       </div>
       <div class="field-wrap">
-        <label>Nominal Height</label>
-        <select onchange="updateItem('${item.id}','stdHeight',this.value);reRenderCard('${item.id}')">
-          ${PROVIA_H.map(r=>`<option ${curH===r.nom?'selected':''}>${r.nom}</option>`).join('')}
-        </select>
+        <label>Height</label>
+        <input type="text" id="dimH-${item.id}" value="${item.dimH||''}" onclick="openKeypad(${item.id},'dimH',this)" placeholder="0-00/00">
       </div>
-    </div>
-    <div class="provia-size-card">
-      <div class="provia-row">
-        <span class="provia-lbl">Unit Size</span>
-        <span class="provia-val">${selW.unit} × ${selH.unit}</span>
-      </div>
-      <div class="provia-row">
-        <span class="provia-lbl">Rough Opening</span>
-        <span class="provia-val">${selW.rough} × ${selH.rough}</span>
-      </div>
-      <div class="provia-row">
-        <span class="provia-lbl">OSB (Brickmold)</span>
-        <span class="provia-val">${selW.osb} × ${selH.osb}</span>
-      </div>
-    </div>` : `
-    <div class="field-wrap">
-      <label>${dimLabel}</label>
-      <div class="dim-pair">
-        <div style="flex:1">
-          <input class="dim-input" id="dimW-${item.id}" value="${esc(item.dimW)}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','dimW')" onclick="openKpad('${item.id}','dimW')">
-          <div class="dim-label">Width</div>
-        </div>
-        <div class="dim-sep">×</div>
-        <div style="flex:1">
-          <input class="dim-input" id="dimH-${item.id}" value="${esc(item.dimH)}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','dimH')" onclick="openKpad('${item.id}','dimH')">
-          <div class="dim-label">Height</div>
-        </div>
-      </div>
-    </div>`}
-    <div class="field-row">
       <div class="field-wrap">
-        <label>Swing</label>
-        <div class="pill-toggle pill-orange">
-          <button class="${item.swing==='inswing'?'active':''}" onclick="updateItem('${item.id}','swing','inswing')">Inswing</button>
-          <button class="${item.swing==='outswing'?'active':''}" onclick="updateItem('${item.id}','swing','outswing')">Outswing</button>
+        <label>Qty</label>
+        <input type="text" id="qty-${item.id}" value="${item.qty||1}" onclick="openKeypad(${item.id},'qty',this)">
+      </div>
+    `;
+    cont.appendChild(row1);
+    
+    addField('Window Type', 'winType', 'select', ['Single Hung', 'Double Hung', 'Casement', 'Sliding', 'Picture', 'Shaped']);
+    addField('Glass Type', 'glassType', 'select', ['Clear', 'Tinted', 'Low-E']);
+    
+    const row2 = document.createElement('div');
+    row2.className = 'field-row';
+    row2.innerHTML = `
+      <div class="field-wrap">
+        <label style="margin-bottom:8px;"><input type="checkbox" id="obscureGlass-${item.id}" ${item.obscureGlass?'checked':''} onchange="item.obscureGlass=this.checked;saveData();"> Obscurity</label>
+      </div>
+      <div class="field-wrap">
+        <label style="margin-bottom:8px;"><input type="checkbox" id="temperedGlass-${item.id}" ${item.temperedGlass?'checked':''} onchange="item.temperedGlass=this.checked;saveData();"> Tempered</label>
+      </div>
+      <div class="field-wrap">
+        <label style="margin-bottom:8px;"><input type="checkbox" id="grids-${item.id}" ${item.grids?'checked':''} onchange="item.grids=this.checked;saveData();"> Grids</label>
+      </div>
+    `;
+    cont.appendChild(row2);
+    
+    if(item.grids){
+      addField('Grid Pattern', 'gridPattern', 'select', ['6x6', '8x8', '12x12', 'Custom']);
+    }
+    if(item.winType==='Shaped'){
+      addField('Shape Description', 'shapeDesc');
+    }
+  } else {
+    addField('Size Mode', 'sizeMode', 'select', ['Custom', 'Standard']);
+    if(item.sizeMode==='Standard'){
+      addField('Provia Unit', 'stdWidth', 'select', getProviaUnits().map(u=>u.unit));
+    } else {
+      const row1 = document.createElement('div');
+      row1.className = 'field-row';
+      row1.innerHTML = `
+        <div class="field-wrap">
+          <label>Width</label>
+          <input type="text" id="dimW-${item.id}" value="${item.dimW||''}" onclick="openKeypad(${item.id},'dimW',this)" placeholder="0-00/00">
         </div>
-      </div>
-    </div>
-    ${dt!=='Patio Slider'&&dt!=='Bi-fold' ? `
-    <div class="field-wrap">
-      <label>Hand</label>
-      <div class="pill-toggle pill-orange">
-        <button class="${item.hand==='left'?'active':''}" onclick="updateItem('${item.id}','hand','left')">Left Hand</button>
-        <button class="${item.hand==='right'?'active':''}" onclick="updateItem('${item.id}','hand','right')">Right Hand</button>
-      </div>
-    </div>` : ''}
-    <div class="field-wrap">
-      <label>Brickmold Measurement</label>
-      <div class="dim-pair">
-        <div style="flex:1">
-          <input class="dim-input" id="bmW-${item.id}" value="${esc(item.bmW||'')}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','bmW')" onclick="openKpad('${item.id}','bmW')">
-          <div class="dim-label">Brickmold Width</div>
+        <div class="field-wrap">
+          <label>Height</label>
+          <input type="text" id="dimH-${item.id}" value="${item.dimH||''}" onclick="openKeypad(${item.id},'dimH',this)" placeholder="0-00/00">
         </div>
-        <div class="dim-sep">×</div>
-        <div style="flex:1">
-          <input class="dim-input" id="bmH-${item.id}" value="${esc(item.bmH||'')}" placeholder="0'0&quot;"
-            readonly onfocus="openKpad('${item.id}','bmH')" onclick="openKpad('${item.id}','bmH')">
-          <div class="dim-label">Sill-to-Brick Height</div>
+        <div class="field-wrap">
+          <label>Qty</label>
+          <input type="text" id="qty-${item.id}" value="${item.qty||1}" onclick="openKeypad(${item.id},'qty',this)">
         </div>
+      `;
+      cont.appendChild(row1);
+    }
+    
+    addField('Door Type', 'doorType', 'select', ['Entry', 'Patio Slider', 'Bi-fold', 'Sliding Glass']);
+    
+    if(item.doorType!=='Patio Slider' && item.doorType!=='Bi-fold'){
+      const row2 = document.createElement('div');
+      row2.className = 'field-row';
+      row2.innerHTML = `
+        <div class="field-wrap">
+          <label>Swing</label>
+          <select id="swing-${item.id}" value="${item.swing||'inswing'}" onchange="item.swing=this.value;saveData();">
+            <option value="inswing">Inswing</option>
+            <option value="outswing">Outswing</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label>Hand</label>
+          <select id="hand-${item.id}" value="${item.hand||'right'}" onchange="item.hand=this.value;saveData();">
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+      `;
+      cont.appendChild(row2);
+    }
+    
+    addField('Install Mode', 'mode', 'select', ['ISJ', 'OSB']);
+    
+    const modRow = document.createElement('div');
+    modRow.innerHTML = `<div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-top:8px;margin-bottom:8px;">Modifiers</div>`;
+    cont.appendChild(modRow);
+    
+    const modifiers = [
+      {key:'spreadMull', label:'Spread Mull'},
+      {key:'transom', label:'Transom', hasSize:true, sizeKey:'transomSize'},
+      {key:'sideliteL', label:'Sidelite L', hasSize:true, sizeKey:'sideliteLSize'},
+      {key:'sideliteR', label:'Sidelite R', hasSize:true, sizeKey:'sideliteRSize'}
+    ];
+    
+    modifiers.forEach(mod=>{
+      const wrap = document.createElement('div');
+      wrap.style.marginBottom = '8px';
+      const chk = document.createElement('input');
+      chk.type = 'checkbox';
+      chk.checked = item.modifiers[mod.key];
+      chk.onchange = ()=>{
+        item.modifiers[mod.key] = chk.checked;
+        saveData();
+        renderCardFields(item, containerId);
+      };
+      wrap.appendChild(chk);
+      const lbl = document.createElement('label');
+      lbl.textContent = ' '+mod.label;
+      lbl.style.marginLeft = '6px';
+      wrap.appendChild(lbl);
+      cont.appendChild(wrap);
+      
+      if(mod.hasSize && item.modifiers[mod.key]){
+        const sizeWrap = document.createElement('div');
+        sizeWrap.className = 'field-wrap';
+        sizeWrap.style.marginLeft = '24px';
+        sizeWrap.style.marginBottom = '8px';
+        const sizeInput = document.createElement('input');
+        sizeInput.type = 'text';
+        sizeInput.value = item.modifiers[mod.sizeKey]||'';
+        sizeInput.placeholder = 'Size';
+        sizeInput.onchange = ()=>{
+          item.modifiers[mod.sizeKey] = sizeInput.value;
+          saveData();
+        };
+        sizeWrap.appendChild(sizeInput);
+        cont.appendChild(sizeWrap);
+      }
+    });
+    
+    const bmRow = document.createElement('div');
+    bmRow.className = 'field-row';
+    bmRow.style.marginTop = '8px';
+    bmRow.innerHTML = `
+      <div class="field-wrap">
+        <label>Brickmold W</label>
+        <input type="text" id="bmW-${item.id}" value="${item.bmW||''}" onclick="openKeypad(${item.id},'bmW',this)" placeholder="0-00/00">
       </div>
-    </div>
-    <div class="field-wrap">
-      <label>Modifiers</label>
-      <div class="checkbox-group">
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.modifiers.spreadMull?'checked':''} onchange="updateMod('${item.id}','spreadMull',this.checked)"> Spread Mull
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.modifiers.transom?'checked':''} onchange="updateMod('${item.id}','transom',this.checked);reRenderCard('${item.id}')"> Transom
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.modifiers.sideliteL?'checked':''} onchange="updateMod('${item.id}','sideliteL',this.checked);reRenderCard('${item.id}')"> Sidelite Left
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" ${item.modifiers.sideliteR?'checked':''} onchange="updateMod('${item.id}','sideliteR',this.checked);reRenderCard('${item.id}')"> Sidelite Right
-        </label>
+      <div class="field-wrap">
+        <label>Brickmold H</label>
+        <input type="text" id="bmH-${item.id}" value="${item.bmH||''}" onclick="openKeypad(${item.id},'bmH',this)" placeholder="0-00/00">
       </div>
-      ${item.modifiers.transom ? `
-      <div class="field-wrap" style="margin-top:10px;">
-        <label>Transom Height</label>
-        <select onchange="updateMod('${item.id}','transomSize',this.value)">
-          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.transomSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
-        </select>
-      </div>` : ''}
-      ${item.modifiers.sideliteL ? `
-      <div class="field-wrap" style="margin-top:10px;">
-        <label>Sidelite Left Width</label>
-        <select onchange="updateMod('${item.id}','sideliteLSize',this.value)">
-          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.sideliteLSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
-        </select>
-      </div>` : ''}
-      ${item.modifiers.sideliteR ? `
-      <div class="field-wrap" style="margin-top:10px;">
-        <label>Sidelite Right Width</label>
-        <select onchange="updateMod('${item.id}','sideliteRSize',this.value)">
-          ${['10"','12"','14"','16"'].map(s=>`<option ${(item.modifiers.sideliteRSize||'12"')===s?'selected':''}>${s}</option>`).join('')}
-        </select>
-      </div>` : ''}
-    </div>
-    <div class="field-wrap">
-      <label>Quantity</label>
-      <div class="qty-row">
-        <button class="qty-btn" onclick="adjustQty('${item.id}',-1)">−</button>
-        <span class="qty-val" id="qty-${item.id}">${item.qty}</span>
-        <button class="qty-btn" onclick="adjustQty('${item.id}',1)">+</button>
-      </div>
-    </div>
-    <div class="field-wrap">
-      <label>Notes</label>
-      <input type="text" value="${esc(item.notes)}" placeholder="Optional notes"
-        onchange="updateItem('${item.id}','notes',this.value)">
-    </div>`;
+    `;
+    cont.appendChild(bmRow);
+  }
+  
+  const trimSection = document.createElement('div');
+  trimSection.style.marginTop = '12px';
+  trimSection.style.paddingTop = '12px';
+  trimSection.style.borderTop = '1px solid var(--border)';
+  trimSection.innerHTML = `<div style="font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px;">Trim & Materials</div>`;
+  cont.appendChild(trimSection);
+  
+  addField('Caulk Level', 'caulkLevel', 'select', ['None', 'Light', 'Full']);
+  addField('Metal Cap Type', 'coilType', 'select', ['None', 'Standard Brickmold', 'Wide Trim']);
+  
+  addField('Notes', 'notes');
 }
 
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toggleCard(header){
+  header.closest('.measure-card').classList.toggle('expanded');
+}
 
-// ─── ITEM OPERATIONS ─────────────────────────────────────────────────────────
-function updateItem(id, field, value){
-  const item = items.find(i=>i.id===id);
-  if(!item) return;
-  item[field] = value;
-  saveData();
-  updateCardSummary(id);
-}
-function updateMod(id, mod, val){
-  const item = items.find(i=>i.id===id);
-  if(!item) return;
-  item.modifiers[mod] = val;
-  saveData();
-  updateCardSummary(id);
-}
-function adjustQty(id, delta){
-  const item = items.find(i=>i.id===id);
-  if(!item) return;
-  item.qty = Math.max(1, (item.qty||1)+delta);
-  saveData();
-  const el = document.getElementById('qty-'+id);
-  if(el) el.textContent = item.qty;
-  updateCardSummary(id);
-}
-function toggleCard(id){
-  const item = items.find(i=>i.id===id);
-  if(!item) return;
-  item.expanded = !item.expanded;
-  saveData();
-  const card = document.getElementById('card-'+id);
-  if(card) card.classList.toggle('expanded', item.expanded);
-}
-function reRenderCard(id){
-  const item = items.find(i=>i.id===id);
-  if(!item) return;
-  saveData();
-  const old = document.getElementById('card-'+id);
-  if(!old) return;
-  const neu = buildCard(item);
-  old.parentNode.replaceChild(neu, old);
-}
 function updateCardSummary(id){
   const item = items.find(i=>i.id===id);
   if(!item) return;
   const card = document.getElementById('card-'+id);
   if(!card) return;
-  const sumEl = card.querySelector('.card-summary');
-  if(sumEl) sumEl.innerHTML = buildSummaryLine(item);
-}
-function deleteItem(id){
-  if(!confirm('Delete this item?')) return;
-  items = items.filter(i=>i.id!==id);
-  saveData();
-  const card = document.getElementById('card-'+id);
-  if(card) card.remove();
-  if(items.length===0) document.getElementById('empty-measure').style.display='';
+  const summary = item.type==='window'
+    ? `${item.location||'(no location)'} | ${item.dimW||'?'} × ${item.dimH||'?'}`
+    : `${item.location||'(no location)'} | ${item.dimW||'?'} × ${item.dimH||'?'}`;
+  card.querySelector('.card-summary').textContent = summary;
 }
 
-// ─── PHOTO ───────────────────────────────────────────────────────────────────
-function triggerPhoto(id){
-  const fi = document.getElementById('photo-input-'+id);
-  if(fi) fi.click();
-}
-function handlePhoto(e, id){
-  const file = e.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const item = items.find(i=>i.id===id);
-    if(!item) return;
-    // compress
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const MAX=800;
-      let w=img.width, h=img.height;
-      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
-      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
-      canvas.width=w; canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      item.photo = canvas.toDataURL('image/jpeg',0.7);
-      saveData();
-      const thumb = document.getElementById('thumb-'+id);
-      if(thumb){
-        if(thumb.tagName==='IMG'){ thumb.src=item.photo; }
-        else {
-          const ni = document.createElement('img');
-          ni.className='photo-thumb'; ni.src=item.photo; ni.id='thumb-'+id; ni.alt='photo';
-          thumb.parentNode.replaceChild(ni, thumb);
-        }
-      }
-    };
-    img.src = ev.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-// ─── FRACTION KEYPAD ─────────────────────────────────────────────────────────
-// All 15 fractions found on a standard US measuring tape (16ths-based)
-const TAPE_FRACS = [
-  {label:'¹⁄₁₆', val:'1/16'},
-  {label:'⅛',    val:'1/8'},
-  {label:'³⁄₁₆', val:'3/16'},
-  {label:'¼',    val:'1/4'},
-  {label:'⁵⁄₁₆', val:'5/16'},
-  {label:'⅜',    val:'3/8'},
-  {label:'⁷⁄₁₆', val:'7/16'},
-  {label:'½',    val:'1/2'},
-  {label:'⁹⁄₁₆', val:'9/16'},
-  {label:'⅝',    val:'5/8'},
-  {label:'¹¹⁄₁₆',val:'11/16'},
-  {label:'¾',    val:'3/4'},
-  {label:'¹³⁄₁₆',val:'13/16'},
-  {label:'⅞',    val:'7/8'},
-  {label:'¹⁵⁄₁₆',val:'15/16'},
-];
-const FRAC_VALS = TAPE_FRACS.map(f=>f.val);
-
-// ── Provia width lookup (top-level for summary/scope use) ──
-const PROVIA_W_GLOBAL = {
-  'Single': [
-    {nom:'30"',unit:'31 9/16"',rough:'32"',osb:'34 1/16"'},
-    {nom:'32"',unit:'33 9/16"',rough:'34"',osb:'36 1/16"'},
-    {nom:'34"',unit:'35 9/16"',rough:'36"',osb:'38 1/16"'},
-    {nom:'36"',unit:'37 9/16"',rough:'38"',osb:'40 1/16"'},
-    {nom:'42"',unit:'43 9/16"',rough:'44"',osb:'46 1/16"'},
-  ],
-  'French Door': [
-    {nom:'60"',unit:'62 1/8"',rough:'62 7/8"',osb:'64 5/8"'},
-    {nom:'64"',unit:'66 1/8"',rough:'66 7/8"',osb:'68 5/8"'},
-    {nom:'68"',unit:'70 1/8"',rough:'70 7/8"',osb:'72 5/8"'},
-    {nom:'72"',unit:'74 1/8"',rough:'74 7/8"',osb:'76 5/8"'},
-    {nom:'84"',unit:'86 1/8"',rough:'86 7/8"',osb:'88 5/8"'},
-  ],
-  'French Door w/ Two 12" Sidelites':[{nom:'60"',unit:'88 5/8"',rough:'89 1/2"',osb:'91 1/8"'},{nom:'64"',unit:'92 5/8"',rough:'93 1/2"',osb:'95 1/8"'},{nom:'68"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'72"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'84"',unit:'112 5/8"',rough:'113 1/2"',osb:'115 1/8"'}],
-  'French Door w/ Two 14" Sidelites':[{nom:'60"',unit:'92 5/8"',rough:'93 1/2"',osb:'95 1/8"'},{nom:'64"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'68"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'72"',unit:'104 5/8"',rough:'105 1/2"',osb:'107 1/8"'},{nom:'84"',unit:'116 5/8"',rough:'117 1/2"',osb:'119 1/8"'}],
-  'French Door w/ Two 16" Sidelites':[{nom:'60"',unit:'96 5/8"',rough:'97 1/2"',osb:'99 1/8"'},{nom:'64"',unit:'100 5/8"',rough:'101 1/2"',osb:'103 1/8"'},{nom:'68"',unit:'104 5/8"',rough:'105 1/2"',osb:'107 1/8"'},{nom:'72"',unit:'108 5/8"',rough:'109 1/2"',osb:'111 1/8"'},{nom:'84"',unit:'120 5/8"',rough:'121 1/2"',osb:'123 1/8"'}],
-  'Single w/ 10" Sidelite':[{nom:'30"',unit:'42 13/16"',rough:'43 9/16"',osb:'45 5/16"'},{nom:'32"',unit:'44 13/16"',rough:'45 9/16"',osb:'47 5/16"'},{nom:'34"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'36"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'}],
-  'Single w/ 12" Sidelite':[{nom:'30"',unit:'44 13/16"',rough:'45 9/16"',osb:'47 5/16"'},{nom:'32"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'34"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'36"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'}],
-  'Single w/ 14" Sidelite':[{nom:'30"',unit:'46 13/16"',rough:'47 9/16"',osb:'49 5/16"'},{nom:'32"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'34"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'},{nom:'36"',unit:'52 13/16"',rough:'53 9/16"',osb:'55 5/16"'}],
-  'Single w/ 16" Sidelite':[{nom:'30"',unit:'48 13/16"',rough:'49 9/16"',osb:'51 5/16"'},{nom:'32"',unit:'50 13/16"',rough:'51 9/16"',osb:'53 5/16"'},{nom:'34"',unit:'52 13/16"',rough:'53 9/16"',osb:'55 5/16"'},{nom:'36"',unit:'54 13/16"',rough:'55 9/16"',osb:'57 5/16"'}],
-  'Single w/ Two 10" Sidelites':[{nom:'30"',unit:'54 1/16"',rough:'54 13/16"',osb:'56 9/16"'},{nom:'32"',unit:'56 1/16"',rough:'56 13/16"',osb:'58 9/16"'},{nom:'34"',unit:'58 1/16"',rough:'58 13/16"',osb:'60 9/16"'},{nom:'36"',unit:'60 1/16"',rough:'60 13/16"',osb:'62 9/16"'}],
-  'Single w/ Two 12" Sidelites':[{nom:'30"',unit:'58 1/16"',rough:'58 13/16"',osb:'60 9/16"'},{nom:'32"',unit:'60 1/16"',rough:'60 13/16"',osb:'62 9/16"'},{nom:'34"',unit:'62 1/16"',rough:'62 13/16"',osb:'64 9/16"'},{nom:'36"',unit:'64 1/16"',rough:'64 13/16"',osb:'66 9/16"'}],
-  'Single w/ Two 14" Sidelites':[{nom:'30"',unit:'62 1/16"',rough:'62 13/16"',osb:'64 9/16"'},{nom:'32"',unit:'64 1/16"',rough:'64 13/16"',osb:'66 9/16"'},{nom:'34"',unit:'66 1/16"',rough:'66 13/16"',osb:'68 9/16"'},{nom:'36"',unit:'68 1/16"',rough:'68 13/16"',osb:'70 9/16"'}],
-  'Single w/ Two 16" Sidelites':[{nom:'30"',unit:'66 1/16"',rough:'66 13/16"',osb:'68 9/16"'},{nom:'32"',unit:'68 1/16"',rough:'68 13/16"',osb:'70 9/16"'},{nom:'34"',unit:'70 1/16"',rough:'70 13/16"',osb:'72 9/16"'},{nom:'36"',unit:'72 1/16"',rough:'72 13/16"',osb:'74 9/16"'}],
-};
-const PROVIA_H_GLOBAL = [
-  {nom:'80"',unit:'81 5/8"',rough:'82"',osb:'82 7/8"'},
-  {nom:'84"',unit:'85 5/8"',rough:'86"',osb:'86 7/8"'},
-  {nom:'96"',unit:'97 5/8"',rough:'98"',osb:'98 7/8"'},
-];
-function getProviaSize(item){
-  if(item.type!=='door'||item.sizeMode==='custom') return null;
-  const rows = PROVIA_W_GLOBAL[item.doorType] || PROVIA_W_GLOBAL['Single'];
-  const rW = rows.find(r=>r.nom===item.stdWidth) || rows[0];
-  const rH = PROVIA_H_GLOBAL.find(r=>r.nom===item.stdHeight) || PROVIA_H_GLOBAL[0];
-  return {unit: rW.unit+' × '+rH.unit, rough: rW.rough+' × '+rH.rough, osb: rW.osb+' × '+rH.osb};
-}
-
-// drum scroll state
-let drumScrollTimer = null;
-
-function buildKpad(){
-  // ── Fraction drum wheel ──
-  const drum = document.getElementById('kp-frac-drum');
-
-  // "None" option at top
-  const noneEl = document.createElement('div');
-  noneEl.className = 'kp-drum-item no-frac';
-  noneEl.dataset.frac = '';
-  noneEl.textContent = 'none';
-  drum.appendChild(noneEl);
-
-  TAPE_FRACS.forEach(f => {
-    const el = document.createElement('div');
-    el.className = 'kp-drum-item';
-    el.dataset.frac = f.val;
-    el.textContent = f.label;
-    drum.appendChild(el);
-  });
-
-  // Tap any item → jump to it
-  drum.addEventListener('click', e => {
-    const item = e.target.closest('.kp-drum-item');
-    if(!item) return;
-    scrollDrumToFrac(item.dataset.frac, true);
-    kpSelectFrac(item.dataset.frac);
-  });
-
-  // On scroll end → just update visual highlight, don't commit value
-  drum.addEventListener('scroll', () => {
-    clearTimeout(drumScrollTimer);
-    drumScrollTimer = setTimeout(() => {
-      const snapped = getDrumCentreItem();
-      if(!snapped) return;
-      drum.querySelectorAll('.kp-drum-item').forEach(el=>{
-        el.classList.toggle('drum-active', el === snapped);
-      });
-    }, 80);
-  }, {passive:true});
-
-  // ── Digit / action grid (4-column) ──
-  const grid = document.getElementById('kp-grid');
-  const buttons = [
-    {label:'7',val:'7'},{label:'8',val:'8'},{label:'9',val:'9'},{label:'⌫',val:'back',cls:'back'},
-    {label:'4',val:'4'},{label:'5',val:'5'},{label:'6',val:'6'},{label:"'",val:"'",cls:'special'},
-    {label:'1',val:'1'},{label:'2',val:'2'},{label:'3',val:'3'},{label:'"',val:'"',cls:'special'},
-    {label:'0',val:'0'},{label:'',val:'',cls:'disabled'},{label:'',val:'',cls:'disabled'},{label:'✓ Done',val:'done',cls:'done'},
-  ];
-  buttons.forEach(b => {
-    const btn = document.createElement('button');
-    btn.className = 'kp-btn'+(b.cls?' '+b.cls:'');
-    btn.textContent = b.label;
-    if(b.val && b.val!=='') btn.addEventListener('click',()=>kpPress(b.val));
-    grid.appendChild(btn);
-  });
-}
-
-function getDrumCentreItem(){
-  const drum = document.getElementById('kp-frac-drum');
-  const drumMid = drum.scrollTop + drum.clientHeight / 2;
-  let best = null, bestDist = Infinity;
-  drum.querySelectorAll('.kp-drum-item').forEach(el => {
-    const mid = el.offsetTop + el.offsetHeight / 2;
-    const dist = Math.abs(mid - drumMid);
-    if(dist < bestDist){ bestDist = dist; best = el; }
-  });
-  return best;
-}
-
-function scrollDrumToFrac(fracVal, animate){
-  const drum = document.getElementById('kp-frac-drum');
-  const target = drum.querySelector(`[data-frac="${fracVal}"]`);
-  if(!target) return;
-  const targetMid = target.offsetTop + target.offsetHeight / 2;
-  const scrollTo = targetMid - drum.clientHeight / 2;
-  drum.scrollTo({top: scrollTo, behavior: animate ? 'smooth' : 'instant'});
-}
-
-function kpSelectFrac(fracVal){
-  // Strip any existing trailing fraction (with optional leading space)
-  kpValue = kpValue.replace(/\s*\d+\/\d+$/, '');
-  // Append new fraction with a space separator if there's already content
-  if(fracVal){
-    kpValue = (kpValue ? kpValue + ' ' : '') + fracVal;
-  }
-  updateKpadDisplay();
-  // Highlight centre item
-  const drum = document.getElementById('kp-frac-drum');
-  drum.querySelectorAll('.kp-drum-item').forEach(el => {
-    el.classList.toggle('drum-active', el.dataset.frac === fracVal);
-  });
-}
-
-function openKpad(itemId, field){
+// ─── PHOTO MANAGEMENT ───────────────────────────────────────────────────────
+function showPhotoMenu(itemId){
   const item = items.find(i=>i.id===itemId);
   if(!item) return;
-  kpTarget = {itemId, field};
-  kpValue = item[field]||'';
-  updateKpadDisplay();
-  document.getElementById('kp-overlay').classList.add('open');
-  // Scroll drum to current fraction (or "none") after paint
-  requestAnimationFrame(()=>{
-    const fracMatch = kpValue.match(/(\d+\/\d+)$/);
-    const cur = fracMatch ? fracMatch[1] : '';
-    scrollDrumToFrac(cur, false);
-    // highlight
-    const drum = document.getElementById('kp-frac-drum');
-    drum.querySelectorAll('.kp-drum-item').forEach(el => {
-      el.classList.toggle('drum-active', el.dataset.frac === cur);
-    });
+  
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay open';
+  modal.innerHTML = `
+    <div class="modal-content">
+      <div class="modal-title">📸 Photos</div>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <button class="btn-primary" onclick="capturePhoto(${itemId},'before')">📷 Take Before Photo</button>
+        <button class="btn-primary" onclick="capturePhoto(${itemId},'after')">📷 Take After Photo</button>
+        <button class="btn-primary" onclick="capturePhoto(${itemId},'reference')">📷 Take Reference Photo</button>
+      </div>
+      <div style="margin-top:16px;">
+        <div style="font-weight:600;margin-bottom:8px;">Existing Photos:</div>
+        <div class="photo-gallery" id="photo-list-${itemId}"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" onclick="this.closest('.modal-overlay').remove()">Close</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  renderPhotoList(itemId);
+}
+
+function renderPhotoList(itemId){
+  const item = items.find(i=>i.id===itemId);
+  if(!item) return;
+  const list = document.getElementById('photo-list-'+itemId);
+  list.innerHTML = '';
+  
+  ['before','after','reference'].forEach(type=>{
+    if(item.photos[type]){
+      const wrap = document.createElement('div');
+      wrap.style.position = 'relative';
+      const img = document.createElement('img');
+      img.src = item.photos[type];
+      img.className = 'photo-thumb';
+      img.onclick = ()=>showPhotoModal(item.photos[type]);
+      const label = document.createElement('div');
+      label.className = 'photo-label';
+      label.textContent = type.toUpperCase();
+      const btn = document.createElement('button');
+      btn.className = 'photo-delete';
+      btn.textContent = '×';
+      btn.onclick = ()=>{
+        item.photos[type] = null;
+        saveData();
+        renderPhotoList(itemId);
+      };
+      wrap.appendChild(img);
+      wrap.appendChild(label);
+      wrap.appendChild(btn);
+      list.appendChild(wrap);
+    }
   });
 }
-function kpOverlayClick(e){
-  if(e.target === document.getElementById('kp-overlay')) closeKpad();
+
+function capturePhoto(itemId, type){
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  input.capture = 'environment';
+  input.onchange = (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt)=>{
+      const item = items.find(i=>i.id===itemId);
+      if(item){
+        item.photos[type] = evt.target.result;
+        saveData();
+        renderPhotoList(itemId);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
 }
-function closeKpad(){ document.getElementById('kp-overlay').classList.remove('open'); kpTarget=null; }
+
+function showPhotoModal(src){
+  document.getElementById('photo-modal-img').src = src;
+  document.getElementById('photo-modal-overlay').classList.add('open');
+}
+
+function closePhotoModal(){
+  document.getElementById('photo-modal-overlay').classList.remove('open');
+}
+
+// ─── KEYPAD ──────────────────────────────────────────────────────────────────
+function openKeypad(itemId, field, inputEl){
+  kpTarget = {itemId, field};
+  const item = items.find(i=>i.id===itemId);
+  kpValue = item ? (item[field]||'') : '';
+  renderKeypad();
+  document.getElementById('kp-overlay').classList.add('open');
+  document.getElementById('kp-display').focus();
+}
+
+function renderKeypad(){
+  const display = document.getElementById('kp-display');
+  display.textContent = kpValue || '';
+  display.classList.toggle('empty', !kpValue);
+  
+  const drum = document.getElementById('kp-frac-drum');
+  drum.innerHTML = '';
+  FRAC_VALS.forEach(f=>{
+    const item = document.createElement('div');
+    item.className = 'kp-frac-item';
+    item.textContent = f;
+    item.dataset.frac = f;
+    item.onclick = ()=>kpSelectFrac(f);
+    drum.appendChild(item);
+  });
+  
+  const numpad = document.getElementById('kp-numpad');
+  numpad.innerHTML = '';
+  const nums = [
+    {t:'1',c:''},{t:'2',c:''},{t:'3',c:''},{t:'+',c:''},
+    {t:'4',c:''},{t:'5',c:''},{t:'6',c:''},{t:'-',c:''},
+    {t:'7',c:''},{t:'8',c:''},{t:'9',c:''},{t:'CLR',c:'kp-clear'},
+    {t:'0',c:''},{t:'.',c:''},{t:'DONE',c:'kp-submit'},
+  ];
+  nums.forEach(n=>{
+    const btn = document.createElement('button');
+    btn.className = 'kp-btn '+n.c;
+    btn.textContent = n.t;
+    if(n.t==='CLR') btn.onclick = ()=>{kpValue='';updateKpadDisplay();};
+    else if(n.t==='DONE') btn.onclick = ()=>commitKpad();
+    else btn.onclick = ()=>kpKeyPress(n.t);
+    numpad.appendChild(btn);
+  });
+}
+
 function updateKpadDisplay(){
-  const disp = document.getElementById('kp-display');
-  if(kpValue){ disp.textContent = kpValue; disp.classList.remove('empty'); }
-  else { disp.textContent=''; disp.classList.add('empty'); }
+  document.getElementById('kp-display').textContent = kpValue;
+  document.getElementById('kp-display').classList.toggle('empty', !kpValue);
 }
-function kpPress(val){
-  if(val==='done'){ commitKpad(); return; }
-  if(val==='back'){
-    // Remove trailing " fraction" as a single unit, otherwise one char
-    if(/\s*\d+\/\d+$/.test(kpValue)){
-      kpValue = kpValue.replace(/\s*\d+\/\d+$/, '');
-    } else {
-      kpValue = kpValue.slice(0,-1);
-    }
-    updateKpadDisplay();
-    // sync drum to "none" if no trailing fraction
-    const stillFrac = kpValue.match(/(\d+\/\d+)$/);
-    const cur = stillFrac ? stillFrac[1] : '';
-    scrollDrumToFrac(cur, true);
-    const drum = document.getElementById('kp-frac-drum');
-    drum.querySelectorAll('.kp-drum-item').forEach(el=>{
+
+function kpKeyPress(val){
+  if(['1/16','1/8','3/16','1/4','5/16','3/8','7/16','1/2','9/16','5/8','11/16','3/4','13/16','7/8','15/16'].includes(val)){
+    const items = document.querySelectorAll('.kp-frac-item');
+    const cur = kpValue.split('-')[1] || '';
+    items.forEach(el=>{
       el.classList.toggle('drum-active', el.dataset.frac===cur);
     });
     return;
   }
   if(FRAC_VALS.includes(val)){
-    // handled by drum scroll → kpSelectFrac; but also allow direct call
     kpSelectFrac(val);
-    scrollDrumToFrac(val, true);
   } else {
     kpValue += val;
     updateKpadDisplay();
   }
 }
+
+function kpSelectFrac(val){
+  const parts = kpValue.split('-');
+  if(parts.length===1) parts.push('');
+  parts[1] = val;
+  kpValue = parts[0] + '-' + val;
+  updateKpadDisplay();
+}
+
+function closeKpad(){
+  document.getElementById('kp-overlay').classList.remove('open');
+  kpTarget = null;
+}
+
 function commitKpad(){
   if(!kpTarget) return;
   const item = items.find(i=>i.id===kpTarget.itemId);
@@ -1359,6 +935,82 @@ function commitKpad(){
   if(inp) inp.value = kpValue;
   updateCardSummary(kpTarget.itemId);
   closeKpad();
+}
+
+// ─── PROVIA INTEGRATION ──────────────────────────────────────────────────────
+function getProviaUnits(){
+  return [
+    {unit:'2068-2 Standard'},
+    {unit:'2668-2 Standard'},
+    {unit:'3068-2 Standard'},
+    {unit:'2076-2 Standard'},
+    {unit:'2676-2 Standard'},
+    {unit:'3076-2 Standard'},
+  ];
+}
+
+function getProviaSize(item){
+  const units = getProviaUnits();
+  return units.find(u=>u.unit===item.stdWidth);
+}
+
+// ─── MATERIAL CALCULATIONS ──────────────────────────────────────────────────
+function calculateMaterials(){
+  let linFeetBrickmold = 0, linFeetSill = 0, linFeetSillNose = 0;
+  let linFeetScreenStop = 0, linFeet1x4 = 0, linFeet1x6 = 0, linFeet1x8 = 0, linFeetBackband = 0;
+  let caulkTubes = 0, coilRolls = 0;
+  
+  items.forEach(item=>{
+    const w = parseFloat(item.dimW) || 0;
+    const h = parseFloat(item.dimH) || 0;
+    const qty = parseInt(item.qty) || 1;
+    
+    if(item.type==='window'){
+      const perimeter = (w + h) * 2;
+      
+      // Trim calculation - brickmold (perimeter)
+      linFeetBrickmold += perimeter * qty;
+      
+      // Caulk calculation
+      if(item.caulkLevel==='None') caulkTubes += 0;
+      else if(item.caulkLevel==='Light') caulkTubes += (qty * 0.1); // 1 tube per 10 windows
+      else if(item.caulkLevel==='Full') caulkTubes += (qty * 0.5); // 1 tube per 2 windows
+      
+      // Coil calculation (metal cap)
+      if(item.mode==='Metal Out'){
+        if(item.coilType==='Standard Brickmold') coilRolls += (qty * 0.1); // 1 roll per 10
+        else if(item.coilType==='Wide Trim') coilRolls += (qty * 0.15); // 1 roll per 6-7
+      }
+    }
+    else if(item.type==='door'){
+      const perimeter = item.bmW && item.bmH ? ((parseFloat(item.bmW)||0) + (parseFloat(item.bmH)||0)) * 2 : 0;
+      
+      // Brickmold trim
+      if(perimeter) linFeetBrickmold += perimeter * qty;
+      
+      // Sill/trim for doors
+      const doorWidth = item.sizeMode==='Standard' ? 36 : (parseFloat(item.dimW)||0);
+      linFeetSill += doorWidth * qty;
+      
+      // Caulk
+      if(item.caulkLevel==='None') caulkTubes += 0;
+      else if(item.caulkLevel==='Light') caulkTubes += (qty * 0.1);
+      else if(item.caulkLevel==='Full') caulkTubes += (qty * 0.5);
+      
+      // Coil (doors with metal out)
+      if(item.mode==='OSB'){
+        if(item.coilType==='Standard Brickmold') coilRolls += (qty * 0.1);
+        else if(item.coilType==='Wide Trim') coilRolls += (qty * 0.15);
+      }
+    }
+  });
+  
+  return {
+    brickmold: Math.round(linFeetBrickmold * 10) / 10,
+    sill: Math.round(linFeetSill * 10) / 10,
+    caulk: Math.round(caulkTubes * 10) / 10,
+    coil: Math.round(coilRolls * 10) / 10,
+  };
 }
 
 // ─── SUMMARY SCREEN ──────────────────────────────────────────────────────────
@@ -1371,26 +1023,49 @@ function renderSummaryScreen(){
     ${esc(job.date)||''}<br>
     ${job.notes?'<em>'+esc(job.notes)+'</em>':''}
   `;
-  // Items
+  
+  // Materials list
+  const mat = calculateMaterials();
+  const matList = document.getElementById('sum-materials-list');
+  matList.innerHTML = `
+    <div class="material-row"><span class="material-row-label">Brickmold</span><span class="material-row-value">${mat.brickmold} ft</span></div>
+    <div class="material-row"><span class="material-row-label">Sill</span><span class="material-row-value">${mat.sill} ft</span></div>
+    <div class="material-row"><span class="material-row-label">Caulk</span><span class="material-row-value">${mat.caulk} tubes</span></div>
+    <div class="material-row"><span class="material-row-label">Metal Coil</span><span class="material-row-value">${mat.coil} rolls</span></div>
+  `;
+  
+  // Stats
+  const wins = items.filter(i=>i.type==='window');
+  const doors = items.filter(i=>i.type==='door');
+  const stats = `
+    <div class="material-row"><span class="material-row-label">Windows</span><span class="material-row-value">${wins.length}</span></div>
+    <div class="material-row"><span class="material-row-label">Doors</span><span class="material-row-value">${doors.length}</span></div>
+  `;
+  matList.innerHTML += stats;
+  
+  // Items list
   const list = document.getElementById('sum-items-list');
   list.innerHTML='';
   if(items.length===0){
     list.innerHTML='<p style="color:var(--muted);font-size:14px;">No measurements yet.</p>';
     return;
   }
+  
   items.forEach(item=>{
     const d = document.createElement('div');
     d.className = `summary-item ${item.type}-item`;
     let size = '';
     if(item.type==='door'&&item.sizeMode==='Standard'){
       const ps = getProviaSize(item);
-      size = ps ? `Unit: ${ps.unit}` : `${item.stdWidth} × ${item.stdHeight}`;
+      size = ps ? `Unit: ${ps.unit}` : `${item.dimW||'?'} × ${item.dimH||'?'}`;
     } else {
       size = `${item.dimW||'?'} × ${item.dimH||'?'}`;
     }
+    
     const modeStr = item.type==='window'
       ? (item.mode==='retro'?'Retro':'Metal Out')
       : (item.mode==='isj'?'ISJ':'OSB');
+    
     let detail = `${modeStr} | ${size}`;
     if(item.type==='window'){
       detail += ` | ${item.winType}`;
@@ -1398,6 +1073,8 @@ function renderSummaryScreen(){
       detail += ` | ${glass}`;
       if(item.grids) detail += ` | Grids${item.gridPattern?': '+item.gridPattern:''}`;
       if(item.winType==='Shaped'&&item.shapeDesc) detail += ` | Shape: ${item.shapeDesc}`;
+      detail += ` | Caulk: ${item.caulkLevel}`;
+      if(item.mode==='Metal Out') detail += ` | Metal: ${item.coilType}`;
     }
     if(item.type==='door'){
       detail += ` | ${item.doorType}`;
@@ -1409,18 +1086,81 @@ function renderSummaryScreen(){
       if(item.modifiers.sideliteR) mods.push(`Sidelite R ${item.modifiers.sideliteRSize||''}`);
       if(mods.length) detail += ` | ${mods.join(', ')}`;
       if(item.bmW||item.bmH) detail += ` | BM: ${item.bmW||'?'} × ${item.bmH||'?'}`;
+      detail += ` | Caulk: ${item.caulkLevel}`;
+      if(item.mode==='OSB') detail += ` | Metal: ${item.coilType}`;
     }
     if(item.qty>1) detail += ` | Qty: ${item.qty}`;
-    if(item.notes) detail += ` | ${item.notes}`;
+    if(item.notes) detail += ` | Note: ${item.notes}`;
     d.innerHTML=`<div class="item-title">${item.type==='window'?'🪟':'🚪'} ${esc(item.location)||'(no location)'}</div><div class="item-detail">${esc(detail)}</div>`;
     list.appendChild(d);
   });
 }
 
-// ─── API KEY ─────────────────────────────────────────────────────────────────
-// ─── EXPORT & SHARE ──────────────────────────────────────────────────────────
-function loadApiKey(){ }
-function saveApiKey(){ }
+// ─── EXPORT ──────────────────────────────────────────────────────────────────
+function buildShareText(){
+  const lines = [];
+  lines.push('THS FIELD MEASUREMENTS');
+  lines.push('======================');
+  lines.push(`Customer: ${job.name||'(none)'}`);
+  lines.push(`Address:  ${job.address||'(none)'}`);
+  lines.push(`Date:     ${job.date||'(none)'}`);
+  if(job.notes) lines.push(`Notes:    ${job.notes}`);
+  lines.push('');
+  
+  const mat = calculateMaterials();
+  lines.push('MATERIALS NEEDED');
+  lines.push('----------------');
+  lines.push(`Brickmold: ${mat.brickmold} ft`);
+  lines.push(`Sill: ${mat.sill} ft`);
+  lines.push(`Caulk: ${mat.caulk} tubes`);
+  lines.push(`Metal Coil: ${mat.coil} rolls`);
+  lines.push('');
+  
+  const wins = items.filter(i=>i.type==='window');
+  const doors = items.filter(i=>i.type==='door');
+  
+  if(wins.length){
+    lines.push(`WINDOWS (${wins.length})`);
+    lines.push('--------');
+    wins.forEach((w,i)=>{
+      const size = `${w.dimW||'?'} × ${w.dimH||'?'}`;
+      const installType = w.mode==='retro' ? 'Retro' : 'Metal Out';
+      const glass = [w.glassType||'Clear', w.obscureGlass?'Obscurity':'', w.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
+      const grids = w.grids ? `Grids${w.gridPattern?': '+w.gridPattern:''}` : '';
+      lines.push(`W${i+1}: ${w.location||'(no location)'}`);
+      lines.push(`     ${w.winType} | ${installType} | ${size} | Qty ${w.qty}`);
+      lines.push(`     Glass: ${glass}${grids?'|':''}${grids}`);
+      lines.push(`     Caulk: ${w.caulkLevel}${w.mode==='Metal Out'?' | Metal: '+w.coilType:''}`);
+      if(w.notes) lines.push(`     Note: ${w.notes}`);
+    });
+    lines.push('');
+  }
+  
+  if(doors.length){
+    lines.push(`DOORS (${doors.length})`);
+    lines.push('------');
+    doors.forEach((d,i)=>{
+      const ps = getProviaSize(d);
+      const size = d.sizeMode==='Standard'&&ps ? `Unit: ${ps.unit}` : `${d.dimW||'?'} × ${d.dimH||'?'}`;
+      const install = d.mode==='isj'?'ISJ':'OSB';
+      const mods=[];
+      if(d.modifiers.spreadMull) mods.push('Spread Mull');
+      if(d.modifiers.transom) mods.push(`Transom ${d.modifiers.transomSize||''}`);
+      if(d.modifiers.sideliteL) mods.push(`Sidelite L ${d.modifiers.sideliteLSize||''}`);
+      if(d.modifiers.sideliteR) mods.push(`Sidelite R ${d.modifiers.sideliteRSize||''}`);
+      lines.push(`D${i+1}: ${d.location||'(no location)'}`);
+      lines.push(`     ${d.doorType} | ${install} | ${size} | Qty ${d.qty}`);
+      if(d.doorType!=='Patio Slider'&&d.doorType!=='Bi-fold')
+        lines.push(`     ${d.swing==='inswing'?'Inswing':'Outswing'}, ${d.hand==='left'?'LH':'RH'}`);
+      if(mods.length) lines.push(`     ${mods.join(', ')}`);
+      if(d.bmW||d.bmH) lines.push(`     Brickmold: ${d.bmW||'?'} × ${d.bmH||'?'}`);
+      lines.push(`     Caulk: ${d.caulkLevel}${d.mode==='OSB'?' | Metal: '+d.coilType:''}`);
+      if(d.notes) lines.push(`     Note: ${d.notes}`);
+    });
+  }
+  
+  return lines.join('\n');
+}
 
 function copyMeasurements(){
   const text = buildShareText();
@@ -1440,75 +1180,149 @@ function fallbackCopyText(text){
   document.body.appendChild(el); el.select(); document.execCommand('copy');
   document.body.removeChild(el);
 }
-function buildShareText(){
-  const lines = [];
-  lines.push('THS FIELD MEASUREMENTS');
-  lines.push('======================');
-  lines.push(`Customer: ${job.name||'(none)'}`);
-  lines.push(`Address:  ${job.address||'(none)'}`);
-  lines.push(`Date:     ${job.date||'(none)'}`);
-  if(job.notes) lines.push(`Notes:    ${job.notes}`);
-  lines.push('');
-  const wins = items.filter(i=>i.type==='window');
-  const doors = items.filter(i=>i.type==='door');
-  if(wins.length){
-    lines.push(`WINDOWS (${wins.length})`);
-    lines.push('--------');
-    wins.forEach((w,i)=>{
-      const size = `${w.dimW||'?'} × ${w.dimH||'?'}`;
-      const installType = w.mode==='retro' ? 'Retro (Jamb Box)' : 'Metal Out (Opening)';
-      const glass = [w.glassType||'Clear', w.obscureGlass?'Obscurity':'', w.temperedGlass?'Tempered':''].filter(Boolean).join(', ');
-      const grids = w.grids ? `Grids${w.gridPattern?': '+w.gridPattern:''}` : 'No Grids';
-      lines.push(`W${i+1}: ${w.location||'(no location)'}`);
-      lines.push(`     ${w.winType} | ${installType} | ${size} | Qty ${w.qty}`);
-      lines.push(`     Glass: ${glass} | ${grids}`);
-      if(w.notes) lines.push(`     Note: ${w.notes}`);
-    });
-    lines.push('');
-  }
-  if(doors.length){
-    lines.push(`DOORS (${doors.length})`);
-    lines.push('------');
-    doors.forEach((d,i)=>{
-      const ps = getProviaSize(d);
-      const size = d.sizeMode==='Standard'&&ps ? `Unit: ${ps.unit}` : `${d.dimW||'?'} × ${d.dimH||'?'}`;
-      const install = d.mode==='isj'?'ISJ':'OSB';
-      const mods=[];
-      if(d.modifiers.spreadMull) mods.push('Spread Mull');
-      if(d.modifiers.transom) mods.push(`Transom ${d.modifiers.transomSize||''}`);
-      if(d.modifiers.sideliteL) mods.push(`Sidelite L ${d.modifiers.sideliteLSize||''}`);
-      if(d.modifiers.sideliteR) mods.push(`Sidelite R ${d.modifiers.sideliteRSize||''}`);
-      lines.push(`D${i+1}: ${d.location||'(no location)'}`);
-      lines.push(`     ${d.doorType} | ${install} | ${size} | Qty ${d.qty}`);
-      if(d.doorType!=='Patio Slider'&&d.doorType!=='Bi-fold')
-        lines.push(`     ${d.swing==='inswing'?'Inswing':'Outswing'}, ${d.hand==='left'?'LH':'RH'}`);
-      if(mods.length) lines.push(`     ${mods.join(', ')}`);
-      if(d.bmW||d.bmH) lines.push(`     Brickmold: ${d.bmW||'?'} × ${d.bmH||'?'}`);
-      if(d.notes) lines.push(`     Note: ${d.notes}`);
-    });
-  }
-  return lines.join('\n');
+
+function exportToJSON(){
+  const data = { job, items, exportDate: new Date().toISOString() };
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `THS_${job.name||'job'}_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
-async function shareMeasurements(){
+function exportToPDF(){
+  if(!window.html2pdf){
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.onload = ()=>generatePDF();
+    document.head.appendChild(script);
+  } else {
+    generatePDF();
+  }
+}
+
+function generatePDF(){
+  const element = document.createElement('div');
+  element.style.padding = '20px';
+  element.style.fontFamily = 'Arial, sans-serif';
+  
+  const content = `
+    <h1>THS Field Measurements</h1>
+    <hr>
+    <h2>Job Information</h2>
+    <p><strong>Customer:</strong> ${job.name||'(none)'}</p>
+    <p><strong>Address:</strong> ${job.address||'(none)'}</p>
+    <p><strong>Date:</strong> ${job.date||'(none)'}</p>
+    ${job.notes?`<p><strong>Notes:</strong> ${job.notes}</p>`:''}
+    
+    <h2>Materials Summary</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr style="border-bottom:1px solid #ccc;">
+        <td style="padding:8px;"><strong>Brickmold</strong></td>
+        <td style="padding:8px;text-align:right;"><strong>${calculateMaterials().brickmold} ft</strong></td>
+      </tr>
+      <tr style="border-bottom:1px solid #ccc;">
+        <td style="padding:8px;"><strong>Sill</strong></td>
+        <td style="padding:8px;text-align:right;"><strong>${calculateMaterials().sill} ft</strong></td>
+      </tr>
+      <tr style="border-bottom:1px solid #ccc;">
+        <td style="padding:8px;"><strong>Caulk</strong></td>
+        <td style="padding:8px;text-align:right;"><strong>${calculateMaterials().caulk} tubes</strong></td>
+      </tr>
+      <tr>
+        <td style="padding:8px;"><strong>Metal Coil</strong></td>
+        <td style="padding:8px;text-align:right;"><strong>${calculateMaterials().coil} rolls</strong></td>
+      </tr>
+    </table>
+    
+    <h2>Measurements</h2>
+    ${items.map((item,i)=>`
+      <div style="margin-bottom:20px;padding:12px;background:#f5f5f5;border-radius:8px;">
+        <h3>${item.type==='window'?'🪟 Window':'🚪 Door'} - ${item.location||'(no location)'}</h3>
+        <p><strong>Type:</strong> ${item.type==='window'?item.winType:item.doorType}</p>
+        <p><strong>Size:</strong> ${item.dimW||'?'} × ${item.dimH||'?'}</p>
+        ${item.qty>1?`<p><strong>Quantity:</strong> ${item.qty}</p>`:''}
+        <p><strong>Caulk:</strong> ${item.caulkLevel}</p>
+        <p><strong>Metal Cap:</strong> ${item.coilType}</p>
+        ${item.notes?`<p><strong>Notes:</strong> ${item.notes}</p>`:''}
+        ${item.photos.before||item.photos.after||item.photos.reference?`
+          <div style="margin-top:12px;">
+            ${item.photos.before?`<img src="${item.photos.before}" style="max-width:150px;max-height:150px;margin-right:10px;border-radius:4px;">`:''} 
+            ${item.photos.after?`<img src="${item.photos.after}" style="max-width:150px;max-height:150px;margin-right:10px;border-radius:4px;">`:''} 
+            ${item.photos.reference?`<img src="${item.photos.reference}" style="max-width:150px;max-height:150px;margin-right:10px;border-radius:4px;">`:''} 
+          </div>
+        `:''}
+      </div>
+    `).join('')}
+    
+    <hr>
+    <p style="color:#666;font-size:12px;">Generated: ${new Date().toLocaleString()}</p>
+  `;
+  
+  element.innerHTML = content;
+  
+  const opt = {
+    margin: 10,
+    filename: `THS_${job.name||'job'}_${new Date().toISOString().split('T')[0]}.pdf`,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+  };
+  
+  window.html2pdf().set(opt).from(element).save();
+}
+
+function shareMeasurements(){
   const text = buildShareText();
   if(navigator.share){
     try{
-      await navigator.share({ title:`THS Measure — ${job.name||job.address||'Job'}`, text });
+      navigator.share({ title:`THS Measure — ${job.name||job.address||'Job'}`, text });
     } catch(e){ if(e.name!=='AbortError'){ fallbackCopyText(text); alert('Copied to clipboard!'); } }
   } else {
     fallbackCopyText(text);
     alert('Copied to clipboard!');
   }
 }
-</script>
-<script>
-// Register service worker for offline use
-if('serviceWorker' in navigator){
-  window.addEventListener('load', () => {
-    // Inline service worker via blob
+
+// ─── UTILITY ─────────────────────────────────────────────────────────────────
+function esc(str){
+  if(!str) return '';
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  loadData();
+  updateHeader();
+  document.getElementById('job-name').value = job.name||'';
+  document.getElementById('job-address').value = job.address||'';
+  document.getElementById('job-date').value = job.date||'';
+  document.getElementById('job-notes').value = job.notes||'';
+  
+  // Prevent double-tap zoom on inputs
+  document.addEventListener('touchend',(e)=>{
+    if(e.target.matches('input,select,textarea,.btn-primary,.btn-delete,.btn-photo,.kp-btn')){
+      e.preventDefault();
+    }
+  }, false);
+  
+  // Keypad close on overlay tap
+  document.getElementById('kp-overlay').addEventListener('click',(e)=>{
+    if(e.target===e.currentTarget) closeKpad();
+  });
+  
+  // Photo modal close
+  document.getElementById('photo-modal-overlay').addEventListener('click',(e)=>{
+    if(e.target===e.currentTarget) closePhotoModal();
+  });
+  
+  // Register service worker
+  if('serviceWorker' in navigator){
     const sw = `
-      const CACHE = 'ths-measure-v1';
+      const CACHE = 'ths-measure-v2';
       self.addEventListener('install', e => {
         e.waitUntil(caches.open(CACHE).then(c => c.add('/')));
         self.skipWaiting();
@@ -1525,8 +1339,8 @@ if('serviceWorker' in navigator){
     `;
     const blob = new Blob([sw], {type:'application/javascript'});
     navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
-  });
-}
+  }
+});
 </script>
 </body>
 </html>
