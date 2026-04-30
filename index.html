@@ -26,7 +26,7 @@
   --header-h:56px;
   --nav-h:60px;
 }
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);font-size:16px;}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);font-size:16px;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 /* HEADER */
 #app-header{
   position:fixed;top:0;left:0;right:0;
@@ -469,7 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSummaryScreen();
   loadApiKey();
   attachJobListeners();
-  document.getElementById('btn-start').addEventListener('click', () => switchScreen('measure'));
+  document.getElementById('btn-start').addEventListener('click', () => initializeMeasurement());
   document.getElementById('btn-share-full').addEventListener('click', shareMeasurements);
   document.getElementById('btn-copy-full').addEventListener('click', copyMeasurements);
   document.getElementById('btn-print').addEventListener('click', () => window.print());
@@ -535,7 +535,7 @@ function updateHeaderJob(){
 
 // ─── ITEM CREATION ───────────────────────────────────────────────────────────
 function makeId(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function addItem(type){
+function addItem(type, expandState=false){
   const item = {
     id: makeId(),
     type,
@@ -546,7 +546,7 @@ function addItem(type){
     qty:1,
     notes:'',
     photo:'',
-    expanded:true,
+    expanded:expandState,
   };
   if(type==='window'){
     item.winType='DH';
@@ -575,6 +575,62 @@ function addItem(type){
     const el = document.getElementById('card-'+item.id);
     if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
   },100);
+}
+
+function initializeMeasurement(){
+  // Clear any existing items
+  items = [];
+  // Generate 10 window cards (collapsed)
+  for(let i=0;i<10;i++){
+    const item = {
+      id: makeId(),
+      type:'window',
+      location:'',
+      mode:'metalout',
+      dimW:'',
+      dimH:'',
+      qty:1,
+      notes:'',
+      photo:'',
+      expanded:false,
+      winType:'DH',
+      glassType:'Clear',
+      obscureGlass:false,
+      temperedGlass:false,
+      grids:false,
+      gridPattern:'',
+      shapeDesc:''
+    };
+    items.push(item);
+  }
+  // Generate 5 door cards (collapsed)
+  for(let i=0;i<5;i++){
+    const item = {
+      id: makeId(),
+      type:'door',
+      location:'',
+      mode:'metalout',
+      dimW:'',
+      dimH:'',
+      qty:1,
+      notes:'',
+      photo:'',
+      expanded:false,
+      doorType:'Single',
+      sizeMode:'Standard',
+      stdWidth:'2\'8',
+      stdHeight:'6\'8',
+      swing:'inswing',
+      hand:'right',
+      modifiers:{spreadMull:false,transom:false,transomSize:'12"',sideliteL:false,sideliteLSize:'12"',sideliteR:false,sideliteRSize:'12"'},
+      bmW:'',
+      bmH:''
+    };
+    items.push(item);
+  }
+  saveData();
+  renderMeasureScreen();
+  switchScreen('measure');
 }
 
 // ─── MEASURE SCREEN ──────────────────────────────────────────────────────────
